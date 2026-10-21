@@ -1,0 +1,82 @@
+---
+import { brandMailHref as mailHref } from "../../lib/brand";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Header from "../../components/layout/Header.astro";
+import Footer from "../../components/layout/Footer.astro";
+import PageHeader from "../../components/ui/PageHeader.astro";
+import ContactForm from "../../components/ui/ContactForm.astro";
+import { locales, useTranslations, type Lang } from "../../lib/i18n/ui";
+
+export function getStaticPaths() {
+  return locales.map((lang) => ({ params: { lang } }));
+}
+
+const { lang } = Astro.params as { lang: Lang };
+const { t, dict } = useTranslations(lang);
+
+const channels = [{ href: mailHref, label: "Email" }];
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "ContactPage",
+  name: `${t("contactPage.eyebrow")} — WedevsVnzla`,
+  description: dict.contactPage.support,
+  url: new URL(`/${lang}/contact`, import.meta.env.SITE).toString(),
+};
+---
+
+<BaseLayout
+  lang={lang}
+  path="/contact"
+  title={`${t("contactPage.eyebrow")} — WedevsVnzla`}
+  description={dict.contactPage.support}
+  jsonLd={jsonLd}
+>
+  <Header lang={lang} path="/contact" />
+
+  <main id="main-content">
+    <PageHeader
+      eyebrow={t("contactPage.eyebrow")}
+      titleBold={t("contactPage.titleBold")}
+      titleLight={t("contactPage.titleLight")}
+      support={t("contactPage.support")}
+    />
+
+    <section
+      class="max-w-base mx-auto grid gap-12 px-6 py-20 md:grid-cols-12 md:py-28"
+    >
+      <div class="md:col-span-7" data-reveal>
+        <ContactForm lang={lang} />
+      </div>
+
+      <div class="flex flex-col gap-10 md:col-span-5" data-reveal-group>
+        <div>
+          <h2 class="text-h3 mb-4">{t("contactPage.channelsLabel")}</h2>
+          <div class="flex flex-wrap gap-2">
+            {
+              channels.map((c) => (
+                <a
+                  href={c.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="chip"
+                >
+                  {c.label}
+                </a>
+              ))
+            }
+          </div>
+        </div>
+
+        <div class="card p-6">
+          <h2 class="text-h3 mb-2">{t("contactPage.availabilityLabel")}</h2>
+          <p class="text-body text-ink-2">
+            {t("contactPage.availabilityText")}
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer lang={lang} />
+</BaseLayout>

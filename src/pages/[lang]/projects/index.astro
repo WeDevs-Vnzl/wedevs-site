@@ -1,0 +1,64 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import Header from "../../../components/layout/Header.astro";
+import Footer from "../../../components/layout/Footer.astro";
+import PageHeader from "../../../components/ui/PageHeader.astro";
+import ProjectCard from "../../../components/ui/ProjectCard.astro";
+import ContactSection from "../../../components/sections/ContactSection.astro";
+import { locales, useTranslations, type Lang } from "../../../lib/i18n/ui";
+import { getLocalizedPath } from "../../../lib/i18n/routes";
+
+export function getStaticPaths() {
+  return locales.map((lang) => ({ params: { lang } }));
+}
+
+const { lang } = Astro.params as { lang: Lang };
+const { t } = useTranslations(lang);
+
+const projects = (await getCollection("projects")).sort(
+  (a, b) => a.data.order - b.data.order,
+);
+---
+
+<BaseLayout
+  lang={lang}
+  path="/projects"
+  title={t("projectsPage.seoTitle")}
+  description={t("projectsPage.support")}
+  breadcrumbs={[
+    { name: t("project.breadcrumbHome"), url: `/${lang}/` },
+    { name: t("project.breadcrumbProjects"), url: `/${lang}/projects` },
+  ]}
+>
+  <Header lang={lang} path="/projects" />
+
+  <main id="main-content">
+    <PageHeader
+      eyebrow={t("projectsPage.eyebrow")}
+      titleBold={t("projectsPage.titleBold")}
+      titleLight={t("projectsPage.titleLight")}
+      support={t("projectsPage.support")}
+    />
+
+    <section class="max-w-base mx-auto px-6 py-20 md:py-30">
+      <div class="flex flex-col gap-3" data-reveal-group>
+        {
+          projects.map((p) => (
+            <ProjectCard
+              lang={lang}
+              data={p.data[lang]}
+              type={p.data.type}
+              stack={p.data.stack}
+              href={getLocalizedPath(`/projects/${p.id}`, lang)}
+            />
+          ))
+        }
+      </div>
+    </section>
+
+    <ContactSection lang={lang} />
+  </main>
+
+  <Footer lang={lang} />
+</BaseLayout>

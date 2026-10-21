@@ -1,0 +1,64 @@
+---
+import { useTranslations, type Lang } from "../../lib/i18n/ui";
+import { md } from "../../lib/utils/md";
+import { getLocalizedPath } from "../../lib/i18n/routes";
+import HeroBg from "../ui/HeroBg.astro";
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const { t } = useTranslations(lang);
+---
+
+<section
+  class="bg-bg relative isolate flex min-h-[80dvh] items-center overflow-hidden"
+  aria-labelledby="hero-heading"
+>
+  <HeroBg />
+
+  <div class="max-w-base relative mx-auto grid w-full gap-8 px-6 md:grid-cols-2 md:gap-12 md:pl-2">
+    <div class="flex flex-col">
+      <p
+        class="text-eyebrow text-accent mb-2 font-mono tracking-wider uppercase"
+        data-reveal
+        data-reveal-delay="0.3"
+      >
+        {t("home.heroEyebrow")}
+      </p>
+
+      <h1
+        id="hero-heading"
+        class="md:text-display-2 text-[2.5rem] leading-[1] tracking-[-0.04em] text-white"
+      >
+        <span class="font-light">{t("home.heroTitle")}</span>
+        <span class="font-bold">{t("home.heroTitleEmphasis")}</span>
+      </h1>
+
+      <a
+        href={getLocalizedPath("/contact", lang)}
+        class="pill-btn-primary mt-8 w-fit"
+        title={t("home.heroCta")}
+        data-reveal
+        data-reveal-delay="0.5"
+      >
+        {t("home.heroCta")}
+      </a>
+    </div>
+
+    <div
+      class="flex flex-col justify-start gap-5"
+      data-reveal-group
+      data-reveal-delay="0.4"
+    >
+      <p
+        class="text-by text-ink-2 [text-shadow:0_2px_16px_rgba(0,0,0,0.85)]"
+        set:html={md(t("home.heroPara1"))}
+      />
+      <p
+        class="text-by text-ink-2 [text-shadow:0_2px_16px_rgba(0,0,0,0.85)]"
+        set:html={md(t("home.heroPara2"))}
+      />
+    </div>
+  </div>
+</section>

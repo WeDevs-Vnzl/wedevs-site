@@ -1,0 +1,148 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import Header from "../../../components/layout/Header.astro";
+import Footer from "../../../components/layout/Footer.astro";
+import PageHeader from "../../../components/ui/PageHeader.astro";
+import { locales, useTranslations, type Lang } from "../../../lib/i18n/ui";
+import { getLocalizedPath } from "../../../lib/i18n/routes";
+import { getPostSlug } from "../../../lib/utils/blog";
+
+export function getStaticPaths() {
+  return locales.map((lang) => ({ params: { lang } }));
+}
+
+const { lang } = Astro.params as { lang: Lang };
+const { t, dict } = useTranslations(lang);
+
+const posts = (
+  await getCollection("blog", ({ data }) => data.lang === lang)
+).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const [featured, ...rest] = posts;
+
+const dateFormatter = new Intl.DateTimeFormat(
+  lang === "es" ? "es-ES" : "en-US",
+  {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  },
+);
+
+const readingTime = (body: string) =>
+  Math.max(1, Math.round(body.trim().split(/\s+/).length / 200));
+
+const tagCounts = new Map<string, number>();
+posts.forEach((p) =>
+  p.data.tags.forEach((tag) =>
+    tagCounts.set(tag, (tagCounts.get(tag) ?? 0) + 1),
+  ),
+);
+---
+
+<BaseLayout
+  lang={lang}
+  path="/blog"
+  title={`${t("nav.blog")} — WedevsVnzla`}
+  description={dict.blog.support}
+>
+  <Header lang={lang} path="/blog" />
+
+  <main id="main-content">
+    <PageHeader
+      eyebrow={t("blog.eyebrow")}
+      titleBold={t("blog.titleBold")}
+      titleLight={t("blog.titleLight")}
+      support={t("blog.support")}
+    />
+
+    <div class="max-w-base mx-auto px-6 py-16">
+      {
+        featured && (
+          <a
+            href={getLocalizedPath(`/blog/${getPostSlug(featured.id)}`, lang)}
+            class="card mb-16 flex flex-col gap-6 p-8 no-underline md:flex-row md:items-center"
+          >
+            {featured.data.coverImage && (
+              <img
+                src={featured.data.coverImage}
+                alt={featured.data.title}
+                width="1200"
+                height="675"
+                class="aspect-video w-full rounded-xl object-cover md:w-[42%]"
+                loading="lazy"
+              />
+            )}
+            <div class="md:flex-1">
+              <span class="chip border-accent text-accent mb-4">
+                {t("blog.featuredLabel")}
+              </span>
+              <h2
+                class="text-h3 text-ink mb-3"
+                transition:name={`post-title-${getPostSlug(featured.id).replace(/\//g, "-")}`}
+              >
+                {featured.data.title}
+              </h2>
+              <p class="text-body text-ink-2 mb-4 max-w-[52ch]">
+                {featured.data.excerpt}
+              </p>
+              <span class="text-muted text-[13px]">
+                {dateFormatter.format(featured.data.date)} ·{" "}
+                {t("blog.readingTime").replace(
+                  "{n}",
+                  String(readingTime(featured.body ?? "")),
+                )}
+              </span>
+            </div>
+          </a>
+        )
+      }
+
+      <div data-reveal-group>
+        {
+          rest.map((post) => (
+            <a
+              href={getLocalizedPath(`/blog/${getPostSlug(post.id)}`, lang)}
+              class="divider-dotted-row group flex flex-col gap-2 py-6 no-underline last:bg-none md:flex-row md:items-center md:gap-6"
+            >
+              <span class="text-muted w-[110px] shrink-0 font-mono text-xs">
+                {dateFormatter.format(post.data.date)}
+              </span>
+              <span class="flex-1">
+                <span
+                  class="text-ink group-hover:text-accent block text-[15px] font-medium"
+                  transition:name={`post-title-${getPostSlug(post.id).replace(/\//g, "-")}`}
+                >
+                  {post.data.title}
+                </span>
+                <span class="text-muted mt-1 block text-[13px]">
+                  {post.data.excerpt}
+                </span>
+              </span>
+              <span class="text-muted shrink-0 text-[13px]">
+                {t("blog.readingTime").replace(
+                  "{n}",
+                  String(readingTime(post.body ?? "")),
+                )}
+              </span>
+            </a>
+          ))
+        }
+      </div>
+
+      {
+        tagCounts.size > 0 && (
+          <div class="mt-12 flex flex-wrap gap-2 pt-10" data-reveal-group>
+            {Array.from(tagCounts.entries()).map(([tag, count]) => (
+              <span class="chip">
+                {tag} ({count})
+              </span>
+            ))}
+          </div>
+        )
+      }
+    </div>
+  </main>
+
+  <Footer lang={lang} />
+</BaseLayout>

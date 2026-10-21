@@ -1,0 +1,3 @@
+# Netlify redirects. The founder CV was removed when the site became a studio site.
+/en/cv  /en/  301
+/es/cv  /es/  301

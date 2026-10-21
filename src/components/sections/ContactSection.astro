@@ -1,0 +1,26 @@
+---
+import CtaBlock from "../ui/CtaBlock.astro";
+import { useTranslations, type Lang } from "../../lib/i18n/ui";
+import { getLocalizedPath } from "../../lib/i18n/routes";
+
+interface Props {
+  lang: Lang;
+  /** Position in the page's numbered sections; omit to hide the eyebrow. */
+  labelIndex?: number;
+}
+const { lang, labelIndex } = Astro.props;
+const { t } = useTranslations(lang);
+---
+
+<div id="contact" data-reveal>
+  <CtaBlock
+    headingId="contact-heading"
+    eyebrow={labelIndex
+      ? { index: labelIndex, label: t("home.sectionLabels.contact") }
+      : undefined}
+    title={t("contact.title")}
+    support={t("contact.desc")}
+    ctaLabel={t("contact.cta")}
+    ctaHref={getLocalizedPath("/contact", lang)}
+  />
+</div>

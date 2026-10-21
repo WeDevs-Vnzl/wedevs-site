@@ -1,0 +1,42 @@
+# WedevsVnzla
+
+> Venezuelan software studio. We build mobile apps, websites, CRMs and custom systems for growing businesses. Custom systems include payment and ERP integrations and AI automation.
+
+The site is bilingual: English under /en/, Spanish under /es/.
+
+## Pages (English)
+
+- [Home](https://wedevs.page/en/): What we do, services, projects, how we work, and contact.
+- [Services](https://wedevs.page/en/services): Services, process, ways of working, and FAQ.
+- [Projects](https://wedevs.page/en/projects): Case studies of what we've built.
+- [Blog](https://wedevs.page/en/blog): Technical writing from real projects.
+- [Contact](https://wedevs.page/en/contact): Tell us about your project.
+
+## Páginas (español)
+
+- [Inicio](https://wedevs.page/es/): Qué hacemos, servicios, proyectos, cómo trabajamos y contacto.
+- [Servicios](https://wedevs.page/es/services): Servicios, proceso, modalidades y preguntas frecuentes.
+- [Proyectos](https://wedevs.page/es/projects): Casos de estudio de lo que hemos construido.
+- [Blog](https://wedevs.page/es/blog): Escritura técnica a partir de proyectos reales.
+- [Contacto](https://wedevs.page/es/contact): Cuéntanos sobre tu proyecto.
+
+## Projects
+
+- [Kairos CMS](https://wedevs.page/en/projects/kairos-cms) · [ES](https://wedevs.page/es/projects/kairos-cms)
+- [Maximiza Brokerage Platform](https://wedevs.page/en/projects/maximiza) · [ES](https://wedevs.page/es/projects/maximiza)
+
+## Services
+
+- [Full-Stack Development](https://wedevs.page/en/services/full-stack-development) · [ES](https://wedevs.page/es/services/full-stack-development)
+- [Fintech & ERP Integrations](https://wedevs.page/en/services/fintech-erp-integrations) · [ES](https://wedevs.page/es/services/fintech-erp-integrations)
+- [AI Agents & Automation](https://wedevs.page/en/services/ai-agents-automation) · [ES](https://wedevs.page/es/services/ai-agents-automation)
+- [Technical Consulting](https://wedevs.page/en/services/technical-consulting) · [ES](https://wedevs.page/es/services/technical-consulting)
+
+## Blog
+
+- [Kairos: Multitenant Lessons](https://wedevs.page/en/blog/kairos-multitenant-lessons)
+- [Schema as JSONB](https://wedevs.page/en/blog/schema-as-jsonb)
+
+## Contact
+
+- Email: eliezermeza.dev@gmail.com

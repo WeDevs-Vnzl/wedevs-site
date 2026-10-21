@@ -1,0 +1,250 @@
+{
+  "nav": {
+    "home": "Home",
+    "projects": "Projects",
+    "services": "Services",
+    "blog": "Blog",
+    "contact": "Contact",
+    "talk": "Let's talk",
+    "menuOpenLabel": "Open menu",
+    "menuCloseLabel": "Close menu",
+    "langSwitch": "ES",
+    "langSwitchLabel": "Cambiar a Español",
+    "navLabel": "Primary navigation"
+  },
+  "home": {
+    "heroEyebrow": "// Software studio · Venezuela",
+    "heroTitle": "We build the software",
+    "heroTitleEmphasis": "your business needs.",
+    "heroPara1": "Mobile apps, websites, CRMs and custom systems. Made in Venezuela, for the world.",
+    "heroPara2": "Less manual work, more sales, better-served customers.",
+    "heroCta": "Let's talk",
+    "sectionLabels": {
+      "services": "Services",
+      "projects": "Projects",
+      "how": "How we work",
+      "contact": "Contact"
+    },
+    "servicesTeaserTitle": "One idea. Four ways to make it real.",
+    "servicesTeaserSupport": "Pick where to start; we take care of the rest.",
+    "servicesTeaserCta": "See all services",
+    "workTitle": "What we've built",
+    "workSupport": "Real products, in use today.",
+    "viewAllProjects": "View all projects",
+    "viewProject": "View project",
+    "howTitle": "How we work",
+    "howItems": [
+      {
+        "title": "We understand first.",
+        "desc": "Before writing code, we learn your business and your problem."
+      },
+      {
+        "title": "Progress every week.",
+        "desc": "You see real progress, not just reports."
+      },
+      {
+        "title": "One team.",
+        "desc": "You talk directly to the people building it."
+      },
+      {
+        "title": "Built to last.",
+        "desc": "Clean code that grows with you."
+      },
+      {
+        "title": "With you after launch.",
+        "desc": "Support and improvements when you need them."
+      }
+    ],
+    "stackDesc": "We use modern, proven tools, chosen for each project.",
+    "seoTitle": "WedevsVnzla · Apps, websites and custom software",
+    "seoDescription": "Venezuelan software studio. We build mobile apps, websites, CRMs and custom systems for growing businesses."
+  },
+  "contact": {
+    "title": "Got an idea? Let's talk.",
+    "desc": "Tell us what you need and we'll reply within a day with a clear proposal.",
+    "cta": "Write to us"
+  },
+  "footer": {
+    "reach": "The fastest way to reach us is email.",
+    "copyright": "© 2026 WedevsVnzla"
+  },
+  "notFound": {
+    "eyebrow": "404",
+    "title": "This page doesn't exist",
+    "support": "The link might be broken, or the page may have moved.",
+    "ctaHome": "Go home",
+    "ctaProjects": "View projects",
+    "linkProjects": "Selected work",
+    "linkServices": "Services",
+    "linkBlog": "Blog"
+  },
+  "project": {
+    "breadcrumbHome": "Home",
+    "breadcrumbProjects": "Projects",
+    "roleLabel": "Role:",
+    "clientLabel": "Client:",
+    "periodLabel": "Period:",
+    "stackLabel": "Stack:",
+    "back": "← Back to home",
+    "viewDemo": "View demo ↗",
+    "viewRepo": "View repository ↗",
+    "prevProject": "Previous",
+    "nextProject": "Next",
+    "typeOwn": "Own product",
+    "typeClient": "Client",
+    "sectionContext": "Context",
+    "sectionConditions": "Conditions",
+    "sectionSolution": "Solution",
+    "sectionTools": "Tools",
+    "sectionFeatures": "Key Features",
+    "sectionResults": "Results & Impact",
+    "sectionGallery": "Gallery",
+    "alternativesDiscarded": "Alternatives discarded:",
+    "lightboxClose": "Close",
+    "lightboxPrevious": "Previous",
+    "lightboxNext": "Next"
+  },
+  "projectsPage": {
+    "eyebrow": "Projects",
+    "titleBold": "What we've",
+    "titleLight": "built",
+    "support": "Real products, in use today.",
+    "seoTitle": "Projects — WedevsVnzla"
+  },
+  "services": {
+    "eyebrow": "Services",
+    "titleBold": "How we",
+    "titleLight": "can help",
+    "support": "Custom software for businesses that need to ship, not just plan.",
+    "processTitle": "Process",
+    "process": [
+      {
+        "title": "Context",
+        "desc": "Constraints, business rules and the parts of the problem that aren't written down anywhere."
+      },
+      {
+        "title": "Plan",
+        "desc": "Stack decisions and a scoped plan with clear milestones, before any code is written."
+      },
+      {
+        "title": "Build",
+        "desc": "Iterative development with visibility into progress, not a black box until the deadline."
+      },
+      {
+        "title": "Ship & support",
+        "desc": "Deployment, monitoring, and a defined window of post-launch support."
+      }
+    ],
+    "modalitiesTitle": "Ways of working",
+    "featuredLabel": "Most requested",
+    "modalities": [
+      {
+        "title": "Fixed-scope project",
+        "desc": "Scope, timeline and deliverables defined from day one.",
+        "features": [
+          "Defined deliverables",
+          "Agreed timeline",
+          "Direct communication"
+        ],
+        "featured": true
+      },
+      {
+        "title": "In stages",
+        "desc": "We move phase by phase, and you decide after each one.",
+        "features": [
+          "Clear milestones",
+          "Review at the end of each stage",
+          "Room to adjust"
+        ]
+      },
+      {
+        "title": "Monthly support",
+        "desc": "A team on hand for ongoing improvements and support.",
+        "features": [
+          "Continuous improvements",
+          "Priority response",
+          "Flexible scope"
+        ]
+      }
+    ],
+    "faqTitle": "FAQ",
+    "faq": [
+      {
+        "q": "How do you scope a new project?",
+        "a": "We start with a short discovery call to map constraints and goals, then we send a written scope with milestones before any commitment."
+      },
+      {
+        "q": "Do you work with existing codebases?",
+        "a": "Yes — most of our work is on existing platforms, not greenfield builds."
+      },
+      {
+        "q": "What's your typical response time?",
+        "a": "Within a day for email, faster during an active engagement."
+      },
+      {
+        "q": "Do you sign NDAs?",
+        "a": "Yes, standard practice for client work."
+      }
+    ],
+    "ctaSupport": "Have a project in mind? Let's talk about it.",
+    "detail": {
+      "breadcrumbServices": "Services",
+      "stackLabel": "Stack",
+      "deliverablesLabel": "What's included",
+      "relatedLabel": "Related work",
+      "faqLabel": "FAQ",
+      "backLabel": "← All services",
+      "ctaLabel": "Get in touch →"
+    }
+  },
+  "contactPage": {
+    "eyebrow": "Contact",
+    "titleBold": "Let's",
+    "titleLight": "build something",
+    "support": "Tell us about your project and we'll get back to you within a day.",
+    "formNameLabel": "Name",
+    "formEmailLabel": "Email",
+    "formProjectTypeLabel": "Project type",
+    "formProjectTypeOptions": [
+      "Mobile app",
+      "Website",
+      "CRM",
+      "Custom system",
+      "Other"
+    ],
+    "formBudgetLabel": "Budget (optional)",
+    "formBudgetOptions": [
+      "< $2,000",
+      "$2,000 – $5,000",
+      "$5,000 – $15,000",
+      "$15,000+",
+      "Not sure yet"
+    ],
+    "formMessageLabel": "Message",
+    "formSubmit": "Send message",
+    "formSubmitting": "Sending…",
+    "formSuccess": "Thanks — we'll reply within a day.",
+    "formError": "Something went wrong. Try emailing us directly.",
+    "formRequiredError": "This field is required.",
+    "formEmailError": "Enter a valid email address.",
+    "channelsLabel": "Other ways to reach us",
+    "availabilityLabel": "Availability",
+    "availabilityText": "Remote, UTC-4. Currently accepting new projects."
+  },
+  "blog": {
+    "eyebrow": "Blog",
+    "titleBold": "Notes on",
+    "titleLight": "shipping software",
+    "support": "Technical writing on fintech, architecture and the tradeoffs behind real projects.",
+    "featuredLabel": "Featured",
+    "readMore": "Read more ↗",
+    "tagsHeading": "Tags",
+    "rssLabel": "RSS",
+    "publishedLabel": "Published",
+    "updatedLabel": "Updated",
+    "readingTime": "{n} min read",
+    "relatedHeading": "Related posts",
+    "backToBlog": "← Back to blog",
+    "authorBioText": "Founder of WedevsVnzla. Full-stack software engineer specialized in fintech and ERP systems."
+  }
+}

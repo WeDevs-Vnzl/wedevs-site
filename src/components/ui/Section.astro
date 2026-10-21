@@ -1,0 +1,20 @@
+---
+interface Props {
+  id?: string;
+  labelledBy: string;
+  layout?: "grid" | "hero";
+}
+const { id, labelledBy, layout = "grid" } = Astro.props;
+const layoutClass =
+  layout === "hero"
+    ? "flex flex-col"
+    : "grid md:grid-cols-[150px_1fr] gap-4 md:gap-8";
+---
+
+<section
+  id={id}
+  class={`max-w-base mx-auto px-6 py-16 ${layoutClass}`}
+  aria-labelledby={labelledBy}
+>
+  <slot />
+</section>

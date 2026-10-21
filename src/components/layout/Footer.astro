@@ -1,0 +1,70 @@
+---
+import { brandMailHref as mailHref } from "../../lib/brand";
+import Logo from "../brand/Logo.astro";
+import { useTranslations, type Lang } from "../../lib/i18n/ui";
+import { getLocalizedPath } from "../../lib/i18n/routes";
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const { t } = useTranslations(lang);
+const home = getLocalizedPath("/", lang);
+
+const navLinks = [
+  { href: getLocalizedPath("/projects", lang), label: t("nav.projects") },
+  { href: getLocalizedPath("/services", lang), label: t("nav.services") },
+  { href: getLocalizedPath("/blog", lang), label: t("nav.blog") },
+];
+
+const socials = [{ href: mailHref, label: "Email" }];
+---
+
+<footer class="mt-auto px-6 pt-16 pb-8">
+  <div class="max-w-base mx-auto grid gap-10 md:grid-cols-3">
+    <div>
+      <a
+        href={home}
+        class="text-ink font-medium no-underline"
+        title="WedevsVnzla — Home"
+      >
+        <Logo size={24} />
+      </a>
+      <p class="text-muted mt-2 max-w-[32ch] text-sm">
+        {t("footer.reach")}
+      </p>
+    </div>
+
+    <nav class="flex flex-col gap-2 text-[13px]" aria-label={t("nav.navLabel")}>
+      {
+        navLinks.map((link) => (
+          <a href={link.href} class="text-muted hover:text-ink no-underline">
+            {link.label}
+          </a>
+        ))
+      }
+    </nav>
+
+    <div class="flex flex-col gap-2 text-[13px] md:items-end">
+      {
+        socials.map((s) => (
+          <a
+            href={s.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-muted hover:text-ink no-underline"
+            title={`WedevsVnzla — ${s.label}`}
+          >
+            {s.label}
+          </a>
+        ))
+      }
+    </div>
+  </div>
+
+  <div
+    class="max-w-base mx-auto mt-10 flex flex-wrap items-center justify-between gap-2 pt-6 text-xs"
+  >
+    <p class="text-muted">{t("footer.copyright")}</p>
+  </div>
+</footer>

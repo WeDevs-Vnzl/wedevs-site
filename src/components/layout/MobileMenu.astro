@@ -1,0 +1,125 @@
+---
+import { brandMailHref as mailHref } from "../../lib/brand";
+import { useTranslations, type Lang } from "../../lib/i18n/ui";
+import { getLocalizedPath } from "../../lib/i18n/routes";
+import LangSwitch from "./LangSwitch.astro";
+import Glow from "../ui/Glow.astro";
+
+interface Props {
+  lang: Lang;
+  path: string;
+}
+const { lang, path } = Astro.props;
+const { t } = useTranslations(lang);
+const home = getLocalizedPath("/", lang);
+
+const links = [
+  { href: home, label: t("nav.home") },
+  { href: getLocalizedPath("/projects", lang), label: t("nav.projects") },
+  { href: getLocalizedPath("/services", lang), label: t("nav.services") },
+  { href: getLocalizedPath("/blog", lang), label: t("nav.blog") },
+  { href: getLocalizedPath("/contact", lang), label: t("nav.contact") },
+];
+---
+
+<div
+  id="mobile-menu"
+  class="fixed inset-0 z-40"
+  role="dialog"
+  aria-modal="true"
+  aria-label={t("nav.navLabel")}
+>
+  <div class="bg-bg relative h-full overflow-hidden">
+    <Glow size="hero" />
+    <div class="relative flex h-full flex-col px-6 pt-28 pb-10">
+      <button
+        id="menu-close"
+        type="button"
+        class="border-line text-ink absolute top-6 right-6 inline-flex h-10 w-10 items-center justify-center rounded-full border"
+        aria-label={t("nav.menuCloseLabel")}
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.5"
+          stroke-linecap="round"
+          aria-hidden="true"
+        >
+          <line x1="5" y1="5" x2="19" y2="19"></line>
+          <line x1="19" y1="5" x2="5" y2="19"></line>
+        </svg>
+      </button>
+
+      <nav
+        class="flex flex-1 flex-col justify-center gap-1"
+        aria-label={t("nav.navLabel")}
+      >
+        {
+          links.map((link, i) => (
+            <a
+              href={link.href}
+              class="menu-link divider-dotted-row text-ink py-3 text-3xl font-medium no-underline last:bg-none"
+              style={`transition-delay: ${i * 50}ms`}
+            >
+              {link.label}
+            </a>
+          ))
+        }
+      </nav>
+
+      <div
+        class="border-line-dashed flex items-center justify-between border-t pt-6"
+      >
+        <LangSwitch lang={lang} path={path} />
+        <div class="text-ink-2 flex items-center gap-5 text-sm font-medium">
+          <a
+            href={mailHref}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="hover:text-ink no-underline"
+          >
+            Email
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  #mobile-menu {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 300ms var(--ease-signature);
+  }
+
+  #mobile-menu.is-open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .menu-link {
+    opacity: 0;
+    transform: translateY(12px);
+    transition:
+      opacity 300ms var(--ease-signature),
+      transform 300ms var(--ease-signature);
+  }
+
+  #mobile-menu.is-open .menu-link {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #mobile-menu,
+    .menu-link {
+      transition: none;
+      transform: none;
+    }
+  }
+</style>

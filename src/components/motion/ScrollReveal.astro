@@ -1,0 +1,17 @@
+---
+// No visible markup — this component only wires up scroll-reveal behavior.
+---
+
+<script>
+  import { initScrollReveal, stopScrollReveal } from "../../lib/utils/motion";
+
+  function runScrollReveal() {
+    initScrollReveal();
+    document.addEventListener("astro:before-swap", stopScrollReveal, {
+      once: true,
+    });
+  }
+
+  runScrollReveal();
+  document.addEventListener("astro:after-swap", runScrollReveal);
+</script>

@@ -1,0 +1,53 @@
+---
+import Glow from "./Glow.astro";
+import SectionLabel from "./SectionLabel.astro";
+
+interface Props {
+  title: string;
+  support: string;
+  ctaLabel: string;
+  ctaHref: string;
+  external?: boolean;
+  headingId?: string;
+  /** Optional numbered eyebrow, e.g. { index: 4, label: "Contact" } */
+  eyebrow?: { index: number; label: string };
+}
+const { title, support, ctaLabel, ctaHref, external, headingId, eyebrow } =
+  Astro.props;
+---
+
+<section
+  class="max-w-base mx-auto px-6 py-20 md:py-30"
+  aria-labelledby={headingId}
+>
+  <div
+    class="card relative isolate overflow-hidden px-8 py-20 text-center md:px-16"
+  >
+    <Glow size="cta" />
+    {
+      eyebrow && (
+        <SectionLabel
+          index={eyebrow.index}
+          label={eyebrow.label}
+          class="relative mb-6"
+        />
+      )
+    }
+    <h2
+      id={headingId}
+      class="text-h2 md:text-display-2 relative mx-auto max-w-[20ch] font-bold"
+    >
+      {title}
+    </h2>
+    <p class="text-muted relative mx-auto mt-6 max-w-[52ch]">{support}</p>
+    <a
+      href={ctaHref}
+      target={external ? "_blank" : undefined}
+      rel={external ? "noopener noreferrer" : undefined}
+      class="pill-btn-primary relative mt-8 inline-flex"
+      title={ctaLabel}
+    >
+      {ctaLabel}
+    </a>
+  </div>
+</section>

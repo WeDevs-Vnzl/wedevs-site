@@ -1,0 +1,76 @@
+---
+import { founder } from "../../../lib/brand";
+import { getCollection, render } from "astro:content";
+import BlogLayout from "../../../layouts/BlogLayout.astro";
+import type { Lang } from "../../../lib/i18n/ui";
+import { getLocalizedPath } from "../../../lib/i18n/routes";
+import { getPostSlug } from "../../../lib/utils/blog";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("blog");
+  return posts.map((entry) => ({
+    params: { lang: entry.data.lang, slug: getPostSlug(entry.id) },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { lang } = Astro.params as { lang: Lang; slug: string };
+const { Content, headings } = await render(entry);
+
+const readingTime = Math.max(
+  1,
+  Math.round((entry.body ?? "").trim().split(/\s+/).length / 200),
+);
+
+const related = (
+  await getCollection(
+    "blog",
+    ({ data, id }) => data.lang === lang && id !== entry.id,
+  )
+)
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 3)
+  .map((p) => ({
+    href: getLocalizedPath(`/blog/${getPostSlug(p.id)}`, lang),
+    title: p.data.title,
+    date: p.data.date,
+  }));
+
+const path = `/blog/${getPostSlug(entry.id)}`;
+const canonicalUrl = new URL(
+  `/${lang}${path}`,
+  import.meta.env.SITE,
+).toString();
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  headline: entry.data.title,
+  description: entry.data.excerpt,
+  datePublished: entry.data.date.toISOString(),
+  dateModified: (entry.data.updatedDate ?? entry.data.date).toISOString(),
+  author: {
+    "@type": "Person",
+    name: founder.name,
+    sameAs: [founder.linkedin, founder.github],
+  },
+  url: canonicalUrl,
+};
+---
+
+<BlogLayout
+  lang={lang}
+  path={path}
+  title={entry.data.title}
+  excerpt={entry.data.excerpt}
+  date={entry.data.date}
+  updatedDate={entry.data.updatedDate}
+  tags={entry.data.tags}
+  readingTime={readingTime}
+  headings={headings}
+  related={related}
+  jsonLd={jsonLd}
+>
+  <Content />
+</BlogLayout>

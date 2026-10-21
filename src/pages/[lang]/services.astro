@@ -1,0 +1,180 @@
+---
+import SectionLabel from "../../components/ui/SectionLabel.astro";
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Header from "../../components/layout/Header.astro";
+import Footer from "../../components/layout/Footer.astro";
+import PageHeader from "../../components/ui/PageHeader.astro";
+import Chip from "../../components/ui/Chip.astro";
+import CtaBlock from "../../components/ui/CtaBlock.astro";
+import { locales, useTranslations, type Lang } from "../../lib/i18n/ui";
+import { getLocalizedPath } from "../../lib/i18n/routes";
+
+export function getStaticPaths() {
+  return locales.map((lang) => ({ params: { lang } }));
+}
+
+const { lang } = Astro.params as { lang: Lang };
+const { t, dict } = useTranslations(lang);
+const services = (await getCollection("services")).sort(
+  (a, b) => a.data.order - b.data.order,
+);
+---
+
+<BaseLayout
+  lang={lang}
+  path="/services"
+  title={`${t("services.eyebrow")} — WedevsVnzla`}
+  description={dict.services.support}
+>
+  <Header lang={lang} path="/services" />
+
+  <main id="main-content">
+    <PageHeader
+      eyebrow={t("services.eyebrow")}
+      titleBold={t("services.titleBold")}
+      titleLight={t("services.titleLight")}
+      support={t("services.support")}
+    />
+
+    <section class="max-w-base mx-auto px-6 py-20 md:py-30">
+      <div class="grid gap-6 md:grid-cols-2" data-reveal-group>
+        {
+          services.map((entry, i) => {
+            const data = entry.data[lang];
+            return (
+              <a
+                href={getLocalizedPath(`/services/${entry.id}`, lang)}
+                class="card flex flex-col p-8 no-underline"
+              >
+                <p class="text-muted mb-6 self-end font-mono text-xs">
+                  {String(i + 1).padStart(2, "0")}
+                </p>
+                <h2 class="text-h3 mb-3">{data.title}</h2>
+                <p class="text-body text-ink-2 mb-6">{data.desc}</p>
+                <div class="mt-auto flex flex-col gap-2 pt-6">
+                  {data.deliverables.map((d) => (
+                    <p class="text-ink-2 text-sm">
+                      <span class="text-accent mr-2">–</span>
+                      {d}
+                    </p>
+                  ))}
+                </div>
+              </a>
+            );
+          })
+        }
+      </div>
+    </section>
+
+    <section class="max-w-base mx-auto px-6 py-20 md:py-30">
+      <SectionLabel
+        as="h2"
+        index={1}
+        label={t("services.processTitle")}
+        class="mb-16"
+      />
+      <div
+        class="relative grid gap-12 md:grid-cols-4 md:gap-8"
+        data-reveal-group
+      >
+        <div
+          class="divider-dotted-row absolute top-[5px] right-0 left-0 hidden h-px md:block"
+          aria-hidden="true"
+        >
+        </div>
+        {
+          dict.services.process.map((step, i) => (
+            <div class="relative flex flex-col">
+              <span
+                class="border-accent bg-bg-alt relative z-10 mb-4 inline-flex h-[9px] w-[9px] rounded-full border-[1.5px]"
+                aria-hidden="true"
+              />
+              <p class="text-muted mb-2 font-mono text-xs">
+                {String(i + 1).padStart(2, "0")}
+              </p>
+              <h3 class="text-h3 mb-2">{step.title}</h3>
+              <p class="text-body text-ink-2 text-sm">{step.desc}</p>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="max-w-base mx-auto px-6 py-20 md:py-30">
+      <SectionLabel
+        as="h2"
+        index={2}
+        label={t("services.modalitiesTitle")}
+        class="mb-16"
+      />
+      <div class="flex flex-col gap-10 md:flex-row md:gap-0" data-reveal-group>
+        {
+          dict.services.modalities.map((m, i) => (
+            <>
+              {i > 0 && (
+                <div
+                  class="divider-dotted-v mx-8 hidden md:block"
+                  aria-hidden="true"
+                />
+              )}
+              <div class="flex-1">
+                <div class="mb-3 flex items-center gap-3">
+                  <h3 class="text-h3">{m.title}</h3>
+                  {m.featured && (
+                    <Chip class="border-accent text-accent">
+                      {t("services.featuredLabel")}
+                    </Chip>
+                  )}
+                </div>
+                <p class="text-body text-ink-2 mb-4">{m.desc}</p>
+                <ul>
+                  {m.features.map((f) => (
+                    <li class="text-ink-2 text-sm">{f}</li>
+                  ))}
+                </ul>
+              </div>
+            </>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="max-w-base mx-auto px-6 py-20 md:py-30">
+      <SectionLabel
+        as="h2"
+        index={3}
+        label={t("services.faqTitle")}
+        class="mb-12"
+      />
+      <div data-reveal-group>
+        {
+          dict.services.faq.map((item) => (
+            <details class="divider-dotted-row group py-5 last:bg-none">
+              <summary class="text-ink flex cursor-pointer items-center justify-between text-[15px] font-medium marker:content-none [&::-webkit-details-marker]:hidden">
+                {item.q}
+                <span
+                  class="text-muted ml-4 shrink-0 text-lg transition-transform duration-200 group-open:rotate-45"
+                  aria-hidden="true"
+                >
+                  +
+                </span>
+              </summary>
+              <p class="text-body text-ink-2 mt-4 max-w-[68ch]">{item.a}</p>
+            </details>
+          ))
+        }
+      </div>
+    </section>
+
+    <CtaBlock
+      headingId="services-cta-heading"
+      title={t("contact.title")}
+      support={t("services.ctaSupport")}
+      ctaLabel={t("contact.cta")}
+      ctaHref={getLocalizedPath("/contact", lang)}
+    />
+  </main>
+
+  <Footer lang={lang} />
+</BaseLayout>

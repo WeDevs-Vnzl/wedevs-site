@@ -1,0 +1,60 @@
+---
+import type { CollectionEntry } from "astro:content";
+import SectionLabel from "../ui/SectionLabel.astro";
+import { useTranslations, type Lang } from "../../lib/i18n/ui";
+import { getLocalizedPath } from "../../lib/i18n/routes";
+
+interface Props {
+  lang: Lang;
+  services: CollectionEntry<"services">[];
+}
+const { lang, services } = Astro.props;
+const { t } = useTranslations(lang);
+---
+
+<section aria-labelledby="services-teaser-heading">
+  <div class="max-w-base mx-auto px-6 py-20 md:py-30">
+    <div class="mb-12">
+      <SectionLabel
+        index={1}
+        label={t("home.sectionLabels.services")}
+        class="mb-4"
+      />
+      <h2 id="services-teaser-heading" class="text-h2" data-reveal>
+        {t("home.servicesTeaserTitle")}
+      </h2>
+      <p class="text-accent-dim text-body mt-1.5">
+        {t("home.servicesTeaserSupport")}
+      </p>
+    </div>
+    <div class="grid gap-10 md:grid-cols-2 md:gap-x-16" data-reveal-group>
+      {
+        services.map((entry) => {
+          const href = getLocalizedPath(`/services/${entry.id}`, lang);
+          const transitionId = href.replace(/\//g, "-");
+          const data = entry.data[lang];
+          return (
+            <a
+              href={href}
+              class="divider-dotted-row group block pb-8 no-underline"
+            >
+              <h3
+                class="text-h3 group-hover:text-accent mb-3 transition-colors"
+                transition:name={`service-title-${transitionId}`}
+              >
+                {data.title}
+              </h3>
+              <p class="text-body text-ink-2">{data.desc}</p>
+            </a>
+          );
+        })
+      }
+    </div>
+    <a
+      href={getLocalizedPath("/services", lang)}
+      class="text-accent mt-10 inline-block text-sm no-underline hover:underline"
+    >
+      {t("home.servicesTeaserCta")} →
+    </a>
+  </div>
+</section>

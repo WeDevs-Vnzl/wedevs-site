@@ -1,0 +1,47 @@
+---
+import Glow from "./Glow.astro";
+
+interface Props {
+  eyebrow?: string;
+  titleBold: string;
+  titleLight?: string;
+  support?: string;
+}
+const { eyebrow, titleBold, titleLight, support } = Astro.props;
+---
+
+<header class="divider-dotted-row relative overflow-hidden">
+  <Glow size="page" />
+  <div
+    class="max-w-base relative mx-auto grid gap-8 px-6 py-20 md:grid-cols-12 md:py-28"
+  >
+    <div class="md:col-span-7">
+      <slot name="breadcrumbs" />
+      {
+        eyebrow && (
+          <p class="text-eyebrow text-accent mb-4 font-mono tracking-wider uppercase">
+            {eyebrow}
+          </p>
+        )
+      }
+      <h1 class="text-h1 md:text-display-2">
+        <span class="font-bold">{titleBold}</span>
+        {
+          titleLight && (
+            <>
+              <br />
+              <span class="font-light">{titleLight}</span>
+            </>
+          )
+        }
+      </h1>
+    </div>
+    {
+      support && (
+        <div class="md:col-span-5 md:self-end">
+          <p class="text-body text-ink-2 max-w-[46ch]">{support}</p>
+        </div>
+      )
+    }
+  </div>
+</header>

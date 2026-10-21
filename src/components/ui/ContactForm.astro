@@ -1,0 +1,240 @@
+---
+import { useTranslations, type Lang } from "../../lib/i18n/ui";
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const { t, dict } = useTranslations(lang);
+---
+
+<form id="contact-form" class="card flex flex-col gap-5 p-8" novalidate>
+  <div class="flex flex-col gap-1.5">
+    <label for="cf-name" class="text-ink text-sm font-medium">
+      {t("contactPage.formNameLabel")}
+    </label>
+    <input
+      id="cf-name"
+      name="name"
+      type="text"
+      required
+      aria-describedby="cf-name-error"
+      class="border-line bg-bg-alt text-ink focus-visible:border-accent rounded-lg border px-4 py-3 text-sm outline-none"
+    />
+    <p
+      id="cf-name-error"
+      class="text-sm text-red-400 empty:hidden"
+      role="alert"
+    >
+    </p>
+  </div>
+
+  <div class="flex flex-col gap-1.5">
+    <label for="cf-email" class="text-ink text-sm font-medium">
+      {t("contactPage.formEmailLabel")}
+    </label>
+    <input
+      id="cf-email"
+      name="email"
+      type="email"
+      required
+      aria-describedby="cf-email-error"
+      class="border-line bg-bg-alt text-ink focus-visible:border-accent rounded-lg border px-4 py-3 text-sm outline-none"
+    />
+    <p
+      id="cf-email-error"
+      class="text-sm text-red-400 empty:hidden"
+      role="alert"
+    >
+    </p>
+  </div>
+
+  <div class="flex flex-col gap-1.5">
+    <label for="cf-project-type" class="text-ink text-sm font-medium">
+      {t("contactPage.formProjectTypeLabel")}
+    </label>
+    <select
+      id="cf-project-type"
+      name="project-type"
+      required
+      aria-describedby="cf-project-type-error"
+      class="border-line bg-bg-alt text-ink focus-visible:border-accent rounded-lg border px-4 py-3 text-sm outline-none"
+    >
+      <option value=""></option>
+      {
+        dict.contactPage.formProjectTypeOptions.map((opt) => (
+          <option value={opt}>{opt}</option>
+        ))
+      }
+    </select>
+    <p
+      id="cf-project-type-error"
+      class="text-sm text-red-400 empty:hidden"
+      role="alert"
+    >
+    </p>
+  </div>
+
+  <div class="flex flex-col gap-1.5">
+    <label for="cf-budget" class="text-ink text-sm font-medium">
+      {t("contactPage.formBudgetLabel")}
+    </label>
+    <select
+      id="cf-budget"
+      name="budget"
+      class="border-line bg-bg-alt text-ink focus-visible:border-accent rounded-lg border px-4 py-3 text-sm outline-none"
+    >
+      <option value=""></option>
+      {
+        dict.contactPage.formBudgetOptions.map((opt) => (
+          <option value={opt}>{opt}</option>
+        ))
+      }
+    </select>
+  </div>
+
+  <div class="flex flex-col gap-1.5">
+    <label for="cf-message" class="text-ink text-sm font-medium">
+      {t("contactPage.formMessageLabel")}
+    </label>
+    <textarea
+      id="cf-message"
+      name="message"
+      rows="5"
+      required
+      aria-describedby="cf-message-error"
+      class="border-line bg-bg-alt text-ink focus-visible:border-accent rounded-lg border px-4 py-3 text-sm outline-none"
+    ></textarea>
+    <p
+      id="cf-message-error"
+      class="text-sm text-red-400 empty:hidden"
+      role="alert"
+    >
+    </p>
+  </div>
+
+  <!-- Honeypot: hidden from sighted users and keyboard focus, but present in the
+       DOM so simple bots that fill every field trip it. Off-screen, not
+       display:none/visibility:hidden, which some bots detect and skip. -->
+  <div
+    class="absolute top-auto -left-[9999px] h-px w-px overflow-hidden"
+    aria-hidden="true"
+  >
+    <label for="cf-bot-field">Do not fill this field</label>
+    <input
+      id="cf-bot-field"
+      name="bot-field"
+      type="text"
+      tabindex="-1"
+      autocomplete="off"
+    />
+  </div>
+
+  <button
+    id="cf-submit"
+    type="submit"
+    class="pill-btn-primary mt-2 justify-center disabled:cursor-not-allowed disabled:opacity-60"
+  >
+    {t("contactPage.formSubmit")}
+  </button>
+
+  <p id="cf-status" class="text-sm" aria-live="polite" role="status"></p>
+</form>
+
+<script
+  is:inline
+  define:vars={{
+    i18n: {
+      requiredError: t("contactPage.formRequiredError"),
+      emailError: t("contactPage.formEmailError"),
+      submitting: t("contactPage.formSubmitting"),
+      submit: t("contactPage.formSubmit"),
+      success: t("contactPage.formSuccess"),
+      error: t("contactPage.formError"),
+    },
+  }}
+>
+  window.__contactFormI18n = i18n;
+</script>
+
+<script>
+  import {
+    submitContactForm,
+    isValidEmail,
+    getMissingRequiredFields,
+  } from "../../lib/utils/form";
+
+  function initContactForm() {
+    const form = document.getElementById("contact-form") as HTMLFormElement;
+    if (!form) return;
+
+    const i18n = (
+      window as unknown as { __contactFormI18n: Record<string, string> }
+    ).__contactFormI18n;
+    const submitBtn = document.getElementById("cf-submit") as HTMLButtonElement;
+    const status = document.getElementById("cf-status")!;
+    const requiredFields = ["name", "email", "project-type", "message"];
+
+    function setFieldError(field: string, message: string) {
+      const el = document.getElementById(`cf-${field}-error`);
+      if (el) el.textContent = message;
+    }
+
+    function clearErrors() {
+      requiredFields.forEach((field) => setFieldError(field, ""));
+    }
+
+    function validate(data: Record<string, string>): boolean {
+      clearErrors();
+      let valid = true;
+      for (const field of getMissingRequiredFields(data, requiredFields)) {
+        setFieldError(field, i18n.requiredError);
+        valid = false;
+      }
+      if (data.email && !isValidEmail(data.email)) {
+        setFieldError("email", i18n.emailError);
+        valid = false;
+      }
+      return valid;
+    }
+
+    async function onSubmit(e: SubmitEvent) {
+      e.preventDefault();
+      if (form.querySelector<HTMLInputElement>("#cf-bot-field")?.value) return; // honeypot tripped
+
+      const formData = new FormData(form);
+      const data = Object.fromEntries(formData.entries()) as Record<
+        string,
+        string
+      >;
+
+      if (!validate(data)) {
+        status.textContent = "";
+        return;
+      }
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = i18n.submitting;
+      status.textContent = "";
+      status.className = "text-sm";
+
+      try {
+        await submitContactForm(data);
+        status.textContent = i18n.success;
+        status.className = "text-sm text-[var(--color-success)]";
+        form.reset();
+      } catch {
+        status.textContent = i18n.error;
+        status.className = "text-sm text-red-400";
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = i18n.submit;
+      }
+    }
+
+    form.addEventListener("submit", onSubmit);
+  }
+
+  initContactForm();
+  document.addEventListener("astro:after-swap", initContactForm);
+</script>

@@ -1,0 +1,30 @@
+<!doctype html>
+<!--
+  Netlify Forms detection stub. Not a page anyone visits — Netlify's build bot
+  scans the DEPLOYED HTML for <form data-netlify> and registers every field
+  listed here by its `name` attribute. The real, styled form lives in
+  ContactForm.astro and submits to this same form name via fetch(). See
+  src/lib/utils/form.ts and _docs/portafolio-v2-spec.md section 5.9.
+-->
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Form detection</title>
+  </head>
+  <body>
+    <form
+      name="contact"
+      method="POST"
+      data-netlify="true"
+      netlify-honeypot="bot-field"
+      hidden
+    >
+      <input type="text" name="name" />
+      <input type="email" name="email" />
+      <input type="text" name="project-type" />
+      <input type="text" name="budget" />
+      <textarea name="message"></textarea>
+      <input type="text" name="bot-field" />
+    </form>
+  </body>
+</html>

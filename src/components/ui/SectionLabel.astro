@@ -1,0 +1,18 @@
+---
+/** Numbered mono eyebrow from the brand manual, e.g. "01 · SERVICES". */
+interface Props {
+  index: number;
+  label: string;
+  as?: "p" | "h2";
+  id?: string;
+  class?: string;
+}
+const { index, label, as: Tag = "p", id, class: className = "" } = Astro.props;
+---
+
+<Tag
+  id={id}
+  class={`text-eyebrow text-muted font-mono tracking-[0.08em] uppercase ${className}`}
+>
+  {String(index).padStart(2, "0")} · {label}
+</Tag>

@@ -1,0 +1,540 @@
+---
+import SectionLabel from "../components/ui/SectionLabel.astro";
+import BaseLayout from "./BaseLayout.astro";
+import Header from "../components/layout/Header.astro";
+import Footer from "../components/layout/Footer.astro";
+import Glow from "../components/ui/Glow.astro";
+import Chip from "../components/ui/Chip.astro";
+import { getLocalizedPath } from "../lib/i18n/routes";
+import { useTranslations, type Lang } from "../lib/i18n/ui";
+import { md } from "../lib/utils/md";
+import type { CollectionEntry } from "astro:content";
+import { projectTypeMeta, type ProjectType } from "../lib/utils/projectType";
+
+type LangData = CollectionEntry<"projects">["data"]["en"];
+type NamedItem = { name: string; reason: string };
+
+interface NavProject {
+  href: string;
+  title: string;
+}
+
+interface Props {
+  lang: Lang;
+  path: string;
+  data: LangData;
+  type: ProjectType;
+  stack: string[];
+  repo_url?: string;
+  preview_url?: string;
+  gallery?: string[];
+  coverImage?: string;
+  prev?: NavProject;
+  next?: NavProject;
+  jsonLd?: object;
+}
+
+const {
+  lang,
+  path,
+  data,
+  type,
+  stack,
+  gallery,
+  coverImage,
+  repo_url,
+  preview_url,
+  prev,
+  next,
+  jsonLd,
+} = Astro.props;
+const { t } = useTranslations(lang);
+const meta = projectTypeMeta(type);
+const home = getLocalizedPath("/", lang);
+// Same id formula as ProjectCard's href-derived transition:name, so the
+// browser can match card <-> detail elements for the shared-element morph.
+const transitionId = getLocalizedPath(path, lang).replace(/\//g, "-");
+const heroImage = coverImage ?? gallery?.[0];
+const projectSlug = path.replace(/^\/projects\//, "");
+const ogImage = `/og/projects/${projectSlug}-${lang}.png`;
+const breadcrumbs = [
+  { name: t("project.breadcrumbHome"), url: `/${lang}/` },
+  { name: t("project.breadcrumbProjects"), url: `/${lang}/projects` },
+  { name: data.title, url: `/${lang}${path}` },
+];
+
+const proseSections = (
+  [
+    data.context && {
+      id: "context",
+      label: t("project.sectionContext"),
+      body: data.context,
+    },
+    data.conditions && {
+      id: "conditions",
+      label: t("project.sectionConditions"),
+      body: data.conditions,
+    },
+    data.solution && {
+      id: "solution",
+      label: t("project.sectionSolution"),
+      body: data.solution,
+    },
+  ] as const
+).filter(Boolean) as { id: string; label: string; body: string }[];
+
+const listSections = (
+  [
+    data.tools?.length && {
+      id: "tools",
+      label: t("project.sectionTools"),
+      items: data.tools,
+    },
+    data.features?.length && {
+      id: "features",
+      label: t("project.sectionFeatures"),
+      items: data.features,
+    },
+    data.results?.length && {
+      id: "results",
+      label: t("project.sectionResults"),
+      items: data.results,
+    },
+  ] as const
+).filter(Boolean) as { id: string; label: string; items: NamedItem[] }[];
+
+const hasExtended = proseSections.length > 0 || listSections.length > 0;
+
+const indexItems = [
+  ...proseSections.map((s) => ({ id: s.id, label: s.label })),
+  ...listSections.map((s) => ({ id: s.id, label: s.label })),
+  ...(gallery?.length
+    ? [{ id: "gallery", label: t("project.sectionGallery") }]
+    : []),
+];
+---
+
+<BaseLayout
+  lang={lang}
+  path={path}
+  title={`${data.title} — WedevsVnzla`}
+  description={data.resultHeadline}
+  ogImage={ogImage}
+  ogType="article"
+  jsonLd={jsonLd}
+  breadcrumbs={breadcrumbs}
+>
+  <Header lang={lang} path={path} />
+  <main id="main-content">
+    <header class="divider-dotted-row relative overflow-hidden">
+      <Glow size="page" />
+      <div class="max-w-base relative mx-auto px-6 pt-32 pb-12">
+        <nav
+          class="text-muted mb-6 flex items-center gap-2 text-[13px]"
+          aria-label="Breadcrumb"
+        >
+          <a href={home} class="hover:text-ink no-underline">
+            {t("project.breadcrumbHome")}
+          </a>
+          <span>/</span>
+          <a
+            href={getLocalizedPath("/projects", lang)}
+            class="hover:text-ink no-underline"
+          >
+            {t("project.breadcrumbProjects")}
+          </a>
+          <span>/</span>
+          <span class="text-ink">{data.title}</span>
+        </nav>
+
+        <span transition:name={`project-chip-${transitionId}`}>
+          <Chip class={meta.className}>{t(`project.${meta.labelKey}`)}</Chip>
+        </span>
+
+        <h1
+          class="text-h1 md:text-display-2 mt-4 font-bold"
+          transition:name={`project-title-${transitionId}`}
+        >
+          {data.title}
+        </h1>
+        <p
+          class="text-muted mt-4 max-w-[62ch] font-mono text-sm leading-relaxed"
+        >
+          {data.resultHeadline}
+        </p>
+
+        {
+          (preview_url || repo_url) && (
+            <div class="mt-8 flex flex-wrap gap-3">
+              {preview_url && (
+                <a
+                  href={preview_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="pill-btn-secondary"
+                >
+                  {t("project.viewDemo")}
+                </a>
+              )}
+              {repo_url && (
+                <a
+                  href={repo_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="pill-btn-secondary"
+                >
+                  {t("project.viewRepo")}
+                </a>
+              )}
+            </div>
+          )
+        }
+      </div>
+    </header>
+
+    <div
+      class="divider-dotted-row max-w-base mx-auto grid gap-8 px-6 py-10 sm:grid-cols-2 md:grid-cols-4"
+    >
+      <div>
+        <p class="text-muted mb-1 text-[11px] tracking-widest uppercase">
+          {t("project.clientLabel")}
+        </p>
+        <p class="text-ink text-[15px]">{data.client}</p>
+      </div>
+      <div>
+        <p class="text-muted mb-1 text-[11px] tracking-widest uppercase">
+          {t("project.periodLabel")}
+        </p>
+        <p class="text-ink text-[15px]">{data.period}</p>
+      </div>
+      <div>
+        <p class="text-muted mb-1 text-[11px] tracking-widest uppercase">
+          {t("project.roleLabel")}
+        </p>
+        <p class="text-ink text-[15px]">{data.role}</p>
+      </div>
+      <div>
+        <p class="text-muted mb-1 text-[11px] tracking-widest uppercase">
+          {t("project.stackLabel")}
+        </p>
+        <p class="text-ink font-mono text-[13px] leading-relaxed">
+          {stack.join(" · ")}
+        </p>
+      </div>
+    </div>
+
+    {
+      heroImage && (
+        <div class="max-w-base mx-auto px-6 pb-16">
+          <img
+            src={heroImage}
+            alt={`${data.title} cover`}
+            width="1280"
+            height="720"
+            loading="eager"
+            decoding="async"
+            class="border-line aspect-video w-full rounded-2xl border object-cover"
+          />
+        </div>
+      )
+    }
+
+    <!-- Cuerpo -->
+    {
+      hasExtended && (
+        <div class="max-w-base mx-auto grid gap-12 px-6 pb-16 md:grid-cols-[200px_1fr]">
+          <nav
+            id="project-index"
+            class="hidden self-start md:sticky md:top-28 md:block"
+            aria-label="Section index"
+          >
+            <ul class="flex flex-col gap-3">
+              {indexItems.map((item) => (
+                <li>
+                  <a
+                    href={`#${item.id}`}
+                    data-index-link={item.id}
+                    class="index-link text-muted hover:text-ink border-line block border-l-2 py-0.5 pl-4 text-[13px] no-underline"
+                  >
+                    {item.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+
+          <div class="flex flex-col gap-16">
+            {proseSections.map((section, i) => (
+              <section id={section.id} class="scroll-mt-28 pt-10">
+                <SectionLabel
+                  as="h2"
+                  index={i + 1}
+                  label={section.label}
+                  class="mb-5"
+                />
+                {section.id === "conditions" ? (
+                  <div
+                    class="border-accent text-ink-2 border-l-2 py-1 pl-6"
+                    style="background-color: rgba(107, 128, 255, 0.03);"
+                    set:html={md(section.body)}
+                  />
+                ) : (
+                  <p
+                    class="text-body text-ink-2 max-w-[68ch]"
+                    set:html={md(section.body)}
+                  />
+                )}
+              </section>
+            ))}
+
+            {listSections.map((section, i) => (
+              <section id={section.id} class="scroll-mt-28 pt-10">
+                <SectionLabel
+                  as="h2"
+                  index={proseSections.length + i + 1}
+                  label={section.label}
+                  class="mb-5"
+                />
+                <div class="flex flex-col">
+                  {section.items.map((item) => (
+                    <div class="divider-dotted-row py-5 last:bg-none">
+                      <h3 class="text-h3 mb-2">{item.name}</h3>
+                      <p
+                        class="text-body text-ink-2 max-w-[68ch]"
+                        set:html={md(item.reason)}
+                      />
+                    </div>
+                  ))}
+                </div>
+              </section>
+            ))}
+
+            {gallery?.length ? (
+              <section id="gallery" class="scroll-mt-28 pt-10">
+                <SectionLabel
+                  as="h2"
+                  index={proseSections.length + listSections.length + 1}
+                  label={t("project.sectionGallery")}
+                  class="mb-5"
+                />
+                <div class="grid gap-4 sm:grid-cols-2 md:grid-cols-3">
+                  {gallery.map((src, i) => (
+                    <button
+                      type="button"
+                      class="lightbox-trigger border-line block overflow-hidden rounded-2xl border"
+                      data-index={i}
+                    >
+                      <img
+                        src={src}
+                        alt={`${data.title} screenshot ${i + 1}`}
+                        width="800"
+                        height="600"
+                        loading="lazy"
+                        decoding="async"
+                        class="aspect-[4/3] w-full object-cover"
+                      />
+                    </button>
+                  ))}
+                </div>
+              </section>
+            ) : null}
+          </div>
+        </div>
+      )
+    }
+
+    {
+      !hasExtended && (data.summary || data.highlights?.length) && (
+        <div class="max-w-base mx-auto px-6 pb-16">
+          {data.summary && (
+            <p class="text-body text-ink-2 max-w-[68ch]">{data.summary}</p>
+          )}
+          {!!data.highlights?.length && (
+            <ul class="mt-6">
+              {data.highlights.map((h) => (
+                <li>{h}</li>
+              ))}
+            </ul>
+          )}
+        </div>
+      )
+    }
+
+    <!-- Lightbox -->
+    {
+      gallery?.length ? (
+        <div
+          id="lightbox"
+          class="fixed inset-0 z-[60] hidden items-center justify-center bg-[rgba(10,10,9,0.94)] backdrop-blur-sm"
+          role="dialog"
+          aria-modal="true"
+        >
+          <button
+            id="lightbox-close"
+            type="button"
+            class="border-line text-ink absolute top-6 right-6 inline-flex h-10 w-10 items-center justify-center rounded-full border"
+            aria-label={t("project.lightboxClose")}
+          >
+            ✕
+          </button>
+          <button
+            id="lightbox-prev"
+            type="button"
+            class="border-line text-ink absolute left-6 inline-flex h-10 w-10 items-center justify-center rounded-full border"
+            aria-label={t("project.lightboxPrevious")}
+          >
+            ←
+          </button>
+          <img
+            id="lightbox-image"
+            src=""
+            alt=""
+            class="max-h-[80vh] max-w-[88vw] rounded-2xl object-contain"
+          />
+          <button
+            id="lightbox-next"
+            type="button"
+            class="border-line text-ink absolute right-6 inline-flex h-10 w-10 items-center justify-center rounded-full border"
+            aria-label={t("project.lightboxNext")}
+          >
+            →
+          </button>
+        </div>
+      ) : null
+    }
+
+    <!-- Navegación entre proyectos -->
+    {
+      (prev || next) && (
+        <div class="max-w-base mx-auto grid gap-px pt-10 pb-16 sm:grid-cols-2">
+          {prev ? (
+            <a
+              href={prev.href}
+              class="hover:bg-surface group px-6 py-6 no-underline"
+            >
+              <p class="text-muted mb-1 text-[13px]">
+                {t("project.prevProject")}
+              </p>
+              <h3 class="text-h3 group-hover:text-accent">{prev.title}</h3>
+            </a>
+          ) : (
+            <div />
+          )}
+          {next ? (
+            <a
+              href={next.href}
+              class="hover:bg-surface group sm:border-line-dashed px-6 py-6 text-right no-underline sm:border-l"
+            >
+              <p class="text-muted mb-1 text-[13px]">
+                {t("project.nextProject")}
+              </p>
+              <h3 class="text-h3 group-hover:text-accent">{next.title}</h3>
+            </a>
+          ) : (
+            <div />
+          )}
+        </div>
+      )
+    }
+
+    <footer class="max-w-base mx-auto px-6 pb-16">
+      <a
+        href={home}
+        class="text-muted hover:text-accent text-sm no-underline hover:underline"
+      >
+        {t("project.back")}
+      </a>
+    </footer>
+  </main>
+  <Footer lang={lang} />
+</BaseLayout>
+
+<style>
+  .index-link.is-active {
+    color: var(--color-ink);
+    border-color: var(--color-accent);
+  }
+</style>
+
+<script>
+  function initProjectPage() {
+    const indexLinks = Array.from(
+      document.querySelectorAll<HTMLAnchorElement>("[data-index-link]"),
+    );
+    const sections = indexLinks
+      .map((link) => document.getElementById(link.dataset.indexLink!))
+      .filter((el): el is HTMLElement => !!el);
+
+    if (indexLinks.length && sections.length) {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            const link = indexLinks.find(
+              (l) => l.dataset.indexLink === entry.target.id,
+            );
+            if (!link) return;
+            link.classList.toggle("is-active", entry.isIntersecting);
+          });
+        },
+        { rootMargin: "-30% 0px -60% 0px" },
+      );
+      sections.forEach((section) => observer.observe(section));
+    }
+
+    const lightbox = document.getElementById("lightbox");
+    const lightboxImage = document.getElementById(
+      "lightbox-image",
+    ) as HTMLImageElement | null;
+    const triggers = Array.from(
+      document.querySelectorAll<HTMLButtonElement>(".lightbox-trigger"),
+    );
+    if (lightbox && lightboxImage && triggers.length) {
+      let current = 0;
+
+      function show(i: number) {
+        current = (i + triggers.length) % triggers.length;
+        const img = triggers[current].querySelector("img");
+        if (img) {
+          lightboxImage!.src = img.src;
+          lightboxImage!.alt = img.alt;
+        }
+      }
+      function open(i: number) {
+        show(i);
+        lightbox!.classList.remove("hidden");
+        lightbox!.classList.add("flex");
+        document.body.style.overflow = "hidden";
+      }
+      function close() {
+        lightbox!.classList.add("hidden");
+        lightbox!.classList.remove("flex");
+        document.body.style.overflow = "";
+      }
+
+      triggers.forEach((trigger, i) =>
+        trigger.addEventListener("click", () => open(i)),
+      );
+      document
+        .getElementById("lightbox-close")
+        ?.addEventListener("click", close);
+      document
+        .getElementById("lightbox-prev")
+        ?.addEventListener("click", () => show(current - 1));
+      document
+        .getElementById("lightbox-next")
+        ?.addEventListener("click", () => show(current + 1));
+      lightbox.addEventListener("click", (e) => {
+        if (e.target === lightbox) close();
+      });
+      document.addEventListener("keydown", (e) => {
+        if (lightbox.classList.contains("hidden")) return;
+        if (e.key === "Escape") close();
+        if (e.key === "ArrowLeft") show(current - 1);
+        if (e.key === "ArrowRight") show(current + 1);
+      });
+    }
+  }
+
+  initProjectPage();
+  document.addEventListener("astro:after-swap", initProjectPage);
+</script>

@@ -1,0 +1,250 @@
+{
+  "nav": {
+    "home": "Inicio",
+    "projects": "Proyectos",
+    "services": "Servicios",
+    "blog": "Blog",
+    "contact": "Contacto",
+    "talk": "Hablemos",
+    "menuOpenLabel": "Abrir menú",
+    "menuCloseLabel": "Cerrar menú",
+    "langSwitch": "EN",
+    "langSwitchLabel": "Switch to English",
+    "navLabel": "Navegación principal"
+  },
+  "home": {
+    "heroEyebrow": "// Estudio de software · Venezuela",
+    "heroTitle": "Construimos el software",
+    "heroTitleEmphasis": "que tu negocio necesita.",
+    "heroPara1": "Apps móviles, páginas web, CRMs y sistemas a la medida. Hechos en Venezuela, para el mundo.",
+    "heroPara2": "Menos trabajo manual, más ventas y clientes mejor atendidos.",
+    "heroCta": "Hablemos",
+    "sectionLabels": {
+      "services": "Servicios",
+      "projects": "Proyectos",
+      "how": "Cómo trabajamos",
+      "contact": "Contacto"
+    },
+    "servicesTeaserTitle": "Una idea. Cuatro formas de hacerla realidad.",
+    "servicesTeaserSupport": "Elige por dónde empezar; nosotros nos encargamos del resto.",
+    "servicesTeaserCta": "Ver todos los servicios",
+    "workTitle": "Lo que ya construimos",
+    "workSupport": "Productos reales, en uso hoy.",
+    "viewAllProjects": "Ver todos los proyectos",
+    "viewProject": "Ver proyecto",
+    "howTitle": "Así trabajamos",
+    "howItems": [
+      {
+        "title": "Primero entendemos.",
+        "desc": "Antes de escribir código, conocemos tu negocio y tu problema."
+      },
+      {
+        "title": "Avances cada semana.",
+        "desc": "Ves el progreso real, no solo informes."
+      },
+      {
+        "title": "Un solo equipo.",
+        "desc": "Hablas directamente con quienes construyen."
+      },
+      {
+        "title": "Hecho para durar.",
+        "desc": "Código ordenado que puede crecer contigo."
+      },
+      {
+        "title": "Contigo después del lanzamiento.",
+        "desc": "Soporte y mejoras cuando las necesites."
+      }
+    ],
+    "stackDesc": "Usamos herramientas modernas y probadas, elegidas para cada proyecto.",
+    "seoTitle": "WedevsVnzla · Apps, webs y software a la medida",
+    "seoDescription": "Estudio de software venezolano. Creamos apps móviles, páginas web, CRMs y sistemas a la medida para negocios que quieren crecer."
+  },
+  "contact": {
+    "title": "¿Tienes una idea? Hablemos.",
+    "desc": "Cuéntanos qué necesitas y te respondemos en menos de un día con una propuesta clara.",
+    "cta": "Escríbenos"
+  },
+  "footer": {
+    "reach": "La forma más rápida de contactarnos es por correo.",
+    "copyright": "© 2026 WedevsVnzla"
+  },
+  "notFound": {
+    "eyebrow": "404",
+    "title": "Esta página no existe",
+    "support": "El enlace puede estar roto, o la página pudo haberse movido.",
+    "ctaHome": "Ir al inicio",
+    "ctaProjects": "Ver proyectos",
+    "linkProjects": "Proyectos",
+    "linkServices": "Servicios",
+    "linkBlog": "Blog"
+  },
+  "project": {
+    "breadcrumbHome": "Inicio",
+    "breadcrumbProjects": "Proyectos",
+    "roleLabel": "Rol:",
+    "clientLabel": "Cliente:",
+    "periodLabel": "Periodo:",
+    "stackLabel": "Stack:",
+    "back": "← Volver al inicio",
+    "viewDemo": "Ver demo ↗",
+    "viewRepo": "Ver repositorio ↗",
+    "prevProject": "Anterior",
+    "nextProject": "Siguiente",
+    "typeOwn": "Producto propio",
+    "typeClient": "Cliente",
+    "sectionContext": "Contexto",
+    "sectionConditions": "Condiciones",
+    "sectionSolution": "Solución",
+    "sectionTools": "Herramientas",
+    "sectionFeatures": "Funcionalidades clave",
+    "sectionResults": "Resultados e impacto",
+    "sectionGallery": "Galería",
+    "alternativesDiscarded": "Alternativas descartadas:",
+    "lightboxClose": "Cerrar",
+    "lightboxPrevious": "Anterior",
+    "lightboxNext": "Siguiente"
+  },
+  "projectsPage": {
+    "eyebrow": "Proyectos",
+    "titleBold": "Lo que ya",
+    "titleLight": "construimos",
+    "support": "Productos reales, en uso hoy.",
+    "seoTitle": "Proyectos — WedevsVnzla"
+  },
+  "services": {
+    "eyebrow": "Servicios",
+    "titleBold": "Cómo podemos",
+    "titleLight": "ayudarte",
+    "support": "Software a la medida para negocios que necesitan lanzar, no solo planificar.",
+    "processTitle": "Proceso",
+    "process": [
+      {
+        "title": "Contexto",
+        "desc": "Restricciones, reglas de negocio y las partes del problema que no están escritas en ningún lado."
+      },
+      {
+        "title": "Plan",
+        "desc": "Decisiones de stack y un plan acotado con hitos claros, antes de escribir código."
+      },
+      {
+        "title": "Construcción",
+        "desc": "Desarrollo iterativo con visibilidad del avance, no una caja negra hasta la entrega."
+      },
+      {
+        "title": "Lanzamiento y soporte",
+        "desc": "Despliegue, monitoreo y una ventana definida de soporte post-lanzamiento."
+      }
+    ],
+    "modalitiesTitle": "Modalidades",
+    "featuredLabel": "Más solicitado",
+    "modalities": [
+      {
+        "title": "Proyecto cerrado",
+        "desc": "Alcance, plazo y entregables definidos desde el inicio.",
+        "features": [
+          "Entregables definidos",
+          "Plazo acordado",
+          "Comunicación directa"
+        ],
+        "featured": true
+      },
+      {
+        "title": "Por etapas",
+        "desc": "Avanzamos fase por fase y decides después de cada una.",
+        "features": [
+          "Hitos claros",
+          "Revisión al cierre de cada etapa",
+          "Margen para ajustar"
+        ]
+      },
+      {
+        "title": "Acompañamiento mensual",
+        "desc": "Un equipo disponible para mejoras y soporte continuo.",
+        "features": [
+          "Mejoras continuas",
+          "Respuesta prioritaria",
+          "Alcance flexible"
+        ]
+      }
+    ],
+    "faqTitle": "Preguntas frecuentes",
+    "faq": [
+      {
+        "q": "¿Cómo definen el alcance de un proyecto nuevo?",
+        "a": "Empezamos con una llamada corta de descubrimiento para mapear restricciones y objetivos, luego enviamos un alcance por escrito con hitos antes de cualquier compromiso."
+      },
+      {
+        "q": "¿Trabajan sobre código base existente?",
+        "a": "Sí — la mayoría de nuestro trabajo es sobre plataformas existentes, no proyectos desde cero."
+      },
+      {
+        "q": "¿Cuál es su tiempo de respuesta habitual?",
+        "a": "Menos de un día por correo, más rápido durante una colaboración activa."
+      },
+      {
+        "q": "¿Firman NDA?",
+        "a": "Sí, es práctica estándar para trabajo con clientes."
+      }
+    ],
+    "ctaSupport": "¿Tienes un proyecto en mente? Hablemos de él.",
+    "detail": {
+      "breadcrumbServices": "Servicios",
+      "stackLabel": "Stack",
+      "deliverablesLabel": "Qué incluye",
+      "relatedLabel": "Trabajo relacionado",
+      "faqLabel": "Preguntas frecuentes",
+      "backLabel": "← Todos los servicios",
+      "ctaLabel": "Escríbenos →"
+    }
+  },
+  "contactPage": {
+    "eyebrow": "Contacto",
+    "titleBold": "Construyamos",
+    "titleLight": "algo juntos",
+    "support": "Cuéntanos sobre tu proyecto y te responderemos en menos de un día.",
+    "formNameLabel": "Nombre",
+    "formEmailLabel": "Correo",
+    "formProjectTypeLabel": "Tipo de proyecto",
+    "formProjectTypeOptions": [
+      "App móvil",
+      "Página web",
+      "CRM",
+      "Sistema a medida",
+      "Otro"
+    ],
+    "formBudgetLabel": "Presupuesto (opcional)",
+    "formBudgetOptions": [
+      "< $2.000",
+      "$2.000 – $5.000",
+      "$5.000 – $15.000",
+      "$15.000+",
+      "Aún no lo sé"
+    ],
+    "formMessageLabel": "Mensaje",
+    "formSubmit": "Enviar mensaje",
+    "formSubmitting": "Enviando…",
+    "formSuccess": "Gracias — te responderemos en menos de un día.",
+    "formError": "Algo salió mal. Intenta escribirnos directo por correo.",
+    "formRequiredError": "Este campo es obligatorio.",
+    "formEmailError": "Ingresa un correo válido.",
+    "channelsLabel": "Otras formas de contactarnos",
+    "availabilityLabel": "Disponibilidad",
+    "availabilityText": "Remoto, UTC-4. Actualmente aceptando nuevos proyectos."
+  },
+  "blog": {
+    "eyebrow": "Blog",
+    "titleBold": "Notas sobre",
+    "titleLight": "construir software",
+    "support": "Escritura técnica sobre fintech, arquitectura y las decisiones detrás de proyectos reales.",
+    "featuredLabel": "Destacado",
+    "readMore": "Leer más ↗",
+    "tagsHeading": "Tags",
+    "rssLabel": "RSS",
+    "publishedLabel": "Publicado",
+    "updatedLabel": "Actualizado",
+    "readingTime": "{n} min de lectura",
+    "relatedHeading": "Artículos relacionados",
+    "backToBlog": "← Volver al blog",
+    "authorBioText": "Fundador de WedevsVnzla. Ingeniero de software full-stack especializado en fintech y sistemas ERP."
+  }
+}

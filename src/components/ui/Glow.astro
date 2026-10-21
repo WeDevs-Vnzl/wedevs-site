@@ -1,0 +1,85 @@
+---
+interface Props {
+  size?: "hero" | "page" | "cta";
+  class?: string;
+}
+const { size = "page", class: className = "" } = Astro.props;
+---
+
+<div
+  class={`glow glow-${size} pointer-events-none absolute inset-0 -z-10 overflow-hidden ${className}`}
+  aria-hidden="true"
+>
+  <div class="glow-orb"></div>
+  {size === "hero" && <div class="glow-grid" />}
+</div>
+
+<style>
+  .glow-orb {
+    position: absolute;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--color-glow) 0%, transparent 70%);
+    filter: blur(40px);
+  }
+
+  .glow-hero .glow-orb {
+    width: 800px;
+    height: 800px;
+    top: 50%;
+    left: 58%;
+    transform: translate(-50%, -50%);
+    animation: breathe 12s ease-in-out infinite;
+  }
+
+  .glow-page .glow-orb {
+    width: 500px;
+    height: 500px;
+    top: -10%;
+    right: -5%;
+  }
+
+  .glow-cta .glow-orb {
+    width: 400px;
+    height: 400px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .glow-grid {
+    position: absolute;
+    inset: 0 15%;
+    background-image: repeating-linear-gradient(
+      to right,
+      rgba(246, 245, 242, 0.035) 0,
+      rgba(246, 245, 242, 0.035) 1px,
+      transparent 1px,
+      transparent 32px
+    );
+    mask-image: linear-gradient(
+      to bottom,
+      transparent,
+      black 20%,
+      black 80%,
+      transparent
+    );
+  }
+
+  @keyframes breathe {
+    0%,
+    100% {
+      transform: translate(-50%, -50%) scale(1);
+      opacity: 0.9;
+    }
+    50% {
+      transform: translate(-50%, -50%) scale(1.04);
+      opacity: 1;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .glow-orb {
+      animation: none !important;
+    }
+  }
+</style>

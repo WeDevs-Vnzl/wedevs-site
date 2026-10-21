@@ -1,0 +1,40 @@
+---
+/** WedevsVnzla "w/" monogram (brand manual v1, proposal A) with optional wordmark. */
+interface Props {
+  size?: number;
+  wordmark?: boolean;
+  class?: string;
+}
+const { size = 28, wordmark = true, class: className = "" } = Astro.props;
+---
+
+<span class={`inline-flex items-center gap-2.5 ${className}`}>
+  <svg
+    width={size}
+    height={Math.round((size * 64) / 68)}
+    viewBox="0 0 68 64"
+    aria-hidden="true"
+    class="shrink-0"
+  >
+    <polyline
+      points="6,16 17,48 28,26 39,48 50,16"
+      fill="none"
+      stroke="var(--color-ink)"
+      stroke-width="6"
+      stroke-linecap="round"
+      stroke-linejoin="round"></polyline>
+    <line
+      x1="62"
+      y1="10"
+      x2="54"
+      y2="54"
+      stroke="var(--color-accent)"
+      stroke-width="6"
+      stroke-linecap="round"></line>
+  </svg>
+  {
+    wordmark && (
+      <span class="text-ink font-extrabold tracking-[-0.04em]">wedevs</span>
+    )
+  }
+</span>

@@ -1,0 +1,341 @@
+---
+import { founder } from "../lib/brand";
+import type { MarkdownHeading } from "astro";
+import BaseLayout from "./BaseLayout.astro";
+import Header from "../components/layout/Header.astro";
+import Footer from "../components/layout/Footer.astro";
+import Glow from "../components/ui/Glow.astro";
+import { getLocalizedPath } from "../lib/i18n/routes";
+import { useTranslations, type Lang } from "../lib/i18n/ui";
+
+interface RelatedPost {
+  href: string;
+  title: string;
+  date: Date;
+}
+
+interface Props {
+  lang: Lang;
+  path: string;
+  title: string;
+  excerpt: string;
+  date: Date;
+  updatedDate?: Date;
+  tags: string[];
+  readingTime: number;
+  headings: MarkdownHeading[];
+  related: RelatedPost[];
+  jsonLd?: object;
+}
+
+const {
+  lang,
+  path,
+  title,
+  excerpt,
+  date,
+  updatedDate,
+  tags,
+  readingTime,
+  headings,
+  related,
+  jsonLd,
+} = Astro.props;
+const { t } = useTranslations(lang);
+const home = getLocalizedPath("/", lang);
+const blogHome = getLocalizedPath("/blog", lang);
+
+const dateFormatter = new Intl.DateTimeFormat(
+  lang === "es" ? "es-ES" : "en-US",
+  {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  },
+);
+
+const indexItems = headings.filter((h) => h.depth === 2);
+// Same id formula as blog/index.astro's post-title transition:name
+// (post slug, derived from `path` = `/blog/<slug>`), so card <-> article
+// titles morph together.
+const postSlug = path.replace(/^\/blog\//, "").replace(/\//g, "-");
+const ogImage = `/og/blog/${path.replace(/^\/blog\//, "")}.png`;
+const breadcrumbs = [
+  { name: t("project.breadcrumbHome"), url: `/${lang}/` },
+  { name: t("nav.blog"), url: blogHome },
+  { name: title, url: `/${lang}${path}` },
+];
+---
+
+<BaseLayout
+  lang={lang}
+  path={path}
+  title={`${title} — WedevsVnzla`}
+  description={excerpt}
+  ogImage={ogImage}
+  ogType="article"
+  jsonLd={jsonLd}
+  breadcrumbs={breadcrumbs}
+>
+  <div
+    id="reading-progress"
+    class="bg-accent fixed top-0 left-0 z-[60] h-[2px] w-0"
+  >
+  </div>
+
+  <Header lang={lang} path={path} />
+
+  <main id="main-content">
+    <header class="divider-dotted-row relative overflow-hidden">
+      <Glow size="page" />
+      <div class="max-w-base relative mx-auto px-6 pt-32 pb-12">
+        <nav
+          class="text-muted mb-6 flex items-center gap-2 text-[13px]"
+          aria-label="Breadcrumb"
+        >
+          <a href={home} class="hover:text-ink no-underline"
+            >{t("project.breadcrumbHome")}</a
+          >
+          <span>/</span>
+          <a href={blogHome} class="hover:text-ink no-underline"
+            >{t("nav.blog")}</a
+          >
+        </nav>
+
+        {
+          tags.length > 0 && (
+            <div class="mb-5 flex flex-wrap gap-2">
+              {tags.map((tag) => (
+                <span class="chip">{tag}</span>
+              ))}
+            </div>
+          )
+        }
+
+        <h1
+          class="text-h1 font-medium"
+          transition:name={`post-title-${postSlug}`}
+        >
+          {title}
+        </h1>
+
+        <p class="text-muted mt-4 text-[13px]">
+          {t("blog.publishedLabel")}
+          {dateFormatter.format(date)}
+          {
+            updatedDate && (
+              <>
+                {" "}
+                · {t("blog.updatedLabel")} {dateFormatter.format(updatedDate)}
+              </>
+            )
+          }
+          {" "}· {t("blog.readingTime").replace("{n}", String(readingTime))}
+        </p>
+      </div>
+    </header>
+
+    <div
+      class="max-w-base mx-auto grid gap-12 px-6 py-16 md:grid-cols-[200px_1fr]"
+    >
+      {
+        indexItems.length > 0 && (
+          <nav
+            class="hidden self-start md:sticky md:top-28 md:block"
+            aria-label="Section index"
+          >
+            <ul class="flex flex-col gap-3">
+              {indexItems.map((h) => (
+                <li>
+                  <a
+                    href={`#${h.slug}`}
+                    class="text-muted hover:text-ink border-line block border-l-2 py-0.5 pl-4 text-[13px] no-underline"
+                  >
+                    {h.text}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        )
+      }
+
+      <article class="prose max-w-[68ch]">
+        <slot />
+      </article>
+    </div>
+
+    <div class="max-w-base mx-auto px-6 py-12">
+      <div class="flex items-start gap-4">
+        <div
+          class="border-line bg-surface flex h-12 w-12 shrink-0 items-center justify-center rounded-full border font-mono text-sm"
+        >
+          {founder.initials}
+        </div>
+        <div>
+          <p class="text-ink font-medium">{founder.name}</p>
+          <p class="text-muted mt-1 text-sm">{t("blog.authorBioText")}</p>
+          <div class="mt-2 flex gap-4 text-sm">
+            <a
+              href={founder.linkedin}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              LinkedIn
+            </a>
+            <a href={founder.github} target="_blank" rel="noopener noreferrer">
+              GitHub
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {
+      related.length > 0 && (
+        <div class="max-w-base mx-auto px-6 py-16">
+          <h2 class="text-h2 mb-6">{t("blog.relatedHeading")}</h2>
+          <div>
+            {related.map((post) => (
+              <a
+                href={post.href}
+                class="divider-dotted-row flex items-center justify-between gap-4 py-4 no-underline last:bg-none"
+              >
+                <span class="text-ink hover:text-accent text-[15px] underline underline-offset-2">
+                  {post.title}
+                </span>
+                <span class="text-muted shrink-0 text-[13px]">
+                  {dateFormatter.format(post.date)}
+                </span>
+              </a>
+            ))}
+          </div>
+        </div>
+      )
+    }
+
+    <footer class="max-w-base mx-auto px-6 pb-16">
+      <a
+        href={blogHome}
+        class="text-muted hover:text-accent text-sm no-underline hover:underline"
+      >
+        {t("blog.backToBlog")}
+      </a>
+    </footer>
+  </main>
+
+  <Footer lang={lang} />
+</BaseLayout>
+
+<style>
+  .prose :global(p) {
+    margin-bottom: 24px;
+    font-size: 17px;
+    line-height: 1.75;
+  }
+
+  .prose :global(h2) {
+    margin-top: 64px;
+    margin-bottom: 20px;
+    padding-top: 24px;
+    background-image: linear-gradient(
+      to right,
+      var(--color-line-dashed) 0,
+      var(--color-line-dashed) 2px,
+      transparent 2px,
+      transparent 6px
+    );
+    background-repeat: repeat-x;
+    background-size: 6px 1px;
+    background-position: top;
+  }
+
+  .prose :global(h3) {
+    margin-top: 40px;
+    margin-bottom: 16px;
+  }
+
+  .prose :global(blockquote) {
+    border-left: 2px solid var(--color-accent);
+    border-radius: 0;
+    padding-left: 24px;
+    color: var(--color-ink);
+    margin: 32px 0;
+  }
+
+  .prose :global(blockquote p) {
+    margin-bottom: 0;
+  }
+
+  .prose :global(pre) {
+    background: #0d0c0b;
+    border: 1px solid var(--color-line);
+    border-radius: 8px;
+    padding: 16px;
+    overflow-x: auto;
+    font-size: 13px;
+    margin: 32px 0;
+  }
+
+  .prose :global(code) {
+    background: rgba(107, 128, 255, 0.08);
+    color: var(--color-accent);
+    border-radius: 4px;
+    padding: 2px 6px;
+    font-family: var(--font-mono);
+    font-size: 13px;
+  }
+
+  .prose :global(pre code) {
+    background: none;
+    color: var(--color-ink-2);
+    padding: 0;
+  }
+
+  .prose :global(a) {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .prose :global(img) {
+    width: 100%;
+    max-width: 900px;
+    border-radius: 16px;
+    margin: 32px auto 8px;
+    display: block;
+  }
+
+  .prose :global(.caption) {
+    display: block;
+    text-align: center;
+    color: var(--color-muted);
+    font-size: 12px;
+    margin-bottom: 24px;
+  }
+</style>
+
+<script>
+  function initReadingProgress() {
+    const bar = document.getElementById("reading-progress");
+    if (!bar) return;
+
+    function onScroll() {
+      const scrollTop = window.scrollY;
+      const docHeight =
+        document.documentElement.scrollHeight - window.innerHeight;
+      const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+      bar!.style.width = `${Math.min(100, Math.max(0, progress))}%`;
+    }
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+
+    document.addEventListener(
+      "astro:before-swap",
+      () => window.removeEventListener("scroll", onScroll),
+      { once: true },
+    );
+  }
+
+  initReadingProgress();
+  document.addEventListener("astro:after-swap", initReadingProgress);
+</script>

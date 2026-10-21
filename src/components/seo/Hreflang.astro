@@ -1,0 +1,21 @@
+---
+import { getAlternates } from "../../lib/i18n/routes";
+
+interface Props {
+  /** Path without the /en//es/ prefix, e.g. "/" or "/projects/kairos-cms" */
+  path: string;
+}
+const { path } = Astro.props;
+const alternates = getAlternates(path);
+const site = import.meta.env.SITE;
+---
+
+{
+  Object.entries(alternates).map(([hreflang, href]) => (
+    <link
+      rel="alternate"
+      hreflang={hreflang}
+      href={new URL(href, site).toString()}
+    />
+  ))
+}

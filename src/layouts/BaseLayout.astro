@@ -1,0 +1,229 @@
+---
+import "../styles/global.css";
+import { ClientRouter } from "astro:transitions";
+import { fade } from "astro:transitions";
+import Hreflang from "../components/seo/Hreflang.astro";
+import Analytics from "../components/seo/Analytics.astro";
+import type { Lang } from "../lib/i18n/ui";
+
+import HeroBg from "../components/ui/HeroBg.astro";
+import ScrollReveal from "../components/motion/ScrollReveal.astro";
+
+interface Breadcrumb {
+  name: string;
+  url: string;
+}
+
+interface Props {
+  lang: Lang;
+  /** Path without the /en//es/ prefix, used for canonical + hreflang. e.g. "/" or "/projects/kairos-cms" */
+  path: string;
+  title: string;
+  description: string;
+  ogTitle?: string;
+  ogDescription?: string;
+  /** Absolute or site-relative OG/Twitter image. Defaults to the shared /images/og.png. */
+  ogImage?: string;
+  /** "article" for blog posts and project case studies, "website" (default) otherwise. */
+  ogType?: "website" | "article";
+  jsonLd?: object;
+  breadcrumbs?: Breadcrumb[];
+  noindex?: boolean;
+}
+
+const {
+  lang,
+  path,
+  title,
+  description,
+  ogTitle,
+  ogDescription,
+  ogImage,
+  ogType = "website",
+  jsonLd,
+  breadcrumbs,
+  noindex = false,
+} = Astro.props;
+
+const site = import.meta.env.SITE;
+const cleanPath = path === "/" ? "" : path;
+const resolvedCanonical = new URL(`/${lang}${cleanPath}`, site).toString();
+const ogImageUrl = ogImage
+  ? new URL(ogImage, site).toString()
+  : `${site}/images/${lang === "es" ? "og-es.png" : "og.png"}`;
+const ogLocale = lang === "es" ? "es_ES" : "en_US";
+
+const organizationJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "@id": `${site}/#organization`,
+  name: "WedevsVnzla",
+  alternateName: "wedevs",
+  url: site,
+  logo: `${site}/icons/android-chrome-512x512.png`,
+};
+
+const websiteJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": `${site}/#website`,
+  url: site,
+  name: "WedevsVnzla",
+  inLanguage: lang,
+  publisher: { "@id": `${site}/#organization` },
+};
+
+const breadcrumbJsonLd = breadcrumbs?.length
+  ? {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      itemListElement: breadcrumbs.map((crumb, i) => ({
+        "@type": "ListItem",
+        position: i + 1,
+        name: crumb.name,
+        item: new URL(crumb.url, site).toString(),
+      })),
+    }
+  : undefined;
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+
+    <ClientRouter />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    {
+      noindex ? (
+        <meta name="robots" content="noindex" />
+      ) : (
+        <meta
+          name="robots"
+          content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1"
+        />
+      )
+    }
+    {
+      import.meta.env.GSC_VERIFICATION && (
+        <meta
+          name="google-site-verification"
+          content={import.meta.env.GSC_VERIFICATION}
+        />
+      )
+    }
+
+    <link rel="canonical" href={resolvedCanonical} />
+    <Hreflang path={path} />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content={ogType} />
+    <meta property="og:url" content={resolvedCanonical} />
+    <meta property="og:title" content={ogTitle || title} />
+    <meta property="og:description" content={ogDescription || description} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={ogTitle || title} />
+    <meta property="og:site_name" content="WedevsVnzla" />
+    <meta property="og:locale" content={ogLocale} />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={ogTitle || title} />
+    <meta name="twitter:description" content={ogDescription || description} />
+    <meta name="twitter:image" content={ogImageUrl} />
+
+    <meta name="theme-color" content="#0e0f12" />
+
+    <link
+      rel="preload"
+      href="/fonts/inter-latin-400-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/inter-latin-600-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/inter-latin-700-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/jetbrains-mono-latin-400-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link rel="icon" type="image/svg+xml" href="/icons/favicon.svg" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="/icons/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="/icons/favicon-16x16.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="/icons/apple-touch-icon.png"
+    />
+    <link rel="manifest" href="/icons/site.webmanifest" />
+
+    <script
+      type="application/ld+json"
+      set:html={JSON.stringify(organizationJsonLd)}
+      is:inline
+    />
+    <script
+      type="application/ld+json"
+      set:html={JSON.stringify(websiteJsonLd)}
+      is:inline
+    />
+    {
+      breadcrumbJsonLd && (
+        <script
+          type="application/ld+json"
+          set:html={JSON.stringify(breadcrumbJsonLd)}
+          is:inline
+        />
+      )
+    }
+    {
+      jsonLd && (
+        <script
+          type="application/ld+json"
+          set:html={JSON.stringify(jsonLd)}
+          is:inline
+        />
+      )
+    }
+
+    {import.meta.env.G_TAG && <Analytics gaId={import.meta.env.G_TAG} />}
+  </head>
+  <body
+    class="relative flex min-h-screen flex-col"
+    transition:animate={fade({ duration: "0.3s" })}
+  >
+    <slot />
+    <ScrollReveal />
+  </body>
+</html>

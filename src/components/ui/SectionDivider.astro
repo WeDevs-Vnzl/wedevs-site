@@ -1,0 +1,39 @@
+---
+interface Props {
+  colorTop?: string;
+  colorBottom?: string;
+  isInvert?: boolean;
+  edgeCount?: number;
+  height?: number;
+  class?: string;
+}
+const {
+  colorTop = "#0E0F12",
+  colorBottom = "#131418",
+  isInvert = false,
+  edgeCount = 1,
+  height = 50,
+  class: className = "",
+} = Astro.props;
+
+const width = 100;
+const segments = Math.max(1, edgeCount) * 2;
+const step = width / segments;
+const points = Array.from({ length: segments + 1 }, (_, i) => ({
+  x: i * step,
+  y: i % 2 === 0 ? height : 0,
+}));
+const path = `M ${points.map((p) => `${p.x} ${p.y}`).join(" L ")} L ${width} 0 L 0 0 Z`;
+---
+
+<svg
+  class={` w-full ${isInvert ? "rotate-180" : ""} ${className}`}
+  style={`height: ${height}px`}
+  viewBox={`0 0 ${width} ${height}`}
+  xmlns="http://www.w3.org/2000/svg"
+  preserveAspectRatio="none"
+  aria-hidden="true"
+>
+  <rect x="0" y="0" width={width} height={height} fill={colorTop}></rect>
+  <path d={path} fill={colorBottom} opacity="1"></path>
+</svg>

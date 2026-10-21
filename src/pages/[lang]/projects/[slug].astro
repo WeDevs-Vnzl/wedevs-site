@@ -1,0 +1,74 @@
+---
+import { getCollection } from "astro:content";
+import ProjectLayout from "../../../layouts/ProjectLayout.astro";
+import { locales, type Lang } from "../../../lib/i18n/ui";
+import { getLocalizedPath } from "../../../lib/i18n/routes";
+
+export async function getStaticPaths() {
+  const projects = (await getCollection("projects")).sort(
+    (a, b) => a.data.order - b.data.order,
+  );
+  return locales.flatMap((lang) =>
+    projects.map((entry, i) => ({
+      params: { lang, slug: entry.id },
+      props: {
+        entry,
+        prevEntry: projects[i - 1],
+        nextEntry: projects[i + 1],
+      },
+    })),
+  );
+}
+
+const { lang } = Astro.params as { lang: Lang };
+const { entry, prevEntry, nextEntry } = Astro.props;
+const { type, stack, coverImage, gallery, repo_url, preview_url } = entry.data;
+const data = entry.data[lang];
+
+const path = `/projects/${entry.id}`;
+const canonicalUrl = new URL(
+  `/${lang}${path}`,
+  import.meta.env.SITE,
+).toString();
+
+const prev = prevEntry
+  ? {
+      href: getLocalizedPath(`/projects/${prevEntry.id}`, lang),
+      title: prevEntry.data[lang].title,
+    }
+  : undefined;
+const next = nextEntry
+  ? {
+      href: getLocalizedPath(`/projects/${nextEntry.id}`, lang),
+      title: nextEntry.data[lang].title,
+    }
+  : undefined;
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline: data.title,
+  description: data.resultHeadline,
+  author: {
+    "@type": "Organization",
+    name: "WedevsVnzla",
+    url: import.meta.env.SITE,
+  },
+  url: canonicalUrl,
+};
+---
+
+<ProjectLayout
+  lang={lang}
+  path={path}
+  data={data}
+  type={type}
+  stack={stack}
+  coverImage={coverImage}
+  gallery={gallery}
+  repo_url={repo_url}
+  preview_url={preview_url}
+  prev={prev}
+  next={next}
+  jsonLd={jsonLd}
+/>

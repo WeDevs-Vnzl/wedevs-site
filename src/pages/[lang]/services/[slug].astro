@@ -1,0 +1,196 @@
+---
+import SectionLabel from "../../../components/ui/SectionLabel.astro";
+import { getCollection } from "astro:content";
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import Header from "../../../components/layout/Header.astro";
+import Footer from "../../../components/layout/Footer.astro";
+import Chip from "../../../components/ui/Chip.astro";
+import ProjectCard from "../../../components/ui/ProjectCard.astro";
+import CtaBlock from "../../../components/ui/CtaBlock.astro";
+import { locales, useTranslations, type Lang } from "../../../lib/i18n/ui";
+import { getLocalizedPath } from "../../../lib/i18n/routes";
+
+export async function getStaticPaths() {
+  const services = await getCollection("services");
+  const projects = await getCollection("projects");
+  return locales.flatMap((lang) =>
+    services.map((entry) => ({
+      params: { lang, slug: entry.id },
+      props: { entry, projects },
+    })),
+  );
+}
+
+const { lang } = Astro.params as { lang: Lang };
+const { entry, projects } = Astro.props;
+const { t } = useTranslations(lang);
+const { stack, relatedProjectIds } = entry.data;
+const data = entry.data[lang];
+
+const path = `/services/${entry.id}`;
+const canonicalUrl = new URL(
+  `/${lang}${path}`,
+  import.meta.env.SITE,
+).toString();
+const servicesHome = getLocalizedPath("/services", lang);
+
+const transitionId = getLocalizedPath(path, lang).replace(/\//g, "-");
+const ogImage = `/og/services/${entry.id}-${lang}.png`;
+const breadcrumbs = [
+  { name: t("project.breadcrumbHome"), url: `/${lang}/` },
+  { name: t("services.detail.breadcrumbServices"), url: servicesHome },
+  { name: data.title, url: `/${lang}${path}` },
+];
+
+const relatedProjects = (relatedProjectIds ?? [])
+  .map((id) => projects.find((p) => p.id === id))
+  .filter((p): p is NonNullable<typeof p> => !!p);
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Service",
+  name: data.title,
+  description: data.desc,
+  provider: {
+    "@type": "Organization",
+    name: "WedevsVnzla",
+    url: import.meta.env.SITE,
+  },
+  url: canonicalUrl,
+};
+---
+
+<BaseLayout
+  lang={lang}
+  path={path}
+  title={`${data.title} — WedevsVnzla`}
+  description={data.desc}
+  ogImage={ogImage}
+  jsonLd={jsonLd}
+  breadcrumbs={breadcrumbs}
+>
+  <Header lang={lang} path={path} />
+
+  <main id="main-content">
+    <header class="divider-dotted-row relative overflow-hidden">
+      <div class="max-w-base relative mx-auto px-6 pt-32 pb-12">
+        <nav
+          class="text-muted mb-6 flex items-center gap-2 text-[13px]"
+          aria-label="Breadcrumb"
+        >
+          <a href={servicesHome} class="hover:text-ink no-underline">
+            {t("services.detail.breadcrumbServices")}
+          </a>
+          <span>/</span>
+          <span class="text-ink">{data.title}</span>
+        </nav>
+
+        <h1
+          class="text-h1 md:text-display-2 mt-4 font-bold"
+          transition:name={`service-title-${transitionId}`}
+        >
+          {data.title}
+        </h1>
+        <p
+          class="text-muted mt-4 max-w-[62ch] font-mono text-sm leading-relaxed"
+        >
+          {data.problem}
+        </p>
+
+        <div class="mt-8 flex flex-wrap gap-2">
+          {stack.map((tech) => <Chip>{tech}</Chip>)}
+        </div>
+      </div>
+    </header>
+
+    <section class="max-w-base mx-auto px-6 py-16">
+      <SectionLabel
+        as="h2"
+        index={1}
+        label={t("services.detail.deliverablesLabel")}
+        class="mb-5"
+      />
+      <p class="text-body text-ink-2 mb-8 max-w-[68ch]">{data.desc}</p>
+      <div class="flex flex-col" data-reveal-group>
+        {
+          data.deliverables.map((d) => (
+            <p class="divider-dotted-row text-ink-2 py-4 text-sm last:bg-none">
+              <span class="text-accent mr-2">–</span>
+              {d}
+            </p>
+          ))
+        }
+      </div>
+    </section>
+
+    {
+      relatedProjects.length > 0 && (
+        <section class="max-w-base mx-auto px-6 py-16">
+          <SectionLabel
+            as="h2"
+            index={2}
+            label={t("services.detail.relatedLabel")}
+            class="mb-8"
+          />
+          <div class="grid gap-6 md:grid-cols-2" data-reveal-group>
+            {relatedProjects.map((project) => (
+              <ProjectCard
+                lang={lang}
+                data={project.data[lang]}
+                type={project.data.type}
+                stack={project.data.stack}
+                href={getLocalizedPath(`/projects/${project.id}`, lang)}
+              />
+            ))}
+          </div>
+        </section>
+      )
+    }
+
+    <section class="max-w-base mx-auto px-6 py-16">
+      <SectionLabel
+        as="h2"
+        index={relatedProjects.length > 0 ? 3 : 2}
+        label={t("services.detail.faqLabel")}
+        class="mb-12"
+      />
+      <div data-reveal-group>
+        {
+          data.faq.map((item) => (
+            <details class="divider-dotted-row group py-5 last:bg-none">
+              <summary class="text-ink flex cursor-pointer items-center justify-between text-[15px] font-medium marker:content-none [&::-webkit-details-marker]:hidden">
+                {item.q}
+                <span
+                  class="text-muted ml-4 shrink-0 text-lg transition-transform duration-200 group-open:rotate-45"
+                  aria-hidden="true"
+                >
+                  +
+                </span>
+              </summary>
+              <p class="text-body text-ink-2 mt-4 max-w-[68ch]">{item.a}</p>
+            </details>
+          ))
+        }
+      </div>
+    </section>
+
+    <CtaBlock
+      headingId="service-cta-heading"
+      title={t("contact.title")}
+      support={t("services.ctaSupport")}
+      ctaLabel={t("services.detail.ctaLabel")}
+      ctaHref={getLocalizedPath("/contact", lang)}
+    />
+
+    <footer class="max-w-base mx-auto px-6 pb-16">
+      <a
+        href={servicesHome}
+        class="text-muted hover:text-accent text-sm no-underline hover:underline"
+      >
+        {t("services.detail.backLabel")}
+      </a>
+    </footer>
+  </main>
+
+  <Footer lang={lang} />
+</BaseLayout>

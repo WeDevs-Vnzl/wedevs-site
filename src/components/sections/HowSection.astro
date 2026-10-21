@@ -1,0 +1,54 @@
+---
+import Chip from "../ui/Chip.astro";
+import SectionLabel from "../ui/SectionLabel.astro";
+import { useTranslations, type Lang } from "../../lib/i18n/ui";
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const { t, dict } = useTranslations(lang);
+
+const stack = [
+  "Next.js",
+  "Nuxt",
+  "Astro",
+  "React",
+  "Flutter",
+  "Node.js",
+  "NestJS",
+  "FastAPI",
+  "PostgreSQL",
+  "LangGraph",
+];
+---
+
+<section aria-labelledby="how-heading">
+  <div class="max-w-base mx-auto px-6 py-20 md:py-30">
+    <SectionLabel index={3} label={t("home.sectionLabels.how")} class="mb-4" />
+    <h2 id="how-heading" class="text-h2 mb-12" data-reveal>
+      {t("home.howTitle")}
+    </h2>
+    <div data-reveal-group>
+      {
+        dict.home.howItems.map((item, i) => (
+          <div class="divider-dotted-row group grid gap-2 py-6 last:bg-none md:grid-cols-[120px_1fr] md:gap-8">
+            <span class="text-accent-dim group-hover:text-accent font-mono text-xs transition-colors duration-200">
+              {String(i + 1).padStart(2, "0")}
+            </span>
+            <div>
+              <h3 class="text-h3 mb-2">{item.title}</h3>
+              <p class="text-body text-ink-2 max-w-[62ch]">{item.desc}</p>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+    <div class="mt-12" data-reveal>
+      <p class="text-body text-ink-2 mb-4">{t("home.stackDesc")}</p>
+      <div class="flex flex-wrap gap-2">
+        {stack.map((item) => <Chip>{item}</Chip>)}
+      </div>
+    </div>
+  </div>
+</section>
