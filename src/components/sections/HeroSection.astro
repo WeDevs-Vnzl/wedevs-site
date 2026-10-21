@@ -2,63 +2,119 @@
 import { useTranslations, type Lang } from "../../lib/i18n/ui";
 import { md } from "../../lib/utils/md";
 import { getLocalizedPath } from "../../lib/i18n/routes";
-import HeroBg from "../ui/HeroBg.astro";
+import Logo from "../brand/Logo.astro";
+import PixelGrid from "../ui/PixelGrid.astro";
 
 interface Props {
   lang: Lang;
 }
 const { lang } = Astro.props;
 const { t } = useTranslations(lang);
+const otherLang: Lang = lang === "en" ? "es" : "en";
+
+// The home has no global header: its nav lives inside the hero.
+const navLinks = [
+  { href: getLocalizedPath("/projects", lang), label: t("nav.projects") },
+  { href: getLocalizedPath("/services", lang), label: t("nav.services") },
+  { href: getLocalizedPath("/blog", lang), label: t("nav.blog") },
+  { href: getLocalizedPath("/contact", lang), label: t("nav.contact") },
+];
 ---
 
 <section
-  class="bg-bg relative isolate flex min-h-[80dvh] items-center overflow-hidden"
+  class="grid min-h-dvh grid-cols-1 lg:h-dvh lg:grid-cols-[5fr_7fr]"
   aria-labelledby="hero-heading"
 >
-  <HeroBg />
+  <div
+    class="bg-night text-paper relative flex flex-col justify-between gap-12 overflow-hidden px-[clamp(20px,4vw,48px)] pt-5 pb-[clamp(28px,4vw,48px)]"
+  >
+    <PixelGrid cols={14} rows={40} seed={7} hi={0.05} lo={0.015} />
 
-  <div class="max-w-base relative mx-auto grid w-full gap-8 px-6 md:grid-cols-2 md:gap-12 md:pl-2">
-    <div class="flex flex-col">
-      <p
-        class="text-eyebrow text-accent mb-2 font-mono tracking-wider uppercase"
-        data-reveal
-        data-reveal-delay="0.3"
-      >
-        {t("home.heroEyebrow")}
-      </p>
-
-      <h1
-        id="hero-heading"
-        class="md:text-display-2 text-[2.5rem] leading-[1] tracking-[-0.04em] text-white"
-      >
-        <span class="font-light">{t("home.heroTitle")}</span>
-        <span class="font-bold">{t("home.heroTitleEmphasis")}</span>
-      </h1>
-
+    <div class="relative flex items-center justify-between gap-3">
       <a
-        href={getLocalizedPath("/contact", lang)}
-        class="pill-btn-primary mt-8 w-fit"
-        title={t("home.heroCta")}
-        data-reveal
-        data-reveal-delay="0.5"
+        href={getLocalizedPath("/", lang)}
+        class="text-paper no-underline"
+        title="Wedevs — Home"
       >
-        {t("home.heroCta")}
+        <Logo size={24} />
       </a>
+      <a
+        href={getLocalizedPath("/", otherLang)}
+        class="text-paper hover:border-paper/60 rounded-full border border-[rgba(250,250,247,0.25)] px-3 py-2 font-mono text-xs font-medium no-underline"
+        aria-label={t("nav.langSwitchLabel")}
+        title={t("nav.langSwitchLabel")}>{t("nav.langSwitch")}</a
+      >
     </div>
 
     <div
-      class="flex flex-col justify-start gap-5"
-      data-reveal-group
-      data-reveal-delay="0.4"
+      class="relative flex flex-1 items-center justify-center [&_svg]:h-auto [&_svg]:w-[clamp(160px,30vw,420px)] [&_svg]:max-w-full"
     >
+      <Logo wordmark={false} />
+    </div>
+
+    <p
+      class="text-fog relative font-mono text-xs leading-relaxed font-medium tracking-[0.08em] uppercase"
+    >
+      {t("home.heroEyebrow").replace(/^\/\/\s*/, "")}
+    </p>
+  </div>
+
+  <div
+    class="bg-paper text-night flex flex-col justify-between gap-10 px-[clamp(20px,4vw,56px)] pt-5 pb-[clamp(28px,4vw,56px)]"
+  >
+    <nav
+      class="hidden flex-wrap items-center justify-between gap-4 md:flex"
+      aria-label={t("nav.navLabel")}
+    >
+      <div class="flex flex-wrap gap-5 text-[15px]">
+        {
+          navLinks.map((link) => (
+            <a
+              href={link.href}
+              class="text-night hover:text-violet no-underline"
+            >
+              {link.label}
+            </a>
+          ))
+        }
+      </div>
+      <a
+        href={getLocalizedPath("/contact", lang)}
+        class="text-night border-night hover:text-violet hover:border-violet rounded-full border px-4 py-2.5 text-sm font-semibold no-underline"
+      >
+        {t("nav.talk")} ↗
+      </a>
+    </nav>
+
+    <div class="flex flex-1 flex-col justify-center gap-7" data-reveal-group>
+      <h1
+        id="hero-heading"
+        class="text-night m-0 text-[clamp(42px,6vw,88px)] leading-[1.1] font-light tracking-[-0.05em] text-balance"
+      >
+        {t("home.heroTitle")}
+        <span
+          class="text-violet rounded-[2rem] [box-decoration-break:clone] px-[0.12em] font-extrabold "
+          >{t("home.heroTitleEmphasis")}</span
+        >
+      </h1>
       <p
-        class="text-by text-ink-2 [text-shadow:0_2px_16px_rgba(0,0,0,0.85)]"
-        set:html={md(t("home.heroPara1"))}
+        class="text-graphite m-0 max-w-[480px] text-lg leading-[1.55]"
+        set:html={`${md(t("home.heroPara1"))} ${md(t("home.heroPara2"))}`}
       />
-      <p
-        class="text-by text-ink-2 [text-shadow:0_2px_16px_rgba(0,0,0,0.85)]"
-        set:html={md(t("home.heroPara2"))}
-      />
+      <div class="flex flex-wrap gap-2.5">
+        <a
+          href={getLocalizedPath("/contact", lang)}
+          class="bg-violet rounded-full px-[26px] py-4 font-bold text-white no-underline transition-opacity hover:opacity-90"
+        >
+          {t("home.heroCta")}
+        </a>
+        <a
+          href="#projects"
+          class="text-night hover:text-violet px-[26px] py-4 font-semibold no-underline"
+        >
+          {t("home.heroCtaSecondary")} →
+        </a>
+      </div>
     </div>
   </div>
 </section>

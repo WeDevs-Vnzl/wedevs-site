@@ -1,11 +1,16 @@
 ---
-import { brandMailHref as mailHref } from "../../lib/brand";
+import {
+  brandMailHref as mailHref,
+  brandWhatsappHref as whatsappHref,
+} from "../../lib/brand";
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import Header from "../../components/layout/Header.astro";
-import Footer from "../../components/layout/Footer.astro";
-import PageHeader from "../../components/ui/PageHeader.astro";
+import SiteHeader from "../../components/layout/SiteHeader.astro";
+import SiteFooter from "../../components/layout/SiteFooter.astro";
+import PageHero from "../../components/ui/PageHero.astro";
+import PixelGrid from "../../components/ui/PixelGrid.astro";
 import ContactForm from "../../components/ui/ContactForm.astro";
 import { locales, useTranslations, type Lang } from "../../lib/i18n/ui";
+import { getCanonicalUrl, getLocalizedPath } from "../../lib/i18n/routes";
 
 export function getStaticPaths() {
   return locales.map((lang) => ({ params: { lang } }));
@@ -14,69 +19,96 @@ export function getStaticPaths() {
 const { lang } = Astro.params as { lang: Lang };
 const { t, dict } = useTranslations(lang);
 
-const channels = [{ href: mailHref, label: "Email" }];
+const channels = [
+  { href: mailHref, label: "Email" },
+  { href: whatsappHref, label: "WhatsApp" },
+];
 
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "ContactPage",
-  name: `${t("contactPage.eyebrow")} — WedevsVnzla`,
+  name: `${t("contactPage.eyebrow")} Wedevs`,
   description: dict.contactPage.support,
-  url: new URL(`/${lang}/contact`, import.meta.env.SITE).toString(),
+  url: getCanonicalUrl("/contact", lang),
 };
 ---
 
 <BaseLayout
   lang={lang}
   path="/contact"
-  title={`${t("contactPage.eyebrow")} — WedevsVnzla`}
-  description={dict.contactPage.support}
+  title={t("contactPage.seoTitle")}
+  description={t("contactPage.seoDescription")}
+  breadcrumbs={[
+    { name: t("project.breadcrumbHome"), url: getLocalizedPath("/", lang) },
+    { name: t("nav.contact"), url: getLocalizedPath("/contact", lang) },
+  ]}
   jsonLd={jsonLd}
 >
-  <Header lang={lang} path="/contact" />
+  <SiteHeader lang={lang} path="/contact" />
 
-  <main id="main-content">
-    <PageHeader
+  <main id="main-content" class="bg-paper text-night">
+    <PageHero
       eyebrow={t("contactPage.eyebrow")}
       titleBold={t("contactPage.titleBold")}
       titleLight={t("contactPage.titleLight")}
       support={t("contactPage.support")}
+      seed={31}
     />
 
     <section
-      class="max-w-base mx-auto grid gap-12 px-6 py-20 md:grid-cols-12 md:py-28"
+      class="bg-mist grid grid-cols-1 items-start gap-6 px-[clamp(20px,4vw,56px)] py-[clamp(40px,6vw,96px)] lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)]"
     >
-      <div class="md:col-span-7" data-reveal>
+      <div class="rounded-[20px] p-[clamp(20px,3vw,48px)] pt-0" data-reveal>
         <ContactForm lang={lang} />
       </div>
 
-      <div class="flex flex-col gap-10 md:col-span-5" data-reveal-group>
-        <div>
-          <h2 class="text-h3 mb-4">{t("contactPage.channelsLabel")}</h2>
-          <div class="flex flex-wrap gap-2">
+      <aside
+        class="bg-night text-paper relative flex flex-col gap-8 overflow-hidden rounded-[20px] p-[clamp(24px,3vw,40px)] lg:sticky lg:top-24"
+        data-reveal
+      >
+        <PixelGrid cols={12} rows={12} seed={53} hi={0.05} lo={0.015} />
+        <div class="relative flex flex-col gap-3">
+          <h2
+            class="text-fog m-0 font-mono text-xs font-medium tracking-[0.1em] uppercase"
+          >
+            {t("contactPage.channelsLabel")}
+          </h2>
+          <div class="flex flex-col gap-4">
             {
               channels.map((c) => (
                 <a
                   href={c.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="chip"
+                  class="text-violet-soft hover:text-paper text-2xl font-bold tracking-[-0.02em] no-underline"
                 >
-                  {c.label}
+                  {c.label} ↗
                 </a>
               ))
             }
           </div>
         </div>
 
-        <div class="card p-6">
-          <h2 class="text-h3 mb-2">{t("contactPage.availabilityLabel")}</h2>
-          <p class="text-body text-ink-2">
+        <div
+          class="relative flex flex-col gap-2 border-t border-[rgba(250,250,247,0.12)] pt-6"
+        >
+          <h2
+            class="text-fog m-0 font-mono text-xs font-medium tracking-[0.1em] uppercase"
+          >
+            {t("contactPage.availabilityLabel")}
+          </h2>
+          <p
+            class="m-0 flex items-start gap-2.5 text-[15px] leading-[1.6] text-[#c5c8d2]"
+          >
+            <span
+              class="mt-[0.55em] size-2 shrink-0 rounded-full bg-emerald-400"
+              aria-hidden="true"></span>
             {t("contactPage.availabilityText")}
           </p>
         </div>
-      </div>
+      </aside>
     </section>
   </main>
 
-  <Footer lang={lang} />
+  <SiteFooter lang={lang} showCta={false} />
 </BaseLayout>

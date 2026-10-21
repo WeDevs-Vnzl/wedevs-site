@@ -1,0 +1,37 @@
+---
+/** Redesign hero shared by the main subpages: dark band with the pixel grid. */
+import PixelGrid from "./PixelGrid.astro";
+
+interface Props {
+  eyebrow: string;
+  titleBold: string;
+  titleLight: string;
+  support: string;
+  seed: number;
+}
+const { eyebrow, titleBold, titleLight, support, seed } = Astro.props;
+---
+
+<section
+  class="bg-night text-paper relative grid grid-cols-1 items-end gap-x-16 gap-y-8 overflow-hidden px-[clamp(20px,4vw,56px)] pt-[clamp(56px,8vw,120px)] pb-[clamp(40px,5vw,72px)] lg:grid-cols-[7fr_5fr]"
+>
+  <PixelGrid cols={24} rows={24} seed={seed} hi={0.05} lo={0.015} />
+  <div class="relative flex flex-col gap-5">
+    <span
+      class="text-violet-soft font-mono text-xs font-medium tracking-[0.12em] uppercase"
+    >
+      {eyebrow}
+    </span>
+    <h1
+      class="text-paper m-0 text-[clamp(44px,8vw,120px)] leading-[0.92] font-extrabold tracking-[-0.055em] text-balance"
+    >
+      {`${titleBold} ${titleLight}`}
+    </h1>
+  </div>
+  <div class="relative flex flex-col gap-4">
+    <p class="m-0 max-w-[460px] text-lg leading-[1.55] text-[#c5c8d2]">
+      {support}
+    </p>
+    <slot />
+  </div>
+</section>

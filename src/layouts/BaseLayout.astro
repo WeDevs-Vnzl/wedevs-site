@@ -4,7 +4,9 @@ import { ClientRouter } from "astro:transitions";
 import { fade } from "astro:transitions";
 import Hreflang from "../components/seo/Hreflang.astro";
 import Analytics from "../components/seo/Analytics.astro";
-import type { Lang } from "../lib/i18n/ui";
+import { useTranslations, type Lang } from "../lib/i18n/ui";
+import { getCanonicalUrl } from "../lib/i18n/routes";
+import { brandEmail, founders } from "../lib/brand";
 
 import HeroBg from "../components/ui/HeroBg.astro";
 import ScrollReveal from "../components/motion/ScrollReveal.astro";
@@ -46,8 +48,8 @@ const {
 } = Astro.props;
 
 const site = import.meta.env.SITE;
-const cleanPath = path === "/" ? "" : path;
-const resolvedCanonical = new URL(`/${lang}${cleanPath}`, site).toString();
+const { t } = useTranslations(lang);
+const resolvedCanonical = getCanonicalUrl(path, lang);
 const ogImageUrl = ogImage
   ? new URL(ogImage, site).toString()
   : `${site}/images/${lang === "es" ? "og-es.png" : "og.png"}`;
@@ -57,10 +59,19 @@ const organizationJsonLd = {
   "@context": "https://schema.org",
   "@type": "Organization",
   "@id": `${site}/#organization`,
-  name: "WedevsVnzla",
+  name: "Wedevs",
   alternateName: "wedevs",
   url: site,
   logo: `${site}/icons/android-chrome-512x512.png`,
+  description: t("home.seoDescription"),
+  email: brandEmail,
+  founder: founders.map((f) => ({
+    "@type": "Person",
+    "@id": `${site}/#${f.id}`,
+    name: f.name,
+    url: getCanonicalUrl("/about", lang),
+    sameAs: [f.linkedin],
+  })),
 };
 
 const websiteJsonLd = {
@@ -68,7 +79,7 @@ const websiteJsonLd = {
   "@type": "WebSite",
   "@id": `${site}/#website`,
   url: site,
-  name: "WedevsVnzla",
+  name: "Wedevs",
   inLanguage: lang,
   publisher: { "@id": `${site}/#organization` },
 };
@@ -117,19 +128,25 @@ const breadcrumbJsonLd = breadcrumbs?.length
       )
     }
 
-    <link rel="canonical" href={resolvedCanonical} />
-    <Hreflang path={path} />
+    {
+      !noindex && (
+        <>
+          <link rel="canonical" href={resolvedCanonical} />
+          <Hreflang path={path} />
+        </>
+      )
+    }
 
     <!-- Open Graph -->
     <meta property="og:type" content={ogType} />
-    <meta property="og:url" content={resolvedCanonical} />
+    {!noindex && <meta property="og:url" content={resolvedCanonical} />}
     <meta property="og:title" content={ogTitle || title} />
     <meta property="og:description" content={ogDescription || description} />
     <meta property="og:image" content={ogImageUrl} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content={ogTitle || title} />
-    <meta property="og:site_name" content="WedevsVnzla" />
+    <meta property="og:site_name" content="Wedevs" />
     <meta property="og:locale" content={ogLocale} />
 
     <!-- Twitter Card -->
@@ -142,21 +159,21 @@ const breadcrumbJsonLd = breadcrumbs?.length
 
     <link
       rel="preload"
-      href="/fonts/inter-latin-400-normal.woff2"
+      href="/fonts/manrope-latin-400-normal.woff2"
       as="font"
       type="font/woff2"
       crossorigin
     />
     <link
       rel="preload"
-      href="/fonts/inter-latin-600-normal.woff2"
+      href="/fonts/manrope-latin-500-normal.woff2"
       as="font"
       type="font/woff2"
       crossorigin
     />
     <link
       rel="preload"
-      href="/fonts/inter-latin-700-normal.woff2"
+      href="/fonts/manrope-latin-700-normal.woff2"
       as="font"
       type="font/woff2"
       crossorigin

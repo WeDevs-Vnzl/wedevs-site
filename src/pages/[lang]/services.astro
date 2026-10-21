@@ -1,12 +1,12 @@
 ---
-import SectionLabel from "../../components/ui/SectionLabel.astro";
 import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import Header from "../../components/layout/Header.astro";
-import Footer from "../../components/layout/Footer.astro";
-import PageHeader from "../../components/ui/PageHeader.astro";
-import Chip from "../../components/ui/Chip.astro";
-import CtaBlock from "../../components/ui/CtaBlock.astro";
+import SiteHeader from "../../components/layout/SiteHeader.astro";
+import SiteFooter from "../../components/layout/SiteFooter.astro";
+import PageHero from "../../components/ui/PageHero.astro";
+import PixelGrid from "../../components/ui/PixelGrid.astro";
+import SplitSection from "../../components/ui/SplitSection.astro";
+import FaqList from "../../components/ui/FaqList.astro";
 import { locales, useTranslations, type Lang } from "../../lib/i18n/ui";
 import { getLocalizedPath } from "../../lib/i18n/routes";
 
@@ -19,162 +19,188 @@ const { t, dict } = useTranslations(lang);
 const services = (await getCollection("services")).sort(
   (a, b) => a.data.order - b.data.order,
 );
+import { itemIndex } from "../../lib/utils/itemIndex";
 ---
 
 <BaseLayout
   lang={lang}
   path="/services"
-  title={`${t("services.eyebrow")} — WedevsVnzla`}
-  description={dict.services.support}
+  title={t("services.seoTitle")}
+  description={t("services.seoDescription")}
+  breadcrumbs={[
+    { name: t("project.breadcrumbHome"), url: getLocalizedPath("/", lang) },
+    { name: t("services.eyebrow"), url: getLocalizedPath("/services", lang) },
+  ]}
 >
-  <Header lang={lang} path="/services" />
+  <SiteHeader lang={lang} path="/services" />
 
-  <main id="main-content">
-    <PageHeader
+  <main id="main-content" class="bg-paper text-night">
+    <PageHero
       eyebrow={t("services.eyebrow")}
       titleBold={t("services.titleBold")}
       titleLight={t("services.titleLight")}
       support={t("services.support")}
+      seed={23}
     />
 
-    <section class="max-w-base mx-auto px-6 py-20 md:py-30">
-      <div class="grid gap-6 md:grid-cols-2" data-reveal-group>
-        {
-          services.map((entry, i) => {
-            const data = entry.data[lang];
-            return (
+    <section class="flex flex-col" data-reveal-group>
+      {
+        services.map((entry, i) => {
+          const data = entry.data[lang];
+          const href = getLocalizedPath(`/services/${entry.id}`, lang);
+          const transitionId = href.replace(/\//g, "-");
+          return (
+            <div class="grid grid-cols-[repeat(auto-fit,minmax(min(100%,260px),1fr))] border-b border-[rgba(17,18,22,0.12)]">
+              <div class="flex flex-col gap-2 px-[clamp(20px,4vw,56px)] pt-[clamp(28px,4vw,56px)] font-mono text-xs font-medium">
+                <span class="text-violet">{itemIndex("01", i)}</span>
+                <span class="text-slate tracking-[0.1em] uppercase">
+                  {entry.data.stack.slice(0, 3).join(" · ")}
+                </span>
+              </div>
               <a
-                href={getLocalizedPath(`/services/${entry.id}`, lang)}
-                class="card flex flex-col p-8 no-underline"
+                href={href}
+                class="group text-night hover:text-night col-span-2 grid min-w-0 grid-cols-[repeat(auto-fit,minmax(min(100%,300px),1fr))] gap-x-10 gap-y-5 px-[clamp(20px,4vw,56px)] py-[clamp(28px,4vw,56px)] no-underline max-[519px]:col-span-1"
               >
-                <p class="text-muted mb-6 self-end font-mono text-xs">
-                  {String(i + 1).padStart(2, "0")}
-                </p>
-                <h2 class="text-h3 mb-3">{data.title}</h2>
-                <p class="text-body text-ink-2 mb-6">{data.desc}</p>
-                <div class="mt-auto flex flex-col gap-2 pt-6">
-                  {data.deliverables.map((d) => (
-                    <p class="text-ink-2 text-sm">
-                      <span class="text-accent mr-2">–</span>
-                      {d}
-                    </p>
-                  ))}
+                <div class="flex flex-col gap-3.5">
+                  <h2
+                    class="text-night group-hover:text-violet m-0 text-[clamp(26px,3.2vw,40px)] leading-[1.05] font-bold tracking-[-0.035em] transition-colors"
+                    transition:name={`service-title-${transitionId}`}
+                  >
+                    {data.title}
+                  </h2>
+                  <p class="text-slate m-0 text-[15px] leading-[1.6]">
+                    {data.desc}
+                  </p>
+                  <span class="text-violet font-bold">
+                    {t("services.detail.viewLabel")} →
+                  </span>
                 </div>
+                <ul class="m-0 flex list-none flex-col p-0">
+                  {data.deliverables.map((d) => (
+                    <li class="text-graphite border-t border-[rgba(17,18,22,0.1)] py-2.5 text-[15px] first:border-t-0 first:pt-0">
+                      <span class="text-violet mr-2">–</span>
+                      {d}
+                    </li>
+                  ))}
+                </ul>
               </a>
-            );
-          })
-        }
-      </div>
+            </div>
+          );
+        })
+      }
     </section>
 
-    <section class="max-w-base mx-auto px-6 py-20 md:py-30">
-      <SectionLabel
-        as="h2"
-        index={1}
-        label={t("services.processTitle")}
-        class="mb-16"
-      />
+    <SplitSection
+      index="02"
+      label={t("services.processTitle")}
+      headingId="process-heading"
+      class="bg-paper-2"
+    >
       <div
-        class="relative grid gap-12 md:grid-cols-4 md:gap-8"
+        class="grid grid-cols-[repeat(auto-fit,minmax(min(100%,200px),1fr))] gap-x-8 gap-y-7"
         data-reveal-group
       >
-        <div
-          class="divider-dotted-row absolute top-[5px] right-0 left-0 hidden h-px md:block"
-          aria-hidden="true"
-        >
-        </div>
         {
           dict.services.process.map((step, i) => (
-            <div class="relative flex flex-col">
-              <span
-                class="border-accent bg-bg-alt relative z-10 mb-4 inline-flex h-[9px] w-[9px] rounded-full border-[1.5px]"
-                aria-hidden="true"
-              />
-              <p class="text-muted mb-2 font-mono text-xs">
-                {String(i + 1).padStart(2, "0")}
+            <div class="border-night flex flex-col gap-2 border-t-2 pt-3.5">
+              <span class="text-violet font-mono text-xs font-medium">
+                {itemIndex("03", i)}
+              </span>
+              <h3 class="text-night m-0 text-[19px] font-bold tracking-[-0.02em]">
+                {step.title}
+              </h3>
+              <p class="text-slate m-0 text-[15px] leading-[1.55]">
+                {step.desc}
               </p>
-              <h3 class="text-h3 mb-2">{step.title}</h3>
-              <p class="text-body text-ink-2 text-sm">{step.desc}</p>
             </div>
           ))
         }
       </div>
-    </section>
+    </SplitSection>
 
-    <section class="max-w-base mx-auto px-6 py-20 md:py-30">
-      <SectionLabel
-        as="h2"
-        index={2}
-        label={t("services.modalitiesTitle")}
-        class="mb-16"
-      />
-      <div class="flex flex-col gap-10 md:flex-row md:gap-0" data-reveal-group>
+    <SplitSection
+      index="03"
+      label={t("services.modalitiesTitle")}
+      headingId="modalities-heading"
+    >
+      <div
+        class="grid grid-cols-[repeat(auto-fit,minmax(min(100%,260px),1fr))] gap-4"
+        data-reveal-group
+      >
         {
-          dict.services.modalities.map((m, i) => (
-            <>
-              {i > 0 && (
-                <div
-                  class="divider-dotted-v mx-8 hidden md:block"
-                  aria-hidden="true"
+          dict.services.modalities.map((m) => (
+            <div
+              class:list={[
+                "relative flex flex-col gap-4 overflow-hidden rounded-md p-[clamp(24px,3vw,36px)]",
+                m.featured ? "bg-violet text-white" : "bg-paper-3 text-night",
+              ]}
+            >
+              {m.featured && (
+                <PixelGrid
+                  cols={16}
+                  rows={14}
+                  seed={41}
+                  hi={0.04}
+                  lo={0.02}
+                  color="#fff"
                 />
               )}
-              <div class="flex-1">
-                <div class="mb-3 flex items-center gap-3">
-                  <h3 class="text-h3">{m.title}</h3>
-                  {m.featured && (
-                    <Chip class="border-accent text-accent">
-                      {t("services.featuredLabel")}
-                    </Chip>
-                  )}
-                </div>
-                <p class="text-body text-ink-2 mb-4">{m.desc}</p>
-                <ul>
-                  {m.features.map((f) => (
-                    <li class="text-ink-2 text-sm">{f}</li>
-                  ))}
-                </ul>
-              </div>
-            </>
-          ))
-        }
-      </div>
-    </section>
-
-    <section class="max-w-base mx-auto px-6 py-20 md:py-30">
-      <SectionLabel
-        as="h2"
-        index={3}
-        label={t("services.faqTitle")}
-        class="mb-12"
-      />
-      <div data-reveal-group>
-        {
-          dict.services.faq.map((item) => (
-            <details class="divider-dotted-row group py-5 last:bg-none">
-              <summary class="text-ink flex cursor-pointer items-center justify-between text-[15px] font-medium marker:content-none [&::-webkit-details-marker]:hidden">
-                {item.q}
-                <span
-                  class="text-muted ml-4 shrink-0 text-lg transition-transform duration-200 group-open:rotate-45"
-                  aria-hidden="true"
+              <div class="relative flex flex-wrap items-center justify-between gap-3">
+                <h3
+                  class:list={[
+                    "m-0 text-2xl font-bold tracking-[-0.03em]",
+                    m.featured ? "text-white" : "text-night",
+                  ]}
                 >
-                  +
-                </span>
-              </summary>
-              <p class="text-body text-ink-2 mt-4 max-w-[68ch]">{item.a}</p>
-            </details>
+                  {m.title}
+                </h3>
+                {m.featured && (
+                  <span class="rounded-full border border-white/40 px-[11px] py-[5px] text-xs text-white">
+                    {t("services.featuredLabel")}
+                  </span>
+                )}
+              </div>
+              <p
+                class:list={[
+                  "relative m-0 text-[15px] leading-[1.55]",
+                  m.featured ? "text-white" : "text-slate",
+                ]}
+              >
+                {m.desc}
+              </p>
+              <ul class="relative m-0 flex list-none flex-col gap-2 p-0">
+                {m.features.map((f) => (
+                  <li
+                    class:list={[
+                      "text-sm",
+                      m.featured ? "text-white" : "text-graphite",
+                    ]}
+                  >
+                    <span
+                      class={
+                        m.featured ? "mr-2 text-white" : "text-violet mr-2"
+                      }
+                    >
+                      –
+                    </span>
+                    {f}
+                  </li>
+                ))}
+              </ul>
+            </div>
           ))
         }
       </div>
-    </section>
+    </SplitSection>
 
-    <CtaBlock
-      headingId="services-cta-heading"
-      title={t("contact.title")}
-      support={t("services.ctaSupport")}
-      ctaLabel={t("contact.cta")}
-      ctaHref={getLocalizedPath("/contact", lang)}
-    />
+    <SplitSection
+      index="04"
+      label={t("services.faqTitle")}
+      headingId="faq-heading"
+    >
+      <FaqList items={dict.services.faq} />
+    </SplitSection>
   </main>
 
-  <Footer lang={lang} />
+  <SiteFooter lang={lang} />
 </BaseLayout>

@@ -10,7 +10,8 @@
     "menuCloseLabel": "Cerrar menú",
     "langSwitch": "EN",
     "langSwitchLabel": "Switch to English",
-    "navLabel": "Navegación principal"
+    "navLabel": "Navegación principal",
+    "about": "Nosotros"
   },
   "home": {
     "heroEyebrow": "// Estudio de software · Venezuela",
@@ -56,8 +57,17 @@
       }
     ],
     "stackDesc": "Usamos herramientas modernas y probadas, elegidas para cada proyecto.",
-    "seoTitle": "WedevsVnzla · Apps, webs y software a la medida",
-    "seoDescription": "Estudio de software venezolano. Creamos apps móviles, páginas web, CRMs y sistemas a la medida para negocios que quieren crecer."
+    "seoTitle": "Wedevs · Apps, webs y software a la medida",
+    "seoDescription": "Estudio de software venezolano. Creamos apps móviles, páginas web, CRMs y sistemas a la medida con integraciones de pago, ERP e IA para negocios.",
+    "heroCtaSecondary": "Ver proyectos",
+    "clientLabel": "Cliente",
+    "blogTitle": "Del blog",
+    "blogAll": "Todos los artículos",
+    "testimonial": {
+      "title": "Lo que dicen los clientes",
+      "quote": "Aquí va el testimonio de un cliente. Agrega una cita real de Novanet Studio u otro cliente.",
+      "who": "Nombre · Cargo · Empresa"
+    }
   },
   "contact": {
     "title": "¿Tienes una idea? Hablemos.",
@@ -66,7 +76,10 @@
   },
   "footer": {
     "reach": "La forma más rápida de contactarnos es por correo.",
-    "copyright": "© 2026 WedevsVnzla"
+    "copyright": "© 2026 Wedevs",
+    "menuLabel": "Menú",
+    "tagline": "Estudio de software · Venezuela",
+    "privacy": "Política de privacidad"
   },
   "notFound": {
     "eyebrow": "404",
@@ -87,35 +100,42 @@
     "stackLabel": "Stack:",
     "back": "← Volver al inicio",
     "viewDemo": "Ver demo ↗",
-    "viewRepo": "Ver repositorio ↗",
     "prevProject": "Anterior",
     "nextProject": "Siguiente",
     "typeOwn": "Producto propio",
     "typeClient": "Cliente",
-    "sectionContext": "Contexto",
-    "sectionConditions": "Condiciones",
-    "sectionSolution": "Solución",
-    "sectionTools": "Herramientas",
-    "sectionFeatures": "Funcionalidades clave",
-    "sectionResults": "Resultados e impacto",
+    "sectionContext": "¿Cuál era el contexto?",
+    "sectionConditions": "¿Cuáles eran las restricciones?",
+    "sectionSolution": "¿Cómo lo resolvimos?",
+    "sectionTools": "¿Qué herramientas usamos?",
+    "sectionFeatures": "¿Qué hace?",
+    "sectionResults": "¿Cuáles fueron los resultados?",
     "sectionGallery": "Galería",
     "alternativesDiscarded": "Alternativas descartadas:",
     "lightboxClose": "Cerrar",
     "lightboxPrevious": "Anterior",
-    "lightboxNext": "Siguiente"
+    "lightboxNext": "Siguiente",
+    "client": "Cliente",
+    "role": "Rol",
+    "period": "Período",
+    "stack": "Stack",
+    "nextCase": "Siguiente proyecto"
   },
   "projectsPage": {
     "eyebrow": "Proyectos",
     "titleBold": "Lo que ya",
     "titleLight": "construimos",
-    "support": "Productos reales, en uso hoy.",
-    "seoTitle": "Proyectos — WedevsVnzla"
+    "support": "Productos reales, en uso hoy. Cada caso de estudio cubre el contexto, las restricciones y las decisiones detrás de lo construido.",
+    "seoTitle": "Casos de estudio de software | Wedevs",
+    "count": "casos de estudio",
+    "view": "Ver caso de estudio",
+    "seoDescription": "Casos de estudio de Wedevs: productos reales en uso hoy, con el contexto, las restricciones y las decisiones técnicas detrás de cada proyecto."
   },
   "services": {
     "eyebrow": "Servicios",
     "titleBold": "Cómo podemos",
     "titleLight": "ayudarte",
-    "support": "Software a la medida para negocios que necesitan lanzar, no solo planificar.",
+    "support": "Software a la medida para negocios que necesitan lanzar, no solo planificar. Del primer alcance a producción, un solo equipo se encarga.",
     "processTitle": "Proceso",
     "process": [
       {
@@ -190,18 +210,21 @@
     "detail": {
       "breadcrumbServices": "Servicios",
       "stackLabel": "Stack",
-      "deliverablesLabel": "Qué incluye",
-      "relatedLabel": "Trabajo relacionado",
+      "deliverablesLabel": "¿Qué incluye?",
+      "relatedLabel": "¿Dónde lo hemos hecho?",
       "faqLabel": "Preguntas frecuentes",
       "backLabel": "← Todos los servicios",
-      "ctaLabel": "Escríbenos →"
-    }
+      "ctaLabel": "Escríbenos →",
+      "viewLabel": "Ver servicio"
+    },
+    "seoTitle": "Servicios de desarrollo de software | Wedevs",
+    "seoDescription": "Desarrollo de software a la medida para negocios en crecimiento: apps full-stack, integraciones fintech y ERP, automatización con IA y consultoría."
   },
   "contactPage": {
     "eyebrow": "Contacto",
     "titleBold": "Construyamos",
     "titleLight": "algo juntos",
-    "support": "Cuéntanos sobre tu proyecto y te responderemos en menos de un día.",
+    "support": "Comparte qué estás construyendo, tus plazos y tu presupuesto, y te responderemos en menos de un día con los próximos pasos.",
     "formNameLabel": "Nombre",
     "formEmailLabel": "Correo",
     "formProjectTypeLabel": "Tipo de proyecto",
@@ -221,6 +244,11 @@
       "Aún no lo sé"
     ],
     "formMessageLabel": "Mensaje",
+    "formNamePlaceholder": "María Pérez",
+    "formEmailPlaceholder": "maria@empresa.com",
+    "formProjectTypePlaceholder": "Selecciona un tipo de proyecto",
+    "formBudgetPlaceholder": "Selecciona un rango",
+    "formMessagePlaceholder": "Cuéntanos sobre tu proyecto, objetivos y plazos…",
     "formSubmit": "Enviar mensaje",
     "formSubmitting": "Enviando…",
     "formSuccess": "Gracias — te responderemos en menos de un día.",
@@ -229,13 +257,15 @@
     "formEmailError": "Ingresa un correo válido.",
     "channelsLabel": "Otras formas de contactarnos",
     "availabilityLabel": "Disponibilidad",
-    "availabilityText": "Remoto, UTC-4. Actualmente aceptando nuevos proyectos."
+    "availabilityText": "UTC-4. Actualmente aceptando nuevos proyectos.",
+    "seoTitle": "Contacta a un estudio de software | Wedevs",
+    "seoDescription": "Cuéntale a Wedevs qué estás construyendo, tus plazos y tu presupuesto. Respondemos en un día hábil con los próximos pasos para tu proyecto."
   },
   "blog": {
     "eyebrow": "Blog",
     "titleBold": "Notas sobre",
     "titleLight": "construir software",
-    "support": "Escritura técnica sobre fintech, arquitectura y las decisiones detrás de proyectos reales.",
+    "support": "Escritura técnica sobre fintech, arquitectura y las decisiones detrás de proyectos reales: qué funcionó, qué no y por qué.",
     "featuredLabel": "Destacado",
     "readMore": "Leer más ↗",
     "tagsHeading": "Tags",
@@ -245,6 +275,83 @@
     "readingTime": "{n} min de lectura",
     "relatedHeading": "Artículos relacionados",
     "backToBlog": "← Volver al blog",
-    "authorBioText": "Fundador de WedevsVnzla. Ingeniero de software full-stack especializado en fintech y sistemas ERP."
+    "authorBioText": "Equipo fundador de WedevsVnzla. Ingeniería de software full-stack con especialidad en fintech y sistemas ERP.",
+    "all": "Todos",
+    "read": "Leer artículo",
+    "soon": "Pronto habrá más artículos.",
+    "share": "Compartir",
+    "shareCopied": "Enlace copiado",
+    "seoTitle": "Blog de ingeniería de software | Wedevs",
+    "seoDescription": "Escritura técnica sobre fintech, arquitectura de software y las decisiones detrás de proyectos reales: qué funcionó, qué no y por qué importó."
+  },
+  "aboutPage": {
+    "seoTitle": "Sobre el estudio y su fundador | Wedevs",
+    "seoDescription": "WedevsVnzla es un estudio de software venezolano fundado por Eliezer Meza y Williams Velazquez, con experiencia full-stack, fintech, mobile y producto.",
+    "eyebrow": "Nosotros",
+    "titleBold": "Un estudio pequeño",
+    "titleLight": "que lanza software.",
+    "support": "Wedevs es un estudio de software de Venezuela. Diseñamos, construimos y mantenemos apps, páginas web y sistemas a la medida para negocios que los necesitan en producción.",
+    "studioLabel": "Quiénes somos",
+    "studioText": [
+      "Wedevs es un estudio de software con base en Venezuela que trabaja con clientes de todo el mundo. Creamos apps móviles, páginas web, CRMs y sistemas a la medida, incluidas integraciones de pago, ERP e IA.",
+      "Un solo equipo se encarga de cada proyecto desde el primer alcance hasta producción y soporte, así las decisiones, el código y la documentación quedan en las mismas manos."
+    ],
+    "principlesLabel": "¿Cómo trabajamos?",
+    "principles": [
+      {
+        "title": "Alcance antes que código",
+        "desc": "Cada proyecto empieza con un alcance escrito: el problema, las restricciones y qué significa terminado."
+      },
+      {
+        "title": "Entregas por etapas",
+        "desc": "Entregamos software funcional en etapas cortas para que puedas probarlo pronto con usuarios reales."
+      },
+      {
+        "title": "Nos hacemos cargo",
+        "desc": "Documentamos las decisiones y seguimos disponibles para soporte después del lanzamiento."
+      }
+    ],
+    "founderLabel": "¿Quién dirige el estudio?",
+    "founders": {
+      "williams-velazquez": {
+        "role": "Cofundación · Desarrollo mobile y diseño de producto",
+        "bio": "Williams Velazquez es parte del equipo fundador de WedevsVnzla, con especialidad en desarrollo mobile y diseño de producto, desde los primeros flujos de usuario hasta la app publicada."
+      },
+      "eliezer-meza": {
+        "role": "Cofundación · Ingeniería de software full-stack",
+        "bio": "Eliezer Meza es parte del equipo fundador de WedevsVnzla. Ingeniería de software full-stack con especialidad en sistemas fintech y ERP, y autoría de los artículos de este blog."
+      }
+    }
+  },
+  "privacyPage": {
+    "seoTitle": "Política de privacidad | Wedevs",
+    "seoDescription": "Cómo Wedevs trata los datos que envías por el formulario de contacto y los datos de analítica de este sitio, y cómo solicitar que los eliminemos.",
+    "eyebrow": "Privacidad",
+    "titleBold": "Política de",
+    "titleLight": "privacidad.",
+    "support": "Qué datos recoge este sitio, para qué, y cómo pedirnos que los eliminemos.",
+    "updatedLabel": "Última actualización",
+    "sections": [
+      {
+        "title": "¿Qué recogemos con el formulario de contacto?",
+        "body": "Cuando envías el formulario recibimos tu nombre, email, tipo de proyecto, rango de presupuesto y mensaje. El formulario lo procesa Netlify Forms, nuestro proveedor de hosting. Usamos estos datos solo para responder tu solicitud."
+      },
+      {
+        "title": "¿Vendemos o compartimos tus datos?",
+        "body": "No. No vendemos tus datos ni los compartimos con terceros, salvo los proveedores que alojan este sitio y procesan el formulario."
+      },
+      {
+        "title": "¿Cuánto tiempo los guardamos?",
+        "body": "Guardamos las solicitudes de contacto mientras haya una conversación o un proyecto activo, y las eliminamos cuando lo solicites."
+      },
+      {
+        "title": "¿Cómo solicitar que los eliminemos?",
+        "body": "Escríbenos por email y eliminaremos tus datos en un plazo de 30 días."
+      }
+    ],
+    "analytics": {
+      "title": "¿Usamos analítica?",
+      "body": "Sí. Usamos Google Analytics 4 para medir las visitas de forma agregada (páginas vistas, país, dispositivo). Google Analytics usa cookies para esto. No usamos esos datos para identificarte."
+    }
   }
 }

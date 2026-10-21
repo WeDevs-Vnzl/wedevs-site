@@ -2,7 +2,7 @@
 import { getCollection } from "astro:content";
 import ProjectLayout from "../../../layouts/ProjectLayout.astro";
 import { locales, type Lang } from "../../../lib/i18n/ui";
-import { getLocalizedPath } from "../../../lib/i18n/routes";
+import { getCanonicalUrl, getLocalizedPath } from "../../../lib/i18n/routes";
 
 export async function getStaticPaths() {
   const projects = (await getCollection("projects")).sort(
@@ -13,30 +13,22 @@ export async function getStaticPaths() {
       params: { lang, slug: entry.id },
       props: {
         entry,
-        prevEntry: projects[i - 1],
-        nextEntry: projects[i + 1],
+        // Wraps around so the last case study still points somewhere.
+        nextEntry:
+          projects.length > 1 ? projects[(i + 1) % projects.length] : undefined,
       },
     })),
   );
 }
 
 const { lang } = Astro.params as { lang: Lang };
-const { entry, prevEntry, nextEntry } = Astro.props;
-const { type, stack, coverImage, gallery, repo_url, preview_url } = entry.data;
+const { entry, nextEntry } = Astro.props;
+const { stack, coverImage, gallery, preview_url } = entry.data;
 const data = entry.data[lang];
 
 const path = `/projects/${entry.id}`;
-const canonicalUrl = new URL(
-  `/${lang}${path}`,
-  import.meta.env.SITE,
-).toString();
+const canonicalUrl = getCanonicalUrl(path, lang);
 
-const prev = prevEntry
-  ? {
-      href: getLocalizedPath(`/projects/${prevEntry.id}`, lang),
-      title: prevEntry.data[lang].title,
-    }
-  : undefined;
 const next = nextEntry
   ? {
       href: getLocalizedPath(`/projects/${nextEntry.id}`, lang),
@@ -48,12 +40,9 @@ const jsonLd = {
   "@context": "https://schema.org",
   "@type": "Article",
   headline: data.title,
-  description: data.resultHeadline,
-  author: {
-    "@type": "Organization",
-    name: "WedevsVnzla",
-    url: import.meta.env.SITE,
-  },
+  description: data.seoDescription ?? data.resultHeadline,
+  author: { "@id": `${import.meta.env.SITE}/#organization` },
+  inLanguage: lang,
   url: canonicalUrl,
 };
 ---
@@ -62,13 +51,10 @@ const jsonLd = {
   lang={lang}
   path={path}
   data={data}
-  type={type}
   stack={stack}
   coverImage={coverImage}
   gallery={gallery}
-  repo_url={repo_url}
   preview_url={preview_url}
-  prev={prev}
   next={next}
   jsonLd={jsonLd}
 />

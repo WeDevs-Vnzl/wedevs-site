@@ -3,6 +3,8 @@
 lang: es
 title: "Lo que aprendí construyendo la arquitectura multi-tenant de Kairos CMS"
 excerpt: "Notas sobre aislar tenants detrás de API keys por proyecto sin recurrir a un framework de multi-tenancy más pesado."
+seoTitle: "Lecciones de la arquitectura multi-tenant de Kairos CMS"
+seoDescription: "Cómo aislamos tenants en Kairos CMS con API keys por proyecto sin recurrir a un framework de multi-tenancy más pesado, y los compromisos que implicó."
 date: 2026-06-02
 tags: ["Arquitectura", "Node.js", "PostgreSQL"]
 ---
@@ -57,7 +59,7 @@ invalidar en cada escritura, pero el requisito no era "más rápido", era
 Cuando ambos objetivos chocan, gana la implementación aburrida que es fácil
 de razonar.
 
-![Panel de administración de Kairos CMS](/projects/kairos/kairos-1.webp)
+<img src="/projects/kairos/kairos-1.webp" alt="Panel de administración de Kairos CMS" width="1876" height="980" loading="lazy" decoding="async" />
 <span class="caption">El constructor visual de campos — cada tipo de campo mapea directo al esquema JSONB de arriba.</span>
 
 Nada de esto es exótico. Se trata sobre todo de elegir la restricción que

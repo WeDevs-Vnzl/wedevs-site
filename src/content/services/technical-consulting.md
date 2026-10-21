@@ -5,6 +5,8 @@ relatedProjectIds: [kairos-cms]
 
 en:
   title: "Technical consulting"
+  seoTitle: "Technical consulting for software teams | Wedevs"
+  seoDescription: "Stack decisions, architecture review and hands-on unblocking for software teams mid-project, so they can keep shipping without a long ramp-up."
   problem: "Your team is mid-project, the stack decision already happened, and you need someone to unblock a specific critical path, not rewrite everything."
   desc: "Stack decisions, architecture review and hands-on unblocking for teams mid-project."
   deliverables:
@@ -20,6 +22,8 @@ en:
 
 es:
   title: "Consultoría técnica"
+  seoTitle: "Consultoría técnica para equipos de software | Wedevs"
+  seoDescription: "Decisiones de stack, revisión de arquitectura y desbloqueo práctico para equipos a mitad de proyecto, para que sigan entregando sin una curva larga."
   problem: "Tu equipo está a mitad de proyecto, la decisión de stack ya se tomó, y necesitas a alguien que desbloquee una ruta crítica puntual, no que reescriba todo."
   desc: "Decisiones de stack, revisión de arquitectura y desbloqueo práctico para equipos a mitad de proyecto."
   deliverables:

@@ -27,11 +27,12 @@ gallery:
   - "/projects/maximiza/maximiza-backoffice-leads.webp"
   - "/projects/maximiza/maximiza-backoffice-lead-detail.webp"
 
-repo_url: https://github.com/Novanet-Studio/maximiza-fe/
 preview_url: https://maximiza.com.ve/
 
 en:
   title: "Maximiza Brokerage Platform"
+  seoTitle: "Maximiza: brokerage CRM with a Meta chatbot"
+  seoDescription: "Case study: a CRM for the Maximiza brokerage with a chatbot integrated through the Meta API, built with Nuxt 4 and NestJS to plug in new modules later."
   client: "Novanet Studio"
   period: "Jun 2026 – Aug 2026"
   role: "Full-Stack Developer"
@@ -105,6 +106,8 @@ en:
 
 es:
   title: "Maximiza Casa de Bolsa"
+  seoTitle: "Maximiza: CRM bursátil con chatbot de Meta"
+  seoDescription: "Caso de estudio: CRM para Maximiza Casa de Bolsa con chatbot integrado vía Meta API, con frontend en Nuxt 4 y backend en NestJS para sumar nuevos módulos."
   client: "Novanet Studio"
   period: "Jun 2026 – Ago 2026"
   role: "Desarrollador Full-Stack"

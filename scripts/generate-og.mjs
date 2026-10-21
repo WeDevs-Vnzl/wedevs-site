@@ -10,9 +10,10 @@ const iconsDir = join(publicDir, "icons");
 mkdirSync(imagesDir, { recursive: true });
 mkdirSync(iconsDir, { recursive: true });
 
-const siteHostname = (
-  process.env.BASE_URL || "https://wedevs.page"
-).replace(/^https?:\/\//, "");
+const siteHostname = (process.env.BASE_URL || "https://wedevs.page").replace(
+  /^https?:\/\//,
+  "",
+);
 
 const ogSvg = (tagline) =>
   Buffer.from(`
@@ -23,7 +24,7 @@ const ogSvg = (tagline) =>
     <line x1="62" y1="10" x2="54" y2="54" stroke="#6b80ff" stroke-width="6" stroke-linecap="round"/>
   </g>
   <rect x="60" y="320" width="1080" height="4" fill="#6b80ff"/>
-  <text x="60" y="230" font-family="Manrope, system-ui, sans-serif" font-size="64" font-weight="800" letter-spacing="-2" fill="#f6f5f2">WedevsVnzla</text>
+  <text x="60" y="230" font-family="Manrope, system-ui, sans-serif" font-size="64" font-weight="800" letter-spacing="-2" fill="#f6f5f2">Wedevs</text>
   <text x="60" y="285" font-family="Manrope, system-ui, sans-serif" font-size="28" font-weight="400" fill="#a9aab0">${tagline}</text>
   <text x="60" y="380" font-family="JetBrains Mono, monospace" font-size="18" fill="#a9aab0">${siteHostname}</text>
 </svg>

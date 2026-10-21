@@ -3,6 +3,8 @@
 lang: es
 title: "Por qué guardamos los esquemas como JSONB en vez de migraciones"
 excerpt: "El balance entre rigor relacional y un constructor visual de campos que tiene que publicar cambios en segundos, no en ciclos de deploy."
+seoTitle: "Esquemas en JSONB en vez de migraciones"
+seoDescription: "El balance entre rigor relacional y un constructor visual de campos que publica cambios de esquema en segundos, no en ciclos de deploy, sobre Postgres."
 date: 2026-05-18
 tags: ["PostgreSQL", "Drizzle", "Backend"]
 ---

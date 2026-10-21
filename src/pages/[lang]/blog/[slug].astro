@@ -1,9 +1,9 @@
 ---
-import { founder } from "../../../lib/brand";
+import { blogAuthor } from "../../../lib/brand";
 import { getCollection, render } from "astro:content";
 import BlogLayout from "../../../layouts/BlogLayout.astro";
 import type { Lang } from "../../../lib/i18n/ui";
-import { getLocalizedPath } from "../../../lib/i18n/routes";
+import { getCanonicalUrl, getLocalizedPath } from "../../../lib/i18n/routes";
 import { getPostSlug } from "../../../lib/utils/blog";
 
 export async function getStaticPaths() {
@@ -16,7 +16,7 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props;
 const { lang } = Astro.params as { lang: Lang; slug: string };
-const { Content, headings } = await render(entry);
+const { Content } = await render(entry);
 
 const readingTime = Math.max(
   1,
@@ -30,7 +30,7 @@ const related = (
   )
 )
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
-  .slice(0, 3)
+  .slice(0, 2)
   .map((p) => ({
     href: getLocalizedPath(`/blog/${getPostSlug(p.id)}`, lang),
     title: p.data.title,
@@ -38,23 +38,24 @@ const related = (
   }));
 
 const path = `/blog/${getPostSlug(entry.id)}`;
-const canonicalUrl = new URL(
-  `/${lang}${path}`,
-  import.meta.env.SITE,
-).toString();
+const canonicalUrl = getCanonicalUrl(path, lang);
 
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "BlogPosting",
   headline: entry.data.title,
-  description: entry.data.excerpt,
+  description: entry.data.seoDescription ?? entry.data.excerpt,
   datePublished: entry.data.date.toISOString(),
   dateModified: (entry.data.updatedDate ?? entry.data.date).toISOString(),
   author: {
     "@type": "Person",
-    name: founder.name,
-    sameAs: [founder.linkedin, founder.github],
+    "@id": `${import.meta.env.SITE}/#${blogAuthor.id}`,
+    name: blogAuthor.name,
+    url: getCanonicalUrl("/about", lang),
+    sameAs: [blogAuthor.linkedin],
   },
+  publisher: { "@id": `${import.meta.env.SITE}/#organization` },
+  inLanguage: lang,
   url: canonicalUrl,
 };
 ---
@@ -64,11 +65,13 @@ const jsonLd = {
   path={path}
   title={entry.data.title}
   excerpt={entry.data.excerpt}
+  seoTitle={entry.data.seoTitle}
+  seoDescription={entry.data.seoDescription}
   date={entry.data.date}
   updatedDate={entry.data.updatedDate}
   tags={entry.data.tags}
   readingTime={readingTime}
-  headings={headings}
+  coverImage={entry.data.coverImage}
   related={related}
   jsonLd={jsonLd}
 >

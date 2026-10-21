@@ -10,7 +10,8 @@
     "menuCloseLabel": "Close menu",
     "langSwitch": "ES",
     "langSwitchLabel": "Cambiar a Español",
-    "navLabel": "Primary navigation"
+    "navLabel": "Primary navigation",
+    "about": "About"
   },
   "home": {
     "heroEyebrow": "// Software studio · Venezuela",
@@ -56,8 +57,17 @@
       }
     ],
     "stackDesc": "We use modern, proven tools, chosen for each project.",
-    "seoTitle": "WedevsVnzla · Apps, websites and custom software",
-    "seoDescription": "Venezuelan software studio. We build mobile apps, websites, CRMs and custom systems for growing businesses."
+    "seoTitle": "Wedevs · Apps, websites and custom software",
+    "seoDescription": "Venezuelan software studio. We build mobile apps, websites, CRMs and custom systems with payment, ERP and AI integrations for growing businesses.",
+    "heroCtaSecondary": "See projects",
+    "clientLabel": "Client",
+    "blogTitle": "From the blog",
+    "blogAll": "All articles",
+    "testimonial": {
+      "title": "What clients say",
+      "quote": "Client testimonial goes here. Add a real quote from Novanet Studio or another client.",
+      "who": "Name · Role · Company"
+    }
   },
   "contact": {
     "title": "Got an idea? Let's talk.",
@@ -66,7 +76,10 @@
   },
   "footer": {
     "reach": "The fastest way to reach us is email.",
-    "copyright": "© 2026 WedevsVnzla"
+    "copyright": "© 2026 Wedevs",
+    "menuLabel": "Menu",
+    "tagline": "Software studio · Venezuela",
+    "privacy": "Privacy policy"
   },
   "notFound": {
     "eyebrow": "404",
@@ -87,35 +100,42 @@
     "stackLabel": "Stack:",
     "back": "← Back to home",
     "viewDemo": "View demo ↗",
-    "viewRepo": "View repository ↗",
     "prevProject": "Previous",
     "nextProject": "Next",
     "typeOwn": "Own product",
     "typeClient": "Client",
-    "sectionContext": "Context",
-    "sectionConditions": "Conditions",
-    "sectionSolution": "Solution",
-    "sectionTools": "Tools",
-    "sectionFeatures": "Key Features",
-    "sectionResults": "Results & Impact",
+    "sectionContext": "What was the context?",
+    "sectionConditions": "What were the constraints?",
+    "sectionSolution": "How did we solve it?",
+    "sectionTools": "Which tools did we use?",
+    "sectionFeatures": "What does it do?",
+    "sectionResults": "What were the results?",
     "sectionGallery": "Gallery",
     "alternativesDiscarded": "Alternatives discarded:",
     "lightboxClose": "Close",
     "lightboxPrevious": "Previous",
-    "lightboxNext": "Next"
+    "lightboxNext": "Next",
+    "client": "Client",
+    "role": "Role",
+    "period": "Period",
+    "stack": "Stack",
+    "nextCase": "Next project"
   },
   "projectsPage": {
     "eyebrow": "Projects",
     "titleBold": "What we've",
     "titleLight": "built",
-    "support": "Real products, in use today.",
-    "seoTitle": "Projects — WedevsVnzla"
+    "support": "Real products, in use today. Each case study covers the context, constraints and decisions behind the build.",
+    "seoTitle": "Software case studies | Wedevs",
+    "count": "case studies",
+    "view": "Read case study",
+    "seoDescription": "Software case studies from Wedevs: real products in use today, with the context, constraints and engineering decisions behind each build."
   },
   "services": {
     "eyebrow": "Services",
     "titleBold": "How we",
     "titleLight": "can help",
-    "support": "Custom software for businesses that need to ship, not just plan.",
+    "support": "Custom software for businesses that need to ship, not just plan. From first scope to production, one team owns the build.",
     "processTitle": "Process",
     "process": [
       {
@@ -190,18 +210,21 @@
     "detail": {
       "breadcrumbServices": "Services",
       "stackLabel": "Stack",
-      "deliverablesLabel": "What's included",
-      "relatedLabel": "Related work",
-      "faqLabel": "FAQ",
+      "deliverablesLabel": "What's included?",
+      "relatedLabel": "Where have we done this?",
+      "faqLabel": "Frequently asked questions",
       "backLabel": "← All services",
-      "ctaLabel": "Get in touch →"
-    }
+      "ctaLabel": "Get in touch →",
+      "viewLabel": "View service"
+    },
+    "seoTitle": "Software development services | Wedevs",
+    "seoDescription": "Custom software development for growing businesses: full-stack web and mobile apps, fintech and ERP integrations, AI automation and consulting."
   },
   "contactPage": {
     "eyebrow": "Contact",
     "titleBold": "Let's",
     "titleLight": "build something",
-    "support": "Tell us about your project and we'll get back to you within a day.",
+    "support": "Share what you're building, your timeline and your budget, and we'll get back to you within a day with next steps.",
     "formNameLabel": "Name",
     "formEmailLabel": "Email",
     "formProjectTypeLabel": "Project type",
@@ -221,6 +244,11 @@
       "Not sure yet"
     ],
     "formMessageLabel": "Message",
+    "formNamePlaceholder": "Jane Doe",
+    "formEmailPlaceholder": "jane@company.com",
+    "formProjectTypePlaceholder": "Select a project type",
+    "formBudgetPlaceholder": "Select a range",
+    "formMessagePlaceholder": "Tell us about your project, goals and timeline…",
     "formSubmit": "Send message",
     "formSubmitting": "Sending…",
     "formSuccess": "Thanks — we'll reply within a day.",
@@ -229,13 +257,15 @@
     "formEmailError": "Enter a valid email address.",
     "channelsLabel": "Other ways to reach us",
     "availabilityLabel": "Availability",
-    "availabilityText": "Remote, UTC-4. Currently accepting new projects."
+    "availabilityText": "UTC-4. Currently accepting new projects.",
+    "seoTitle": "Contact a software studio | Wedevs",
+    "seoDescription": "Tell Wedevs what you're building, your timeline and your budget. We reply within one business day with clear next steps for your project."
   },
   "blog": {
     "eyebrow": "Blog",
     "titleBold": "Notes on",
     "titleLight": "shipping software",
-    "support": "Technical writing on fintech, architecture and the tradeoffs behind real projects.",
+    "support": "Technical writing on fintech, architecture and the tradeoffs behind real projects: what worked, what didn't, and why.",
     "featuredLabel": "Featured",
     "readMore": "Read more ↗",
     "tagsHeading": "Tags",
@@ -245,6 +275,83 @@
     "readingTime": "{n} min read",
     "relatedHeading": "Related posts",
     "backToBlog": "← Back to blog",
-    "authorBioText": "Founder of WedevsVnzla. Full-stack software engineer specialized in fintech and ERP systems."
+    "authorBioText": "Co-founder of WedevsVnzla. Full-stack software engineer specialized in fintech and ERP systems.",
+    "all": "All",
+    "read": "Read article",
+    "soon": "More articles coming soon.",
+    "share": "Share",
+    "shareCopied": "Link copied",
+    "seoTitle": "Software engineering blog | Wedevs",
+    "seoDescription": "Technical writing on fintech, software architecture and the tradeoffs behind real projects: what worked, what didn't, and why it mattered to us."
+  },
+  "aboutPage": {
+    "seoTitle": "About the studio and its founder | Wedevs",
+    "seoDescription": "WedevsVnzla is a Venezuelan software studio founded by Eliezer Meza and Williams Velazquez: full-stack, fintech, mobile and product design expertise.",
+    "eyebrow": "About",
+    "titleBold": "A small studio",
+    "titleLight": "that ships software.",
+    "support": "Wedevs is a software studio from Venezuela. We design, build and maintain apps, websites and custom systems for businesses that need them in production.",
+    "studioLabel": "Who we are",
+    "studioText": [
+      "Wedevs is a software studio based in Venezuela that works with clients worldwide. We build mobile apps, websites, CRMs and custom systems, including payment, ERP and AI integrations.",
+      "One team owns each project from the first scope to production and support, so decisions, code and documentation stay in the same hands."
+    ],
+    "principlesLabel": "How do we work?",
+    "principles": [
+      {
+        "title": "Scope before code",
+        "desc": "Every project starts with a written scope: the problem, the constraints and what done looks like."
+      },
+      {
+        "title": "Ship in stages",
+        "desc": "We deliver working software in short stages so you can test it with real users early."
+      },
+      {
+        "title": "Own what we build",
+        "desc": "We document decisions and stay available for support after launch."
+      }
+    ],
+    "founderLabel": "Who leads the studio?",
+    "founders": {
+      "williams-velazquez": {
+        "role": "Co-founder · Mobile development & product design",
+        "bio": "Williams Velazquez co-founded WedevsVnzla. Specialized in mobile development and product design, from the first user flows to the app in the stores."
+      },
+      "eliezer-meza": {
+        "role": "Co-founder · Full-stack software engineer",
+        "bio": "Eliezer Meza co-founded WedevsVnzla. Full-stack software engineer specialized in fintech and ERP systems, and the author of the articles on this blog."
+      }
+    }
+  },
+  "privacyPage": {
+    "seoTitle": "Privacy policy | Wedevs",
+    "seoDescription": "How Wedevs handles the data you send through the contact form and the analytics data collected on this site, and how to ask for its removal.",
+    "eyebrow": "Privacy",
+    "titleBold": "Privacy",
+    "titleLight": "policy.",
+    "support": "What data this site collects, why, and how to ask us to delete it.",
+    "updatedLabel": "Last updated",
+    "sections": [
+      {
+        "title": "What do we collect through the contact form?",
+        "body": "When you send the contact form we receive your name, email, project type, budget range and message. The form is processed by Netlify Forms, our hosting provider. We use this data only to reply to your request."
+      },
+      {
+        "title": "Do we sell or share your data?",
+        "body": "No. We do not sell your data or share it with third parties, other than the providers that host this site and process the form."
+      },
+      {
+        "title": "How long do we keep it?",
+        "body": "We keep contact requests while a conversation or project is active, and delete them on request."
+      },
+      {
+        "title": "How can you ask for deletion?",
+        "body": "Write to us by email and we will delete your data within 30 days."
+      }
+    ],
+    "analytics": {
+      "title": "Do we use analytics?",
+      "body": "Yes. We use Google Analytics 4 to measure visits in aggregate (pages viewed, country, device). Google Analytics sets cookies for this. We do not use the data to identify you."
+    }
   }
 }

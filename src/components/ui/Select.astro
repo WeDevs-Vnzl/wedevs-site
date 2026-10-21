@@ -1,0 +1,202 @@
+---
+import { Check, ChevronDown } from "@lucide/astro";
+
+interface Props {
+  id: string;
+  name: string;
+  options: string[];
+  placeholder: string;
+  required?: boolean;
+  describedBy?: string;
+}
+const { id, name, options, placeholder, required, describedBy } = Astro.props;
+const listId = `${id}-listbox`;
+---
+
+<div class="group relative" data-select>
+  <input type="hidden" name={name} value="" data-select-input />
+  <button
+    id={id}
+    type="button"
+    aria-haspopup="listbox"
+    aria-expanded="false"
+    aria-controls={listId}
+    aria-required={required ? "true" : undefined}
+    aria-describedby={describedBy}
+    data-select-trigger
+    class="text-night focus-visible:border-violet aria-expanded:border-violet flex w-full cursor-pointer items-center gap-3 rounded-md border border-[rgba(17,18,22,0.2)] bg-white py-3 pr-4 pl-11 text-left text-[15px] outline-none"
+  >
+    <span
+      class="data-placeholder:text-slate/70 flex-1 truncate"
+      data-select-label
+      data-placeholder
+      data-placeholder-text={placeholder}
+    >
+      {placeholder}
+    </span>
+    <ChevronDown
+      size={18}
+      aria-hidden="true"
+      class="text-slate shrink-0 transition-transform [[aria-expanded=true]>&]:rotate-180"
+    />
+  </button>
+  <slot />
+  <ul
+    id={listId}
+    role="listbox"
+    tabindex="-1"
+    hidden
+    data-select-list
+    class="absolute top-full right-0 left-0 z-20 mt-2 max-h-64 overflow-auto rounded-md border border-[rgba(17,18,22,0.12)] bg-white p-1.5 shadow-[0_12px_32px_-12px_rgba(17,18,22,0.25)] outline-none"
+  >
+    {
+      options.map((opt, i) => (
+        <li
+          id={`${id}-opt-${i}`}
+          role="option"
+          aria-selected="false"
+          data-value={opt}
+          class="text-night data-active:bg-violet/10 aria-selected:text-violet flex cursor-pointer items-center justify-between gap-3 rounded px-3 py-2.5 text-[15px] aria-selected:font-medium"
+        >
+          <span>{opt}</span>
+          <Check
+            size={16}
+            aria-hidden="true"
+            class="text-violet invisible shrink-0 [[aria-selected=true]>&]:visible"
+          />
+        </li>
+      ))
+    }
+  </ul>
+</div>
+
+<script>
+  function initSelect(root: HTMLElement) {
+    if (root.dataset.selectReady) return;
+    root.dataset.selectReady = "true";
+
+    const input = root.querySelector<HTMLInputElement>("[data-select-input]")!;
+    const trigger = root.querySelector<HTMLButtonElement>(
+      "[data-select-trigger]",
+    )!;
+    const label = root.querySelector<HTMLElement>("[data-select-label]")!;
+    const list = root.querySelector<HTMLUListElement>("[data-select-list]")!;
+    const options = Array.from(
+      list.querySelectorAll<HTMLLIElement>("[role=option]"),
+    );
+    let activeIndex = -1;
+
+    function setActive(index: number) {
+      options.forEach((opt) => delete opt.dataset.active);
+      activeIndex = index;
+      const opt = options[index];
+      if (!opt) {
+        list.removeAttribute("aria-activedescendant");
+        return;
+      }
+      opt.dataset.active = "";
+      list.setAttribute("aria-activedescendant", opt.id);
+      opt.scrollIntoView({ block: "nearest" });
+    }
+
+    function open() {
+      list.hidden = false;
+      trigger.setAttribute("aria-expanded", "true");
+      const selected = options.findIndex(
+        (opt) => opt.getAttribute("aria-selected") === "true",
+      );
+      setActive(selected >= 0 ? selected : 0);
+      list.focus();
+    }
+
+    function close(focusTrigger = true) {
+      list.hidden = true;
+      trigger.setAttribute("aria-expanded", "false");
+      setActive(-1);
+      if (focusTrigger) trigger.focus();
+    }
+
+    function select(index: number) {
+      const opt = options[index];
+      if (!opt) return;
+      options.forEach((o) => o.setAttribute("aria-selected", "false"));
+      opt.setAttribute("aria-selected", "true");
+      input.value = opt.dataset.value ?? "";
+      label.textContent = input.value;
+      delete label.dataset.placeholder;
+      close();
+    }
+
+    function reset() {
+      options.forEach((o) => o.setAttribute("aria-selected", "false"));
+      input.value = "";
+      label.textContent = label.dataset.placeholderText ?? "";
+      label.dataset.placeholder = "";
+    }
+
+    trigger.addEventListener("click", () => (list.hidden ? open() : close()));
+
+    trigger.addEventListener("keydown", (e) => {
+      if (["ArrowDown", "ArrowUp", "Enter", " "].includes(e.key)) {
+        e.preventDefault();
+        open();
+      }
+    });
+
+    list.addEventListener("keydown", (e) => {
+      switch (e.key) {
+        case "ArrowDown":
+          e.preventDefault();
+          setActive(Math.min(activeIndex + 1, options.length - 1));
+          break;
+        case "ArrowUp":
+          e.preventDefault();
+          setActive(Math.max(activeIndex - 1, 0));
+          break;
+        case "Home":
+          e.preventDefault();
+          setActive(0);
+          break;
+        case "End":
+          e.preventDefault();
+          setActive(options.length - 1);
+          break;
+        case "Enter":
+        case " ":
+          e.preventDefault();
+          select(activeIndex);
+          break;
+        case "Escape":
+          e.preventDefault();
+          close();
+          break;
+        case "Tab":
+          close(false);
+          break;
+      }
+    });
+
+    options.forEach((opt, i) => {
+      opt.addEventListener("click", () => select(i));
+      opt.addEventListener("mousemove", () => {
+        if (activeIndex !== i) setActive(i);
+      });
+    });
+
+    document.addEventListener("click", (e) => {
+      if (!list.hidden && !root.contains(e.target as Node)) close(false);
+    });
+
+    // Hidden inputs keep their value on form.reset(), so clear it explicitly.
+    root.closest("form")?.addEventListener("reset", reset);
+  }
+
+  function initSelects() {
+    document
+      .querySelectorAll<HTMLElement>("[data-select]")
+      .forEach((root) => initSelect(root));
+  }
+
+  initSelects();
+  document.addEventListener("astro:after-swap", initSelects);
+</script>

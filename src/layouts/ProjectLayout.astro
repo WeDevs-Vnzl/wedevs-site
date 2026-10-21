@@ -1,15 +1,12 @@
 ---
-import SectionLabel from "../components/ui/SectionLabel.astro";
 import BaseLayout from "./BaseLayout.astro";
-import Header from "../components/layout/Header.astro";
-import Footer from "../components/layout/Footer.astro";
-import Glow from "../components/ui/Glow.astro";
-import Chip from "../components/ui/Chip.astro";
+import SiteHeader from "../components/layout/SiteHeader.astro";
+import SiteFooter from "../components/layout/SiteFooter.astro";
+import PixelGrid from "../components/ui/PixelGrid.astro";
 import { getLocalizedPath } from "../lib/i18n/routes";
 import { useTranslations, type Lang } from "../lib/i18n/ui";
 import { md } from "../lib/utils/md";
 import type { CollectionEntry } from "astro:content";
-import { projectTypeMeta, type ProjectType } from "../lib/utils/projectType";
 
 type LangData = CollectionEntry<"projects">["data"]["en"];
 type NamedItem = { name: string; reason: string };
@@ -23,13 +20,10 @@ interface Props {
   lang: Lang;
   path: string;
   data: LangData;
-  type: ProjectType;
   stack: string[];
-  repo_url?: string;
   preview_url?: string;
   gallery?: string[];
   coverImage?: string;
-  prev?: NavProject;
   next?: NavProject;
   jsonLd?: object;
 }
@@ -38,329 +32,356 @@ const {
   lang,
   path,
   data,
-  type,
   stack,
   gallery,
   coverImage,
-  repo_url,
   preview_url,
-  prev,
   next,
   jsonLd,
 } = Astro.props;
 const { t } = useTranslations(lang);
-const meta = projectTypeMeta(type);
 const home = getLocalizedPath("/", lang);
-// Same id formula as ProjectCard's href-derived transition:name, so the
-// browser can match card <-> detail elements for the shared-element morph.
+// Same id formula as the projects index href-derived transition:name, so the
+// browser can match list <-> detail titles for the shared-element morph.
 const transitionId = getLocalizedPath(path, lang).replace(/\//g, "-");
 const heroImage = coverImage ?? gallery?.[0];
 const projectSlug = path.replace(/^\/projects\//, "");
 const ogImage = `/og/projects/${projectSlug}-${lang}.png`;
 const breadcrumbs = [
-  { name: t("project.breadcrumbHome"), url: `/${lang}/` },
-  { name: t("project.breadcrumbProjects"), url: `/${lang}/projects` },
-  { name: data.title, url: `/${lang}${path}` },
+  { name: t("project.breadcrumbHome"), url: getLocalizedPath("/", lang) },
+  {
+    name: t("project.breadcrumbProjects"),
+    url: getLocalizedPath("/projects", lang),
+  },
+  { name: data.title, url: getLocalizedPath(path, lang) },
 ];
 
-const proseSections = (
+type Section =
+  | { id: string; label: string; kind: "prose" | "callout"; body: string }
+  | {
+      id: string;
+      label: string;
+      kind: "rows" | "cards" | "results";
+      items: NamedItem[];
+    }
+  | { id: string; label: string; kind: "gallery"; images: string[] };
+
+const sections = (
   [
     data.context && {
       id: "context",
       label: t("project.sectionContext"),
+      kind: "prose",
       body: data.context,
     },
     data.conditions && {
       id: "conditions",
       label: t("project.sectionConditions"),
+      kind: "callout",
       body: data.conditions,
     },
     data.solution && {
       id: "solution",
       label: t("project.sectionSolution"),
+      kind: "prose",
       body: data.solution,
     },
-  ] as const
-).filter(Boolean) as { id: string; label: string; body: string }[];
-
-const listSections = (
-  [
     data.tools?.length && {
       id: "tools",
       label: t("project.sectionTools"),
+      kind: "rows",
       items: data.tools,
     },
     data.features?.length && {
       id: "features",
       label: t("project.sectionFeatures"),
+      kind: "cards",
       items: data.features,
     },
     data.results?.length && {
       id: "results",
       label: t("project.sectionResults"),
+      kind: "results",
       items: data.results,
     },
+    gallery?.length && {
+      id: "gallery",
+      label: t("project.sectionGallery"),
+      kind: "gallery",
+      images: gallery,
+    },
   ] as const
-).filter(Boolean) as { id: string; label: string; items: NamedItem[] }[];
+).filter(Boolean) as Section[];
 
-const hasExtended = proseSections.length > 0 || listSections.length > 0;
-
-const indexItems = [
-  ...proseSections.map((s) => ({ id: s.id, label: s.label })),
-  ...listSections.map((s) => ({ id: s.id, label: s.label })),
-  ...(gallery?.length
-    ? [{ id: "gallery", label: t("project.sectionGallery") }]
-    : []),
+import { itemIndex } from "../lib/utils/itemIndex";
+const meta = [
+  { label: t("project.client"), value: data.client },
+  { label: t("project.role"), value: data.role },
+  { label: t("project.period"), value: data.period },
 ];
+const sectionLabel =
+  "text-slate font-mono text-xs font-medium tracking-[0.12em] uppercase";
+const bodyText =
+  "m-0 max-w-[760px] text-[clamp(17px,1.5vw,19px)] leading-[1.7] text-pretty text-[#2a2c33] [&_strong]:text-night [&_strong]:font-semibold";
 ---
 
 <BaseLayout
   lang={lang}
   path={path}
-  title={`${data.title} — WedevsVnzla`}
-  description={data.resultHeadline}
+  title={data.seoTitle ?? `${data.title} Wedevs`}
+  description={data.seoDescription ?? data.resultHeadline}
   ogImage={ogImage}
   ogType="article"
   jsonLd={jsonLd}
   breadcrumbs={breadcrumbs}
 >
-  <Header lang={lang} path={path} />
-  <main id="main-content">
-    <header class="divider-dotted-row relative overflow-hidden">
-      <Glow size="page" />
-      <div class="max-w-base relative mx-auto px-6 pt-32 pb-12">
-        <nav
-          class="text-muted mb-6 flex items-center gap-2 text-[13px]"
-          aria-label="Breadcrumb"
+  <SiteHeader lang={lang} path={path} />
+
+  <main id="main-content" class="bg-paper text-night">
+    <section
+      class="bg-night text-paper relative flex flex-col gap-[clamp(40px,6vw,88px)] overflow-hidden px-[clamp(20px,4vw,56px)] pt-7 pb-[clamp(40px,5vw,72px)]"
+    >
+      <PixelGrid cols={24} rows={24} seed={7} hi={0.05} lo={0.015} />
+
+      <nav
+        class="text-fog relative flex flex-wrap gap-2.5 font-mono text-xs"
+        aria-label="Breadcrumb"
+      >
+        <a href={home} class="text-fog hover:text-paper no-underline">
+          {t("project.breadcrumbHome")}
+        </a>
+        <span>/</span>
+        <a
+          href={getLocalizedPath("/projects", lang)}
+          class="text-fog hover:text-paper no-underline"
         >
-          <a href={home} class="hover:text-ink no-underline">
-            {t("project.breadcrumbHome")}
-          </a>
-          <span>/</span>
-          <a
-            href={getLocalizedPath("/projects", lang)}
-            class="hover:text-ink no-underline"
-          >
-            {t("project.breadcrumbProjects")}
-          </a>
-          <span>/</span>
-          <span class="text-ink">{data.title}</span>
-        </nav>
+          {t("project.breadcrumbProjects")}
+        </a>
+        <span>/</span>
+        <span class="text-paper">{data.title}</span>
+      </nav>
 
-        <span transition:name={`project-chip-${transitionId}`}>
-          <Chip class={meta.className}>{t(`project.${meta.labelKey}`)}</Chip>
+      <div class="relative flex flex-col gap-6">
+        <span
+          class="self-start rounded-full border border-[rgba(250,250,247,0.3)] px-[11px] py-[5px] text-xs"
+        >
+          {t("project.client")} · {data.client}
         </span>
-
         <h1
-          class="text-h1 md:text-display-2 mt-4 font-bold"
+          class="text-paper m-0 text-[clamp(52px,11vw,168px)] leading-[0.88] font-extrabold tracking-[-0.06em] text-balance"
           transition:name={`project-title-${transitionId}`}
         >
           {data.title}
         </h1>
         <p
-          class="text-muted mt-4 max-w-[62ch] font-mono text-sm leading-relaxed"
+          class="m-0 max-w-[720px] text-[clamp(18px,1.8vw,22px)] leading-normal text-pretty text-[#c5c8d2]"
         >
-          {data.resultHeadline}
+          {data.summary ?? data.resultHeadline}
         </p>
-
         {
-          (preview_url || repo_url) && (
-            <div class="mt-8 flex flex-wrap gap-3">
-              {preview_url && (
-                <a
-                  href={preview_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="pill-btn-secondary"
-                >
-                  {t("project.viewDemo")}
-                </a>
-              )}
-              {repo_url && (
-                <a
-                  href={repo_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="pill-btn-secondary"
-                >
-                  {t("project.viewRepo")}
-                </a>
-              )}
+          preview_url && (
+            <div class="flex flex-wrap gap-2.5">
+              <a
+                href={preview_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="text-night hover:text-violet rounded-full bg-white px-5 py-3 text-sm font-bold no-underline"
+              >
+                {t("project.viewDemo")}
+              </a>
             </div>
           )
         }
       </div>
-    </header>
 
-    <div
-      class="divider-dotted-row max-w-base mx-auto grid gap-8 px-6 py-10 sm:grid-cols-2 md:grid-cols-4"
-    >
-      <div>
-        <p class="text-muted mb-1 text-[11px] tracking-widest uppercase">
-          {t("project.clientLabel")}
-        </p>
-        <p class="text-ink text-[15px]">{data.client}</p>
-      </div>
-      <div>
-        <p class="text-muted mb-1 text-[11px] tracking-widest uppercase">
-          {t("project.periodLabel")}
-        </p>
-        <p class="text-ink text-[15px]">{data.period}</p>
-      </div>
-      <div>
-        <p class="text-muted mb-1 text-[11px] tracking-widest uppercase">
-          {t("project.roleLabel")}
-        </p>
-        <p class="text-ink text-[15px]">{data.role}</p>
-      </div>
-      <div>
-        <p class="text-muted mb-1 text-[11px] tracking-widest uppercase">
-          {t("project.stackLabel")}
-        </p>
-        <p class="text-ink font-mono text-[13px] leading-relaxed">
-          {stack.join(" · ")}
-        </p>
-      </div>
-    </div>
+      <dl
+        class="relative m-0 grid grid-cols-[repeat(auto-fit,minmax(min(100%,200px),1fr))] gap-x-8 gap-y-5 border-t border-[rgba(250,250,247,0.18)] pt-6"
+      >
+        {
+          meta.map((item) => (
+            <div class="flex flex-col gap-1.5">
+              <dt class="text-fog font-mono text-[11px] font-medium tracking-[0.1em] uppercase">
+                {item.label}
+              </dt>
+              <dd class="m-0 font-semibold">{item.value}</dd>
+            </div>
+          ))
+        }
+        <div class="flex flex-col gap-1.5">
+          <dt
+            class="text-fog font-mono text-[11px] font-medium tracking-[0.1em] uppercase"
+          >
+            {t("project.stack")}
+          </dt>
+          <dd class="m-0 flex flex-wrap gap-[5px]">
+            {
+              stack.map((item) => (
+                <span class="bg-night-2 rounded px-2 py-1 font-mono text-[11px] text-[#d4d6de]">
+                  {item}
+                </span>
+              ))
+            }
+          </dd>
+        </div>
+      </dl>
+    </section>
 
     {
       heroImage && (
-        <div class="max-w-base mx-auto px-6 pb-16">
+        <section class="px-[clamp(20px,4vw,56px)] pt-[clamp(20px,4vw,56px)]">
           <img
             src={heroImage}
             alt={`${data.title} cover`}
-            width="1280"
-            height="720"
+            width="1600"
+            height="686"
             loading="eager"
             decoding="async"
-            class="border-line aspect-video w-full rounded-2xl border object-cover"
+            class="aspect-[21/9] w-full rounded-md object-cover"
           />
-        </div>
+        </section>
       )
     }
 
-    <!-- Cuerpo -->
     {
-      hasExtended && (
-        <div class="max-w-base mx-auto grid gap-12 px-6 pb-16 md:grid-cols-[200px_1fr]">
+      sections.length > 0 && (
+        <section class="grid grid-cols-[repeat(auto-fit,minmax(min(100%,240px),1fr))] items-start gap-x-14 gap-y-8 px-[clamp(20px,4vw,56px)] py-[clamp(40px,5vw,72px)]">
           <nav
-            id="project-index"
-            class="hidden self-start md:sticky md:top-28 md:block"
+            class="sticky top-5 hidden flex-col md:flex"
             aria-label="Section index"
           >
-            <ul class="flex flex-col gap-3">
-              {indexItems.map((item) => (
-                <li>
-                  <a
-                    href={`#${item.id}`}
-                    data-index-link={item.id}
-                    class="index-link text-muted hover:text-ink border-line block border-l-2 py-0.5 pl-4 text-[13px] no-underline"
-                  >
-                    {item.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
+            {sections.map((s, i) => (
+              <a
+                href={`#${s.id}`}
+                data-index-link={s.id}
+                class="index-link text-slate hover:text-night flex items-baseline gap-3 border-l-2 border-[rgba(17,18,22,0.12)] py-2.5 pl-3.5 text-sm font-medium no-underline"
+              >
+                <span class="text-violet font-mono text-[11px]">{itemIndex("02", i)}</span>
+                {s.label}
+              </a>
+            ))}
+          </nav>
+          <nav
+            class="flex flex-wrap gap-1.5 md:hidden"
+            aria-label="Section index"
+          >
+            {sections.map((s) => (
+              <a
+                href={`#${s.id}`}
+                data-index-link={s.id}
+                class="index-chip bg-paper-3 text-night rounded-full px-3 py-[7px] text-[13px] no-underline"
+              >
+                {s.label}
+              </a>
+            ))}
           </nav>
 
-          <div class="flex flex-col gap-16">
-            {proseSections.map((section, i) => (
-              <section id={section.id} class="scroll-mt-28 pt-10">
-                <SectionLabel
-                  as="h2"
-                  index={i + 1}
-                  label={section.label}
-                  class="mb-5"
-                />
-                {section.id === "conditions" ? (
-                  <div
-                    class="border-accent text-ink-2 border-l-2 py-1 pl-6"
-                    style="background-color: rgba(107, 128, 255, 0.03);"
-                    set:html={md(section.body)}
-                  />
-                ) : (
-                  <p
-                    class="text-body text-ink-2 max-w-[68ch]"
-                    set:html={md(section.body)}
-                  />
-                )}
-              </section>
-            ))}
-
-            {listSections.map((section, i) => (
-              <section id={section.id} class="scroll-mt-28 pt-10">
-                <SectionLabel
-                  as="h2"
-                  index={proseSections.length + i + 1}
-                  label={section.label}
-                  class="mb-5"
-                />
-                <div class="flex flex-col">
-                  {section.items.map((item) => (
-                    <div class="divider-dotted-row py-5 last:bg-none">
-                      <h3 class="text-h3 mb-2">{item.name}</h3>
-                      <p
-                        class="text-body text-ink-2 max-w-[68ch]"
-                        set:html={md(item.reason)}
-                      />
+          <div class="col-span-2 flex min-w-0 flex-col gap-[clamp(56px,7vw,96px)] max-[519px]:col-span-1">
+            {sections.map((s, i) => {
+              const label = `${itemIndex("02", i)} · ${s.label}`;
+              if (s.kind === "results") {
+                return (
+                  <article
+                    id={s.id}
+                    class="bg-violet relative flex scroll-mt-5 flex-col gap-6 overflow-hidden rounded-md p-[clamp(24px,3.5vw,44px)] text-white"
+                  >
+                    <PixelGrid
+                      cols={16}
+                      rows={14}
+                      seed={41}
+                      hi={0.04}
+                      lo={0.02}
+                      color="#fff"
+                    />
+                    <h2 class="relative m-0 font-mono text-xs font-medium tracking-[0.12em] text-white uppercase">
+                      {label}
+                    </h2>
+                    <div class="relative grid grid-cols-[repeat(auto-fit,minmax(min(100%,220px),1fr))] gap-6">
+                      {s.items.map((item) => (
+                        <div class="flex flex-col gap-2 border-t border-white/35 pt-3.5">
+                          <h3 class="m-0 text-[clamp(22px,2.4vw,30px)] leading-[1.1] font-extrabold tracking-[-0.03em] text-white">
+                            {item.name}
+                          </h3>
+                          <p
+                            class="m-0 text-sm leading-[1.5] text-white [&_strong]:text-white"
+                            set:html={md(item.reason)}
+                          />
+                        </div>
+                      ))}
                     </div>
-                  ))}
-                </div>
-              </section>
-            ))}
-
-            {gallery?.length ? (
-              <section id="gallery" class="scroll-mt-28 pt-10">
-                <SectionLabel
-                  as="h2"
-                  index={proseSections.length + listSections.length + 1}
-                  label={t("project.sectionGallery")}
-                  class="mb-5"
-                />
-                <div class="grid gap-4 sm:grid-cols-2 md:grid-cols-3">
-                  {gallery.map((src, i) => (
-                    <button
-                      type="button"
-                      class="lightbox-trigger border-line block overflow-hidden rounded-2xl border"
-                      data-index={i}
-                    >
-                      <img
-                        src={src}
-                        alt={`${data.title} screenshot ${i + 1}`}
-                        width="800"
-                        height="600"
-                        loading="lazy"
-                        decoding="async"
-                        class="aspect-[4/3] w-full object-cover"
-                      />
-                    </button>
-                  ))}
-                </div>
-              </section>
-            ) : null}
+                  </article>
+                );
+              }
+              return (
+                <article id={s.id} class="flex scroll-mt-5 flex-col gap-[18px]">
+                  <h2 class={`${sectionLabel} m-0`}>{label}</h2>
+                  {s.kind === "prose" && (
+                    <p class={bodyText} set:html={md(s.body)} />
+                  )}
+                  {s.kind === "callout" && (
+                    <p
+                      class={`${bodyText} bg-paper-3 max-w-[820px] rounded-md p-[clamp(20px,3vw,32px)]`}
+                      set:html={md(s.body)}
+                    />
+                  )}
+                  {s.kind === "rows" && (
+                    <div class="flex flex-col">
+                      {s.items.map((item) => (
+                        <div class="grid grid-cols-[repeat(auto-fit,minmax(min(100%,260px),1fr))] gap-x-8 gap-y-2 border-t border-[rgba(17,18,22,0.12)] py-[18px]">
+                          <h3 class="text-night m-0 text-lg font-bold tracking-[-0.015em]">
+                            {item.name}
+                          </h3>
+                          <p
+                            class="text-slate [&_strong]:text-night m-0 text-[15px] leading-[1.55] [&_strong]:font-semibold"
+                            set:html={md(item.reason)}
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                  {s.kind === "cards" && (
+                    <div class="grid grid-cols-[repeat(auto-fit,minmax(min(100%,240px),1fr))] gap-x-8 gap-y-7">
+                      {s.items.map((item) => (
+                        <div class="border-night flex flex-col gap-2 border-t-2 pt-3.5">
+                          <h3 class="text-night m-0 text-[19px] font-bold tracking-[-0.02em]">
+                            {item.name}
+                          </h3>
+                          <p
+                            class="text-slate [&_strong]:text-night m-0 text-[15px] leading-[1.55] [&_strong]:font-semibold"
+                            set:html={md(item.reason)}
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                  {s.kind === "gallery" && (
+                    <div class="grid grid-cols-[repeat(auto-fill,minmax(min(100%,240px),1fr))] gap-3">
+                      {s.images.map((src, j) => (
+                        <button
+                          type="button"
+                          class="lightbox-trigger block cursor-zoom-in overflow-hidden rounded-md"
+                          data-index={j}
+                        >
+                          <img
+                            src={src}
+                            alt={`${data.title} screenshot ${j + 1}`}
+                            width="800"
+                            height="600"
+                            loading="lazy"
+                            decoding="async"
+                            class="aspect-[4/3] w-full object-cover"
+                          />
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </article>
+              );
+            })}
           </div>
-        </div>
+        </section>
       )
     }
 
-    {
-      !hasExtended && (data.summary || data.highlights?.length) && (
-        <div class="max-w-base mx-auto px-6 pb-16">
-          {data.summary && (
-            <p class="text-body text-ink-2 max-w-[68ch]">{data.summary}</p>
-          )}
-          {!!data.highlights?.length && (
-            <ul class="mt-6">
-              {data.highlights.map((h) => (
-                <li>{h}</li>
-              ))}
-            </ul>
-          )}
-        </div>
-      )
-    }
-
-    <!-- Lightbox -->
     {
       gallery?.length ? (
         <div
@@ -372,7 +393,7 @@ const indexItems = [
           <button
             id="lightbox-close"
             type="button"
-            class="border-line text-ink absolute top-6 right-6 inline-flex h-10 w-10 items-center justify-center rounded-full border"
+            class="text-paper absolute top-6 right-6 inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/25"
             aria-label={t("project.lightboxClose")}
           >
             ✕
@@ -380,7 +401,7 @@ const indexItems = [
           <button
             id="lightbox-prev"
             type="button"
-            class="border-line text-ink absolute left-6 inline-flex h-10 w-10 items-center justify-center rounded-full border"
+            class="text-paper absolute left-6 inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/25"
             aria-label={t("project.lightboxPrevious")}
           >
             ←
@@ -389,12 +410,12 @@ const indexItems = [
             id="lightbox-image"
             src=""
             alt=""
-            class="max-h-[80vh] max-w-[88vw] rounded-2xl object-contain"
+            class="max-h-[80vh] max-w-[88vw] rounded-md object-contain"
           />
           <button
             id="lightbox-next"
             type="button"
-            class="border-line text-ink absolute right-6 inline-flex h-10 w-10 items-center justify-center rounded-full border"
+            class="text-paper absolute right-6 inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/25"
             aria-label={t("project.lightboxNext")}
           >
             →
@@ -403,56 +424,40 @@ const indexItems = [
       ) : null
     }
 
-    <!-- Navegación entre proyectos -->
     {
-      (prev || next) && (
-        <div class="max-w-base mx-auto grid gap-px pt-10 pb-16 sm:grid-cols-2">
-          {prev ? (
-            <a
-              href={prev.href}
-              class="hover:bg-surface group px-6 py-6 no-underline"
-            >
-              <p class="text-muted mb-1 text-[13px]">
-                {t("project.prevProject")}
-              </p>
-              <h3 class="text-h3 group-hover:text-accent">{prev.title}</h3>
-            </a>
-          ) : (
-            <div />
-          )}
-          {next ? (
-            <a
-              href={next.href}
-              class="hover:bg-surface group sm:border-line-dashed px-6 py-6 text-right no-underline sm:border-l"
-            >
-              <p class="text-muted mb-1 text-[13px]">
-                {t("project.nextProject")}
-              </p>
-              <h3 class="text-h3 group-hover:text-accent">{next.title}</h3>
-            </a>
-          ) : (
-            <div />
-          )}
-        </div>
+      next && (
+        <a
+          href={next.href}
+          class="bg-paper text-night hover:bg-paper-2 hover:text-night grid grid-cols-[repeat(auto-fit,minmax(min(100%,260px),1fr))] border-t border-[rgba(17,18,22,0.12)] no-underline"
+        >
+          <span class="text-slate px-[clamp(20px,4vw,56px)] py-[clamp(28px,4vw,48px)] font-mono text-xs font-medium tracking-[0.1em] uppercase">
+            {t("project.nextCase")}
+          </span>
+          <span class="col-span-2 flex min-w-0 items-center justify-between gap-4 px-[clamp(20px,4vw,56px)] py-[clamp(28px,4vw,48px)] max-[519px]:col-span-1">
+            <span class="text-[clamp(26px,3.6vw,48px)] leading-none font-bold tracking-[-0.04em]">
+              {next.title}
+            </span>
+            <span class="text-violet text-[32px]" aria-hidden="true">
+              →
+            </span>
+          </span>
+        </a>
       )
     }
-
-    <footer class="max-w-base mx-auto px-6 pb-16">
-      <a
-        href={home}
-        class="text-muted hover:text-accent text-sm no-underline hover:underline"
-      >
-        {t("project.back")}
-      </a>
-    </footer>
   </main>
-  <Footer lang={lang} />
+
+  <SiteFooter lang={lang} />
 </BaseLayout>
 
 <style>
   .index-link.is-active {
-    color: var(--color-ink);
-    border-color: var(--color-accent);
+    color: var(--color-night);
+    font-weight: 700;
+    border-color: var(--color-violet);
+  }
+  .index-chip.is-active {
+    background: var(--color-night);
+    color: var(--color-paper);
   }
 </style>
 
@@ -461,19 +466,20 @@ const indexItems = [
     const indexLinks = Array.from(
       document.querySelectorAll<HTMLAnchorElement>("[data-index-link]"),
     );
-    const sections = indexLinks
-      .map((link) => document.getElementById(link.dataset.indexLink!))
+    const ids = [...new Set(indexLinks.map((l) => l.dataset.indexLink!))];
+    const sections = ids
+      .map((id) => document.getElementById(id))
       .filter((el): el is HTMLElement => !!el);
 
     if (indexLinks.length && sections.length) {
       const observer = new IntersectionObserver(
         (entries) => {
           entries.forEach((entry) => {
-            const link = indexLinks.find(
-              (l) => l.dataset.indexLink === entry.target.id,
-            );
-            if (!link) return;
-            link.classList.toggle("is-active", entry.isIntersecting);
+            indexLinks
+              .filter((l) => l.dataset.indexLink === entry.target.id)
+              .forEach((l) =>
+                l.classList.toggle("is-active", entry.isIntersecting),
+              );
           });
         },
         { rootMargin: "-30% 0px -60% 0px" },

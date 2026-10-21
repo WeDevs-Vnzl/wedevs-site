@@ -1,7 +1,6 @@
 ---
-import Chip from "../ui/Chip.astro";
-import SectionLabel from "../ui/SectionLabel.astro";
 import { useTranslations, type Lang } from "../../lib/i18n/ui";
+import { itemIndex } from "../../lib/utils/itemIndex";
 
 interface Props {
   lang: Lang;
@@ -23,31 +22,53 @@ const stack = [
 ];
 ---
 
-<section aria-labelledby="how-heading">
-  <div class="max-w-base mx-auto px-6 py-20 md:py-30">
-    <SectionLabel index={3} label={t("home.sectionLabels.how")} class="mb-4" />
-    <h2 id="how-heading" class="text-h2 mb-12" data-reveal>
+<section
+  class="bg-paper text-night grid grid-cols-[repeat(auto-fit,minmax(min(100%,260px),1fr))] content-center border-b border-[rgba(17,18,22,0.12)] lg:min-h-[80dvh]"
+  aria-labelledby="how-heading"
+>
+  <div
+    class="flex flex-col gap-2 px-[clamp(20px,4vw,56px)] pt-[clamp(32px,5vw,72px)] font-mono text-xs font-medium"
+  >
+    <span class="text-violet">03</span>
+    <h2
+      id="how-heading"
+      class="text-night m-0 text-xs font-medium tracking-[0.1em] uppercase"
+    >
       {t("home.howTitle")}
     </h2>
+  </div>
+
+  <div
+    class="col-span-2 flex min-w-0 flex-col gap-3 px-[clamp(20px,4vw,56px)] py-[clamp(32px,5vw,72px)] max-[519px]:col-span-1"
+  >
     <div data-reveal-group>
       {
         dict.home.howItems.map((item, i) => (
-          <div class="divider-dotted-row group grid gap-2 py-6 last:bg-none md:grid-cols-[120px_1fr] md:gap-8">
-            <span class="text-accent-dim group-hover:text-accent font-mono text-xs transition-colors duration-200">
-              {String(i + 1).padStart(2, "0")}
+          <div class="grid grid-cols-[40px_1fr] items-baseline gap-x-5 border-b border-[rgba(17,18,22,0.1)] py-[clamp(20px,2.4vw,32px)] first:pt-0">
+            <span class="text-violet font-mono text-xs font-medium">
+              {itemIndex("03", i)}
             </span>
-            <div>
-              <h3 class="text-h3 mb-2">{item.title}</h3>
-              <p class="text-body text-ink-2 max-w-[62ch]">{item.desc}</p>
+            <div class="flex flex-col gap-2.5">
+              <h3 class="text-night m-0 text-[clamp(22px,2.8vw,36px)] leading-[1.1] font-bold tracking-[-0.035em]">
+                {item.title}
+              </h3>
+              <p class="text-slate m-0 text-base leading-[1.55]">{item.desc}</p>
             </div>
           </div>
         ))
       }
     </div>
-    <div class="mt-12" data-reveal>
-      <p class="text-body text-ink-2 mb-4">{t("home.stackDesc")}</p>
-      <div class="flex flex-wrap gap-2">
-        {stack.map((item) => <Chip>{item}</Chip>)}
+
+    <div data-reveal>
+      <p class="text-graphite mt-12 mb-4">{t("home.stackDesc")}</p>
+      <div class="flex flex-wrap gap-2.5">
+        {
+          stack.map((item) => (
+            <span class="bg-paper-3 rounded-full px-3 py-[7px] text-[13px]">
+              {item}
+            </span>
+          ))
+        }
       </div>
     </div>
   </div>

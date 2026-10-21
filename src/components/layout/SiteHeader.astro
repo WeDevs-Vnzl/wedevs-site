@@ -1,0 +1,268 @@
+---
+import Logo from "../brand/Logo.astro";
+import { useTranslations, type Lang } from "../../lib/i18n/ui";
+import { getLocalizedPath } from "../../lib/i18n/routes";
+
+/** Light header for the redesigned inner pages (projects, blog). */
+interface Props {
+  lang: Lang;
+  /** Path without the /en//es/ prefix, e.g. "/projects/kairos-cms" */
+  path: string;
+  /**
+   * Float over the page and stay hidden until the viewport-tall hero has
+   * scrolled away (the home renders its own nav inside the hero).
+   */
+  overlay?: boolean;
+}
+const { lang, path, overlay = false } = Astro.props;
+const { t } = useTranslations(lang);
+const otherLang: Lang = lang === "en" ? "es" : "en";
+
+const navLinks = [
+  { base: "/services", label: t("nav.services") },
+  { base: "/projects", label: t("nav.projects") },
+  { base: "/blog", label: t("nav.blog") },
+  { base: "/contact", label: t("nav.contact") },
+];
+---
+
+<header
+  data-site-header={overlay ? "overlay" : ""}
+  data-hidden={overlay ? "" : undefined}
+  inert={overlay}
+  class:list={[
+    overlay ? "fixed inset-x-0" : "sticky",
+    "bg-paper text-night top-0 z-50 flex items-center justify-between gap-4 border-b border-[rgba(17,18,22,0.1)] px-[clamp(20px,4vw,56px)] py-[18px] transition-transform duration-300 ease-out data-hidden:-translate-y-full motion-reduce:transition-none",
+  ]}
+>
+  <a
+    href={getLocalizedPath("/", lang)}
+    class="text-night no-underline"
+    title="Wedevs — Home"
+  >
+    <Logo size={24} ink="var(--color-night)" />
+  </a>
+
+  <nav
+    class="hidden flex-wrap gap-5 text-[15px] md:flex"
+    aria-label={t("nav.navLabel")}
+  >
+    {
+      navLinks.map((link) => {
+        const active = path.startsWith(link.base);
+        return (
+          <a
+            href={getLocalizedPath(link.base, lang)}
+            class:list={[
+              "hover:text-violet no-underline",
+              active ? "text-violet font-bold" : "text-night",
+            ]}
+            aria-current={active ? "page" : undefined}
+          >
+            {link.label}
+          </a>
+        );
+      })
+    }
+  </nav>
+
+  <div class="flex items-center gap-2">
+    <a
+      href={getLocalizedPath(path, otherLang)}
+      class="text-night rounded-full border border-[rgba(17,18,22,0.2)] px-[11px] py-2 font-mono text-xs font-medium no-underline hover:border-[rgba(17,18,22,0.5)]"
+      aria-label={t("nav.langSwitchLabel")}
+      title={t("nav.langSwitchLabel")}>{t("nav.langSwitch")}</a
+    >
+    <a
+      href={getLocalizedPath("/contact", lang)}
+      class="bg-night text-paper hover:bg-violet hover:text-paper hidden rounded-full px-4 py-2.5 text-sm font-semibold no-underline md:inline-block"
+    >
+      {t("nav.talk")} ↗
+    </a>
+    <button
+      type="button"
+      data-menu-toggle
+      class="text-night flex size-10 cursor-pointer items-center justify-center rounded-full border border-[rgba(17,18,22,0.2)] bg-transparent md:hidden"
+      aria-expanded="false"
+      aria-controls="site-menu"
+      aria-label={t("nav.menuOpenLabel")}
+      data-label-open={t("nav.menuOpenLabel")}
+      data-label-close={t("nav.menuCloseLabel")}
+    >
+      <svg
+        data-icon-open
+        width="18"
+        height="18"
+        viewBox="0 0 18 18"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.8"
+        stroke-linecap="round"
+        aria-hidden="true"
+      >
+        <path d="M2 5h14M2 13h14"></path>
+      </svg>
+      <svg
+        data-icon-close
+        hidden
+        width="18"
+        height="18"
+        viewBox="0 0 18 18"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.8"
+        stroke-linecap="round"
+        aria-hidden="true"
+      >
+        <path d="M4 4l10 10M14 4L4 14"></path>
+      </svg>
+    </button>
+  </div>
+
+  <div
+    id="site-menu"
+    hidden
+    class="bg-paper absolute inset-x-0 top-full flex flex-col gap-1 border-b border-[rgba(17,18,22,0.1)] px-[clamp(20px,4vw,56px)] pt-2 pb-6 md:hidden"
+  >
+    <nav class="flex flex-col" aria-label={t("nav.navLabel")}>
+      {
+        navLinks.map((link) => {
+          const active = path.startsWith(link.base);
+          return (
+            <a
+              href={getLocalizedPath(link.base, lang)}
+              class:list={[
+                "hover:text-violet border-b border-[rgba(17,18,22,0.08)] py-3.5 text-lg no-underline",
+                active ? "text-violet font-bold" : "text-night",
+              ]}
+              aria-current={active ? "page" : undefined}
+            >
+              {link.label}
+            </a>
+          );
+        })
+      }
+    </nav>
+    <a
+      href={getLocalizedPath("/contact", lang)}
+      class="bg-night text-paper hover:bg-violet hover:text-paper mt-4 self-start rounded-full px-5 py-3 text-sm font-semibold no-underline"
+    >
+      {t("nav.talk")} ↗
+    </a>
+  </div>
+</header>
+
+<script>
+  // Sticky header that follows the scroll, hides once scrolling stops and
+  // comes back when the pointer nears the top of the viewport.
+  const IDLE_MS = 1200;
+  const REVEAL_ZONE_PX = 80;
+  let controller: AbortController | undefined;
+
+  function setupHeader() {
+    controller?.abort();
+    const header = document.querySelector<HTMLElement>("[data-site-header]");
+    if (!header) return;
+    controller = new AbortController();
+    const { signal } = controller;
+    const overlay = header.dataset.siteHeader === "overlay";
+    let idleTimer: number | undefined;
+
+    // Near the top a sticky header stays visible, while an overlay header
+    // stays hidden because the hero already shows its own nav.
+    const atTop = () =>
+      window.scrollY <=
+      (overlay
+        ? window.innerHeight - header.offsetHeight
+        : header.offsetHeight);
+    const toggle =
+      header.querySelector<HTMLButtonElement>("[data-menu-toggle]");
+    const menu = header.querySelector<HTMLElement>("#site-menu");
+    const setMenu = (open: boolean) => {
+      if (!toggle || !menu) return;
+      menu.hidden = !open;
+      header.toggleAttribute("data-menu-open", open);
+      toggle.setAttribute("aria-expanded", String(open));
+      toggle.setAttribute(
+        "aria-label",
+        (open ? toggle.dataset.labelClose : toggle.dataset.labelOpen) ?? "",
+      );
+      toggle.querySelector("[data-icon-open]")?.toggleAttribute("hidden", open);
+      toggle
+        .querySelector("[data-icon-close]")
+        ?.toggleAttribute("hidden", !open);
+    };
+    const conceal = () => {
+      setMenu(false);
+      header.setAttribute("data-hidden", "");
+    };
+    const show = () => {
+      const blocked = overlay && atTop();
+      header.inert = blocked;
+      if (blocked) conceal();
+      else header.removeAttribute("data-hidden");
+    };
+    const hide = () => {
+      if (atTop()) return;
+      if (header.hasAttribute("data-menu-open")) return;
+      if (header.matches(":hover, :focus-within")) return;
+      conceal();
+    };
+    const scheduleHide = () => {
+      window.clearTimeout(idleTimer);
+      idleTimer = window.setTimeout(hide, IDLE_MS);
+    };
+
+    window.addEventListener(
+      "scroll",
+      () => {
+        show();
+        scheduleHide();
+      },
+      { passive: true, signal },
+    );
+    window.addEventListener(
+      "mousemove",
+      (e) => {
+        if (e.clientY > REVEAL_ZONE_PX) return;
+        show();
+        scheduleHide();
+      },
+      { passive: true, signal },
+    );
+    // Mobile menu: the header stays visible while it is open.
+    toggle?.addEventListener(
+      "click",
+      () => setMenu(!header.hasAttribute("data-menu-open")),
+      { signal },
+    );
+    document.addEventListener(
+      "click",
+      (e) => {
+        if (!header.contains(e.target as Node)) setMenu(false);
+      },
+      { signal },
+    );
+    document.addEventListener(
+      "keydown",
+      (e) => {
+        if (e.key !== "Escape" || !header.hasAttribute("data-menu-open"))
+          return;
+        setMenu(false);
+        toggle?.focus();
+      },
+      { signal },
+    );
+    window
+      .matchMedia("(min-width: 48rem)")
+      .addEventListener("change", (e) => e.matches && setMenu(false), {
+        signal,
+      });
+    header.addEventListener("mouseleave", scheduleHide, { signal });
+    header.addEventListener("focusin", show, { signal });
+    header.addEventListener("focusout", scheduleHide, { signal });
+    signal.addEventListener("abort", () => window.clearTimeout(idleTimer));
+  }
+
+  document.addEventListener("astro:page-load", setupHeader);
+</script>

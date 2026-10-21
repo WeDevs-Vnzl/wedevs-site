@@ -1,0 +1,36 @@
+---
+/** Redesign section: a narrow numbered label column next to a two-column content area. */
+interface Props {
+  index: string;
+  label: string;
+  /** Id for the label heading, so the section can reference it. */
+  headingId: string;
+  class?: string;
+}
+const { index, label, headingId, class: className = "" } = Astro.props;
+---
+
+<section
+  class:list={[
+    "grid grid-cols-[repeat(auto-fit,minmax(min(100%,260px),1fr))] border-b border-[rgba(17,18,22,0.12)]",
+    className,
+  ]}
+  aria-labelledby={headingId}
+>
+  <div
+    class="flex flex-col gap-2 px-[clamp(20px,4vw,56px)] pt-[clamp(32px,5vw,72px)] font-mono text-xs font-medium"
+  >
+    <span class="text-violet">{index}</span>
+    <h2
+      id={headingId}
+      class="text-night m-0 text-xs font-medium tracking-[0.1em] uppercase"
+    >
+      {label}
+    </h2>
+  </div>
+  <div
+    class="col-span-2 flex min-w-0 flex-col gap-6 px-[clamp(20px,4vw,56px)] py-[clamp(32px,5vw,72px)] max-[519px]:col-span-1"
+  >
+    <slot />
+  </div>
+</section>

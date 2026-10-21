@@ -1,14 +1,21 @@
 ---
-/** WedevsVnzla "w/" monogram (brand manual v1, proposal A) with optional wordmark. */
+/** Wedevs "w/" monogram (brand manual v1, proposal A) with optional wordmark. */
 interface Props {
   size?: number;
   wordmark?: boolean;
   class?: string;
+  /** Color of the "w" stroke and wordmark; the slash always uses the accent. */
+  ink?: string;
 }
-const { size = 28, wordmark = true, class: className = "" } = Astro.props;
+const {
+  size = 28,
+  wordmark = true,
+  class: className = "",
+  ink = "var(--color-ink)",
+} = Astro.props;
 ---
 
-<span class={`inline-flex items-center gap-2.5 ${className}`}>
+<span class={`inline-flex items-center ${className}`}>
   <svg
     width={size}
     height={Math.round((size * 64) / 68)}
@@ -19,7 +26,7 @@ const { size = 28, wordmark = true, class: className = "" } = Astro.props;
     <polyline
       points="6,16 17,48 28,26 39,48 50,16"
       fill="none"
-      stroke="var(--color-ink)"
+      stroke={ink}
       stroke-width="6"
       stroke-linecap="round"
       stroke-linejoin="round"></polyline>
@@ -34,7 +41,12 @@ const { size = 28, wordmark = true, class: className = "" } = Astro.props;
   </svg>
   {
     wordmark && (
-      <span class="text-ink font-extrabold tracking-[-0.04em]">wedevs</span>
+      <span
+        class="mt-[0.075rem] font-extrabold tracking-[-0.04em]"
+        style={`color: ${ink}`}
+      >
+        edevs
+      </span>
     )
   }
 </span>

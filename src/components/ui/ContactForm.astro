@@ -1,113 +1,158 @@
 ---
+import {
+  BriefcaseBusiness,
+  Mail,
+  MessageSquareText,
+  User,
+  Wallet,
+} from "@lucide/astro";
 import { useTranslations, type Lang } from "../../lib/i18n/ui";
+import Select from "./Select.astro";
 
 interface Props {
   lang: Lang;
 }
 const { lang } = Astro.props;
 const { t, dict } = useTranslations(lang);
+
+const labelClass =
+  "text-night font-mono text-xs font-medium tracking-[0.1em] uppercase";
+const fieldClass =
+  "text-night placeholder:text-slate/70 focus-visible:border-violet w-full rounded-md border border-[rgba(17,18,22,0.2)] bg-white py-3 pr-4 pl-11 text-[15px] outline-none";
+const iconClass =
+  "text-slate pointer-events-none absolute left-4 transition-colors";
 ---
 
-<form id="contact-form" class="card flex flex-col gap-5 p-8" novalidate>
-  <div class="flex flex-col gap-1.5">
-    <label for="cf-name" class="text-ink text-sm font-medium">
-      {t("contactPage.formNameLabel")}
-    </label>
-    <input
-      id="cf-name"
-      name="name"
-      type="text"
-      required
-      aria-describedby="cf-name-error"
-      class="border-line bg-bg-alt text-ink focus-visible:border-accent rounded-lg border px-4 py-3 text-sm outline-none"
-    />
-    <p
-      id="cf-name-error"
-      class="text-sm text-red-400 empty:hidden"
-      role="alert"
-    >
-    </p>
+<form id="contact-form" class="flex flex-col gap-6" novalidate>
+  <div class="grid gap-6">
+    <div class="flex flex-col gap-1.5">
+      <label for="cf-name" class={labelClass}>
+        {t("contactPage.formNameLabel")}
+      </label>
+      <div class="group relative flex items-center">
+        <User
+          size={18}
+          aria-hidden="true"
+          class={`${iconClass} group-focus-within:text-violet`}
+        />
+        <input
+          id="cf-name"
+          name="name"
+          type="text"
+          required
+          autocomplete="name"
+          placeholder={t("contactPage.formNamePlaceholder")}
+          aria-describedby="cf-name-error"
+          class={fieldClass}
+        />
+      </div>
+      <p
+        id="cf-name-error"
+        class="text-sm text-red-700 empty:hidden"
+        role="alert"
+      >
+      </p>
+    </div>
+
+    <div class="flex flex-col gap-1.5">
+      <label for="cf-email" class={labelClass}>
+        {t("contactPage.formEmailLabel")}
+      </label>
+      <div class="group relative flex items-center">
+        <Mail
+          size={18}
+          aria-hidden="true"
+          class={`${iconClass} group-focus-within:text-violet`}
+        />
+        <input
+          id="cf-email"
+          name="email"
+          type="email"
+          required
+          autocomplete="email"
+          placeholder={t("contactPage.formEmailPlaceholder")}
+          aria-describedby="cf-email-error"
+          class={fieldClass}
+        />
+      </div>
+      <p
+        id="cf-email-error"
+        class="text-sm text-red-700 empty:hidden"
+        role="alert"
+      >
+      </p>
+    </div>
+  </div>
+
+  <div class="grid gap-6 sm:grid-cols-2">
+    <div class="flex flex-col gap-1.5">
+      <label for="cf-project-type" class={labelClass}>
+        {t("contactPage.formProjectTypeLabel")}
+      </label>
+      <Select
+        id="cf-project-type"
+        name="project-type"
+        required
+        describedBy="cf-project-type-error"
+        placeholder={t("contactPage.formProjectTypePlaceholder")}
+        options={dict.contactPage.formProjectTypeOptions}
+      >
+        <BriefcaseBusiness
+          size={18}
+          aria-hidden="true"
+          class={`${iconClass} top-1/2 -translate-y-1/2 group-focus-within:text-violet`}
+        />
+      </Select>
+      <p
+        id="cf-project-type-error"
+        class="text-sm text-red-700 empty:hidden"
+        role="alert"
+      >
+      </p>
+    </div>
+
+    <div class="flex flex-col gap-1.5">
+      <label for="cf-budget" class={labelClass}>
+        {t("contactPage.formBudgetLabel")}
+      </label>
+      <Select
+        id="cf-budget"
+        name="budget"
+        placeholder={t("contactPage.formBudgetPlaceholder")}
+        options={dict.contactPage.formBudgetOptions}
+      >
+        <Wallet
+          size={18}
+          aria-hidden="true"
+          class={`${iconClass} top-1/2 -translate-y-1/2 group-focus-within:text-violet`}
+        />
+      </Select>
+    </div>
   </div>
 
   <div class="flex flex-col gap-1.5">
-    <label for="cf-email" class="text-ink text-sm font-medium">
-      {t("contactPage.formEmailLabel")}
-    </label>
-    <input
-      id="cf-email"
-      name="email"
-      type="email"
-      required
-      aria-describedby="cf-email-error"
-      class="border-line bg-bg-alt text-ink focus-visible:border-accent rounded-lg border px-4 py-3 text-sm outline-none"
-    />
-    <p
-      id="cf-email-error"
-      class="text-sm text-red-400 empty:hidden"
-      role="alert"
-    >
-    </p>
-  </div>
-
-  <div class="flex flex-col gap-1.5">
-    <label for="cf-project-type" class="text-ink text-sm font-medium">
-      {t("contactPage.formProjectTypeLabel")}
-    </label>
-    <select
-      id="cf-project-type"
-      name="project-type"
-      required
-      aria-describedby="cf-project-type-error"
-      class="border-line bg-bg-alt text-ink focus-visible:border-accent rounded-lg border px-4 py-3 text-sm outline-none"
-    >
-      <option value=""></option>
-      {
-        dict.contactPage.formProjectTypeOptions.map((opt) => (
-          <option value={opt}>{opt}</option>
-        ))
-      }
-    </select>
-    <p
-      id="cf-project-type-error"
-      class="text-sm text-red-400 empty:hidden"
-      role="alert"
-    >
-    </p>
-  </div>
-
-  <div class="flex flex-col gap-1.5">
-    <label for="cf-budget" class="text-ink text-sm font-medium">
-      {t("contactPage.formBudgetLabel")}
-    </label>
-    <select
-      id="cf-budget"
-      name="budget"
-      class="border-line bg-bg-alt text-ink focus-visible:border-accent rounded-lg border px-4 py-3 text-sm outline-none"
-    >
-      <option value=""></option>
-      {
-        dict.contactPage.formBudgetOptions.map((opt) => (
-          <option value={opt}>{opt}</option>
-        ))
-      }
-    </select>
-  </div>
-
-  <div class="flex flex-col gap-1.5">
-    <label for="cf-message" class="text-ink text-sm font-medium">
+    <label for="cf-message" class={labelClass}>
       {t("contactPage.formMessageLabel")}
     </label>
-    <textarea
-      id="cf-message"
-      name="message"
-      rows="5"
-      required
-      aria-describedby="cf-message-error"
-      class="border-line bg-bg-alt text-ink focus-visible:border-accent rounded-lg border px-4 py-3 text-sm outline-none"
-    ></textarea>
+    <div class="group relative">
+      <MessageSquareText
+        size={18}
+        aria-hidden="true"
+        class={`${iconClass} top-3.5 group-focus-within:text-violet`}
+      />
+      <textarea
+        id="cf-message"
+        name="message"
+        rows="5"
+        required
+        placeholder={t("contactPage.formMessagePlaceholder")}
+        aria-describedby="cf-message-error"
+        class={`${fieldClass} resize-none`}
+      ></textarea>
+    </div>
     <p
       id="cf-message-error"
-      class="text-sm text-red-400 empty:hidden"
+      class="text-sm text-red-700 empty:hidden"
       role="alert"
     >
     </p>
@@ -133,12 +178,13 @@ const { t, dict } = useTranslations(lang);
   <button
     id="cf-submit"
     type="submit"
-    class="pill-btn-primary mt-2 justify-center disabled:cursor-not-allowed disabled:opacity-60"
+    class="bg-violet mt-2 w-full cursor-pointer rounded-full border-0 px-[26px] py-4 font-bold text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60 sm:w-fit"
   >
     {t("contactPage.formSubmit")}
   </button>
 
-  <p id="cf-status" class="text-sm" aria-live="polite" role="status"></p>
+  <p id="cf-status" class="text-slate text-sm" aria-live="polite" role="status">
+  </p>
 </form>
 
 <script
@@ -221,11 +267,11 @@ const { t, dict } = useTranslations(lang);
       try {
         await submitContactForm(data);
         status.textContent = i18n.success;
-        status.className = "text-sm text-[var(--color-success)]";
+        status.className = "text-sm text-green-700";
         form.reset();
       } catch {
         status.textContent = i18n.error;
-        status.className = "text-sm text-red-400";
+        status.className = "text-sm text-red-700";
       } finally {
         submitBtn.disabled = false;
         submitBtn.textContent = i18n.submit;

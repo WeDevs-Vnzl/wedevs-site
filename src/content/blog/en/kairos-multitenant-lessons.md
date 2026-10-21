@@ -3,6 +3,8 @@
 lang: en
 title: "What I learned building Kairos CMS's multi-tenant architecture"
 excerpt: "Notes on isolating tenants behind per-project API keys without reaching for a heavier multi-tenancy framework."
+seoTitle: "Lessons from Kairos CMS multi-tenant architecture"
+seoDescription: "How we isolated tenants in Kairos CMS behind per-project API keys without reaching for a heavier multi-tenancy framework, and the tradeoffs it involved."
 date: 2026-06-02
 tags: ["Architecture", "Node.js", "PostgreSQL"]
 ---
@@ -54,7 +56,7 @@ invalidate on write, but "faster" wasn't the requirement; "verifiably takes
 effect everywhere in under two seconds" was. When the two goals conflict,
 the boring implementation that's easy to reason about wins.
 
-![Kairos CMS admin panel](/projects/kairos/kairos-1.webp)
+<img src="/projects/kairos/kairos-1.webp" alt="Kairos CMS admin panel" width="1876" height="980" loading="lazy" decoding="async" />
 <span class="caption">The collection field builder — every field type maps directly to the JSONB schema above.</span>
 
 None of this is exotic. It's mostly about picking the constraint that

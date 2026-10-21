@@ -28,7 +28,6 @@ gallery: # string[] · OPCIONAL · rutas bajo /public
   - "/projects/<slug>/img-1.webp"
   - "/projects/<slug>/img-2.webp"
 
-repo_url: "" # string · OPCIONAL
 preview_url: "" # string · OPCIONAL
 
 # ─── English ──────────────────────────────────────────────────────────────────
@@ -103,7 +102,6 @@ es:
 | `type`        | `"own"` \| `"third-party"` | Sí          | Clasificación del proyecto                              |
 | `stack`       | string[]                   | Sí          | Tecnologías; entrecomilla los valores con `(` `)` o `,` |
 | `gallery`     | string[]                   | No          | Rutas de imágenes bajo `/public`                        |
-| `repo_url`    | string                     | No          | Enlace al repositorio                                   |
 | `preview_url` | string                     | No          | Enlace a la demo/preview                                |
 
 ### Dentro de `en:` y `es:` (idénticos, uno por idioma)

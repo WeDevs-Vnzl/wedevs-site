@@ -1,7 +1,6 @@
 ---
 import type { CollectionEntry } from "astro:content";
-import ProjectCard from "../ui/ProjectCard.astro";
-import SectionLabel from "../ui/SectionLabel.astro";
+import PixelGrid from "../ui/PixelGrid.astro";
 import { useTranslations, type Lang } from "../../lib/i18n/ui";
 import { getLocalizedPath } from "../../lib/i18n/routes";
 
@@ -15,35 +14,80 @@ const { t } = useTranslations(lang);
 const visible = projects.slice(0, 4);
 ---
 
-<section id="projects" class="bg-bg-alt" aria-labelledby="projects-heading">
-  <div class="max-w-base mx-auto px-6 py-20 md:py-30">
-    <SectionLabel
-      index={2}
-      label={t("home.sectionLabels.projects")}
-      class="mb-4"
-    />
-    <h2 id="projects-heading" class="text-h2" data-reveal>
-      {t("home.workTitle")}
-    </h2>
-    <p class="text-accent-dim text-body mt-1.5 mb-8">{t("home.workSupport")}</p>
-    <div class="flex flex-col gap-3" data-reveal-group>
+<section
+  id="projects"
+  class="bg-night text-paper relative grid grid-cols-[repeat(auto-fit,minmax(min(100%,260px),1fr))] content-center overflow-hidden lg:min-h-[80dvh]"
+  aria-labelledby="projects-heading"
+>
+  <PixelGrid cols={24} rows={60} seed={31} hi={0.035} lo={0.01} cover />
+
+  <div
+    class="relative flex flex-col gap-2 px-[clamp(20px,4vw,56px)] pt-[clamp(32px,5vw,72px)] font-mono text-xs font-medium"
+  >
+    <span class="text-violet-soft">02</span>
+    <span class="tracking-[0.1em] uppercase">
+      {t("home.sectionLabels.projects")}
+    </span>
+  </div>
+
+  <div
+    class="relative col-span-2 flex min-w-0 flex-col gap-8 px-[clamp(20px,4vw,56px)] py-[clamp(32px,5vw,72px)] max-[519px]:col-span-1"
+  >
+    <!-- <div class="flex flex-col gap-2.5">
+      <h2
+        id="projects-heading"
+        class="text-paper m-0 text-[clamp(32px,4vw,54px)] leading-none font-bold tracking-[-0.04em]"
+        data-reveal
+      >
+        {t("home.workTitle")}
+      </h2>
+      <p class="text-violet-soft m-0 font-medium">{t("home.workSupport")}</p>
+    </div> -->
+
+    <div class="flex flex-col" data-reveal-group>
       {
-        visible.map((p) => (
-          <ProjectCard
-            lang={lang}
-            data={p.data[lang]}
-            type={p.data.type}
-            stack={p.data.stack}
-            href={getLocalizedPath(`/projects/${p.id}`, lang)}
-          />
-        ))
+        visible.map((p) => {
+          const data = p.data[lang];
+          const href = getLocalizedPath(`/projects/${p.id}`, lang);
+          const transitionId = href.replace(/\//g, "-");
+          return (
+            <a
+              href={href}
+              class="text-paper hover:text-paper grid grid-cols-[repeat(auto-fit,minmax(min(100%,240px),1fr))] gap-x-8 gap-y-5 border-t border-[rgba(250,250,247,0.15)] py-7 px-4 no-underline transition-colors hover:bg-[rgba(250,250,247,0.03)]"
+              title={`${data.title} - ${t("home.viewProject")}`}
+            >
+              <div class="flex flex-col gap-2.5">
+                <span class="text-fog font-mono text-xs">
+                  {t("home.clientLabel")} · {data.client}
+                </span>
+                <h3
+                  class="text-paper m-0 text-[clamp(24px,2.6vw,34px)] leading-[1.05] font-bold tracking-[-0.03em]"
+                  transition:name={`project-title-${transitionId}`}
+                >
+                  {data.title} ↗
+                </h3>
+                <div class="flex flex-wrap gap-1.5">
+                  {p.data.stack.slice(0, 4).map((item) => (
+                    <span class="bg-night-2 rounded px-2 py-1 font-mono text-[11px] text-[#d4d6de]">
+                      {item}
+                    </span>
+                  ))}
+                </div>
+              </div>
+              <p class="text-fog m-0 text-[15px] leading-relaxed">
+                {data.resultHeadline}
+              </p>
+            </a>
+          );
+        })
       }
     </div>
+
     {
       projects.length > visible.length && (
         <a
           href={getLocalizedPath("/projects", lang)}
-          class="text-accent mt-6 inline-block text-sm no-underline hover:underline"
+          class="text-violet-soft w-fit text-sm font-semibold no-underline hover:underline"
         >
           {t("home.viewAllProjects")} →
         </a>

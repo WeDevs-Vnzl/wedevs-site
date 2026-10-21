@@ -3,6 +3,8 @@
 lang: en
 title: "Why we store schemas as JSONB instead of migrations"
 excerpt: "The tradeoff between relational rigor and a visual field builder that has to ship changes in seconds, not deploy cycles."
+seoTitle: "Storing schemas as JSONB instead of migrations"
+seoDescription: "The tradeoff between relational rigor and a visual field builder that has to ship schema changes in seconds, not deploy cycles, in a Postgres CMS."
 date: 2026-05-18
 tags: ["PostgreSQL", "Drizzle", "Backend"]
 ---

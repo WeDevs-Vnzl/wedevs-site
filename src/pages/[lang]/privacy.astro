@@ -1,0 +1,95 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import SiteHeader from "../../components/layout/SiteHeader.astro";
+import SiteFooter from "../../components/layout/SiteFooter.astro";
+import PageHero from "../../components/ui/PageHero.astro";
+import { brandEmail, brandMailHref } from "../../lib/brand";
+import { locales, useTranslations, type Lang } from "../../lib/i18n/ui";
+import { getCanonicalUrl, getLocalizedPath } from "../../lib/i18n/routes";
+
+export function getStaticPaths() {
+  return locales.map((lang) => ({ params: { lang } }));
+}
+
+const { lang } = Astro.params as { lang: Lang };
+const { t, dict } = useTranslations(lang);
+
+// Bump when the policy text changes.
+const updated = new Date("2026-10-21");
+const dateFormatter = new Intl.DateTimeFormat(lang, { dateStyle: "long" });
+
+// The analytics section only describes what the build actually loads.
+const sections = [
+  ...dict.privacyPage.sections,
+  ...(import.meta.env.G_TAG ? [dict.privacyPage.analytics] : []),
+];
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  name: t("privacyPage.seoTitle"),
+  description: t("privacyPage.seoDescription"),
+  url: getCanonicalUrl("/privacy", lang),
+  inLanguage: lang,
+  dateModified: updated.toISOString(),
+  publisher: { "@id": `${import.meta.env.SITE}/#organization` },
+};
+---
+
+<BaseLayout
+  lang={lang}
+  path="/privacy"
+  title={t("privacyPage.seoTitle")}
+  description={t("privacyPage.seoDescription")}
+  jsonLd={jsonLd}
+  breadcrumbs={[
+    { name: t("project.breadcrumbHome"), url: getLocalizedPath("/", lang) },
+    { name: t("footer.privacy"), url: getLocalizedPath("/privacy", lang) },
+  ]}
+>
+  <SiteHeader lang={lang} path="/privacy" />
+
+  <main id="main-content" class="bg-paper text-night">
+    <PageHero
+      eyebrow={t("privacyPage.eyebrow")}
+      titleBold={t("privacyPage.titleBold")}
+      titleLight={t("privacyPage.titleLight")}
+      support={t("privacyPage.support")}
+      seed={43}
+    />
+
+    <section
+      class="flex max-w-[860px] flex-col gap-10 px-[clamp(20px,4vw,56px)] py-[clamp(48px,6vw,96px)]"
+    >
+      <p class="text-slate m-0 font-mono text-xs">
+        {t("privacyPage.updatedLabel")}{" "}
+        <time datetime={updated.toISOString()}>
+          {dateFormatter.format(updated)}
+        </time>
+      </p>
+      {
+        sections.map((s) => (
+          <div
+            class="border-night flex flex-col gap-3 border-t-2 pt-4"
+            data-reveal
+          >
+            <h2 class="text-night m-0 text-[clamp(22px,2.4vw,28px)] font-bold tracking-[-0.03em]">
+              {s.title}
+            </h2>
+            <p class="m-0 text-[17px] leading-[1.7] text-[#2a2c33]">{s.body}</p>
+          </div>
+        ))
+      }
+      <a
+        href={brandMailHref}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="text-violet w-fit text-lg font-bold no-underline hover:underline"
+      >
+        {brandEmail} ↗
+      </a>
+    </section>
+  </main>
+
+  <SiteFooter lang={lang} />
+</BaseLayout>

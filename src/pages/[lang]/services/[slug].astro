@@ -1,14 +1,13 @@
 ---
-import SectionLabel from "../../../components/ui/SectionLabel.astro";
 import { getCollection } from "astro:content";
 import BaseLayout from "../../../layouts/BaseLayout.astro";
-import Header from "../../../components/layout/Header.astro";
-import Footer from "../../../components/layout/Footer.astro";
-import Chip from "../../../components/ui/Chip.astro";
-import ProjectCard from "../../../components/ui/ProjectCard.astro";
-import CtaBlock from "../../../components/ui/CtaBlock.astro";
+import SiteHeader from "../../../components/layout/SiteHeader.astro";
+import SiteFooter from "../../../components/layout/SiteFooter.astro";
+import PixelGrid from "../../../components/ui/PixelGrid.astro";
+import SplitSection from "../../../components/ui/SplitSection.astro";
+import FaqList from "../../../components/ui/FaqList.astro";
 import { locales, useTranslations, type Lang } from "../../../lib/i18n/ui";
-import { getLocalizedPath } from "../../../lib/i18n/routes";
+import { getCanonicalUrl, getLocalizedPath } from "../../../lib/i18n/routes";
 
 export async function getStaticPaths() {
   const services = await getCollection("services");
@@ -28,34 +27,29 @@ const { stack, relatedProjectIds } = entry.data;
 const data = entry.data[lang];
 
 const path = `/services/${entry.id}`;
-const canonicalUrl = new URL(
-  `/${lang}${path}`,
-  import.meta.env.SITE,
-).toString();
+const canonicalUrl = getCanonicalUrl(path, lang);
 const servicesHome = getLocalizedPath("/services", lang);
 
 const transitionId = getLocalizedPath(path, lang).replace(/\//g, "-");
 const ogImage = `/og/services/${entry.id}-${lang}.png`;
 const breadcrumbs = [
-  { name: t("project.breadcrumbHome"), url: `/${lang}/` },
+  { name: t("project.breadcrumbHome"), url: getLocalizedPath("/", lang) },
   { name: t("services.detail.breadcrumbServices"), url: servicesHome },
-  { name: data.title, url: `/${lang}${path}` },
+  { name: data.title, url: getLocalizedPath(path, lang) },
 ];
 
 const relatedProjects = (relatedProjectIds ?? [])
   .map((id) => projects.find((p) => p.id === id))
   .filter((p): p is NonNullable<typeof p> => !!p);
 
+import { itemIndex } from "../../../lib/utils/itemIndex";
+
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "Service",
   name: data.title,
-  description: data.desc,
-  provider: {
-    "@type": "Organization",
-    name: "WedevsVnzla",
-    url: import.meta.env.SITE,
-  },
+  description: data.seoDescription ?? data.desc,
+  provider: { "@id": `${import.meta.env.SITE}/#organization` },
   url: canonicalUrl,
 };
 ---
@@ -63,134 +57,150 @@ const jsonLd = {
 <BaseLayout
   lang={lang}
   path={path}
-  title={`${data.title} — WedevsVnzla`}
-  description={data.desc}
+  title={data.seoTitle ?? `${data.title} Wedevs`}
+  description={data.seoDescription ?? data.desc}
   ogImage={ogImage}
   jsonLd={jsonLd}
   breadcrumbs={breadcrumbs}
 >
-  <Header lang={lang} path={path} />
+  <SiteHeader lang={lang} path={path} />
 
-  <main id="main-content">
-    <header class="divider-dotted-row relative overflow-hidden">
-      <div class="max-w-base relative mx-auto px-6 pt-32 pb-12">
-        <nav
-          class="text-muted mb-6 flex items-center gap-2 text-[13px]"
-          aria-label="Breadcrumb"
+  <main id="main-content" class="bg-paper text-night">
+    <section
+      class="bg-night text-paper relative flex flex-col gap-[clamp(40px,6vw,88px)] overflow-hidden px-[clamp(20px,4vw,56px)] pt-7 pb-[clamp(40px,5vw,72px)]"
+    >
+      <PixelGrid cols={24} rows={24} seed={23} hi={0.05} lo={0.015} />
+
+      <nav
+        class="text-fog relative flex flex-wrap gap-2.5 font-mono text-xs"
+        aria-label="Breadcrumb"
+      >
+        <a
+          href={getLocalizedPath("/", lang)}
+          class="text-fog hover:text-paper no-underline"
         >
-          <a href={servicesHome} class="hover:text-ink no-underline">
-            {t("services.detail.breadcrumbServices")}
-          </a>
-          <span>/</span>
-          <span class="text-ink">{data.title}</span>
-        </nav>
+          {t("project.breadcrumbHome")}
+        </a>
+        <span>/</span>
+        <a href={servicesHome} class="text-fog hover:text-paper no-underline">
+          {t("services.detail.breadcrumbServices")}
+        </a>
+        <span>/</span>
+        <span class="text-paper">{data.title}</span>
+      </nav>
 
+      <div class="relative flex flex-col gap-6">
         <h1
-          class="text-h1 md:text-display-2 mt-4 font-bold"
+          class="text-paper m-0 text-[clamp(48px,9vw,140px)] leading-[0.9] font-extrabold tracking-[-0.06em] text-balance"
           transition:name={`service-title-${transitionId}`}
         >
           {data.title}
         </h1>
         <p
-          class="text-muted mt-4 max-w-[62ch] font-mono text-sm leading-relaxed"
+          class="m-0 max-w-[720px] text-[clamp(18px,1.8vw,22px)] leading-normal text-pretty text-[#c5c8d2]"
         >
           {data.problem}
         </p>
+      </div>
 
-        <div class="mt-8 flex flex-wrap gap-2">
-          {stack.map((tech) => <Chip>{tech}</Chip>)}
+      <div
+        class="relative flex flex-col gap-2 border-t border-[rgba(250,250,247,0.18)] pt-6"
+      >
+        <span
+          class="text-fog font-mono text-[11px] font-medium tracking-[0.1em] uppercase"
+        >
+          {t("services.detail.stackLabel")}
+        </span>
+        <div class="flex flex-wrap gap-[5px]">
+          {
+            stack.map((tech) => (
+              <span class="bg-night-2 rounded px-2 py-1 font-mono text-[11px] text-[#d4d6de]">
+                {tech}
+              </span>
+            ))
+          }
         </div>
       </div>
-    </header>
+    </section>
 
-    <section class="max-w-base mx-auto px-6 py-16">
-      <SectionLabel
-        as="h2"
-        index={1}
-        label={t("services.detail.deliverablesLabel")}
-        class="mb-5"
-      />
-      <p class="text-body text-ink-2 mb-8 max-w-[68ch]">{data.desc}</p>
+    <SplitSection
+      index="01"
+      label={t("services.detail.deliverablesLabel")}
+      headingId="deliverables-heading"
+    >
+      <p
+        class="m-0 max-w-[760px] text-[clamp(17px,1.5vw,19px)] leading-[1.7] text-pretty text-[#2a2c33]"
+      >
+        {data.desc}
+      </p>
       <div class="flex flex-col" data-reveal-group>
         {
-          data.deliverables.map((d) => (
-            <p class="divider-dotted-row text-ink-2 py-4 text-sm last:bg-none">
-              <span class="text-accent mr-2">–</span>
-              {d}
-            </p>
+          data.deliverables.map((d, i) => (
+            <div class="grid grid-cols-[40px_1fr] items-baseline gap-x-4 border-t border-[rgba(17,18,22,0.12)] py-[18px]">
+              <span class="text-violet font-mono text-xs font-medium">
+                {itemIndex("01", i)}
+              </span>
+              <span class="text-night text-lg font-semibold tracking-[-0.015em]">
+                {d}
+              </span>
+            </div>
           ))
         }
       </div>
-    </section>
+    </SplitSection>
 
     {
       relatedProjects.length > 0 && (
-        <section class="max-w-base mx-auto px-6 py-16">
-          <SectionLabel
-            as="h2"
-            index={2}
-            label={t("services.detail.relatedLabel")}
-            class="mb-8"
-          />
-          <div class="grid gap-6 md:grid-cols-2" data-reveal-group>
-            {relatedProjects.map((project) => (
-              <ProjectCard
-                lang={lang}
-                data={project.data[lang]}
-                type={project.data.type}
-                stack={project.data.stack}
-                href={getLocalizedPath(`/projects/${project.id}`, lang)}
-              />
-            ))}
+        <SplitSection
+          index="02"
+          label={t("services.detail.relatedLabel")}
+          headingId="related-heading"
+          class="bg-paper-2"
+        >
+          <div class="flex flex-col" data-reveal-group>
+            {relatedProjects.map((project) => {
+              const p = project.data[lang];
+              return (
+                <a
+                  href={getLocalizedPath(`/projects/${project.id}`, lang)}
+                  class="group text-night hover:text-night flex flex-col gap-2 border-t border-[rgba(17,18,22,0.12)] py-6 no-underline last:border-b"
+                >
+                  <span class="text-slate font-mono text-xs tracking-[0.1em] uppercase">
+                    {t("project.client")} · {p.client}
+                  </span>
+                  <span class="flex items-center justify-between gap-4">
+                    <span class="group-hover:text-violet text-[clamp(24px,3vw,36px)] leading-[1.1] font-bold tracking-[-0.035em] transition-colors">
+                      {p.title}
+                    </span>
+                    <span class="text-violet text-2xl" aria-hidden="true">
+                      →
+                    </span>
+                  </span>
+                  <span class="text-slate text-[15px] leading-[1.55]">
+                    {p.resultHeadline}
+                  </span>
+                </a>
+              );
+            })}
           </div>
-        </section>
+        </SplitSection>
       )
     }
 
-    <section class="max-w-base mx-auto px-6 py-16">
-      <SectionLabel
-        as="h2"
-        index={relatedProjects.length > 0 ? 3 : 2}
-        label={t("services.detail.faqLabel")}
-        class="mb-12"
-      />
-      <div data-reveal-group>
-        {
-          data.faq.map((item) => (
-            <details class="divider-dotted-row group py-5 last:bg-none">
-              <summary class="text-ink flex cursor-pointer items-center justify-between text-[15px] font-medium marker:content-none [&::-webkit-details-marker]:hidden">
-                {item.q}
-                <span
-                  class="text-muted ml-4 shrink-0 text-lg transition-transform duration-200 group-open:rotate-45"
-                  aria-hidden="true"
-                >
-                  +
-                </span>
-              </summary>
-              <p class="text-body text-ink-2 mt-4 max-w-[68ch]">{item.a}</p>
-            </details>
-          ))
-        }
-      </div>
-    </section>
-
-    <CtaBlock
-      headingId="service-cta-heading"
-      title={t("contact.title")}
-      support={t("services.ctaSupport")}
-      ctaLabel={t("services.detail.ctaLabel")}
-      ctaHref={getLocalizedPath("/contact", lang)}
-    />
-
-    <footer class="max-w-base mx-auto px-6 pb-16">
+    <SplitSection
+      index={relatedProjects.length > 0 ? "03" : "02"}
+      label={t("services.detail.faqLabel")}
+      headingId="faq-heading"
+    >
+      <FaqList items={data.faq} />
       <a
         href={servicesHome}
-        class="text-muted hover:text-accent text-sm no-underline hover:underline"
+        class="text-violet mt-2 w-fit font-bold no-underline hover:underline"
       >
         {t("services.detail.backLabel")}
       </a>
-    </footer>
+    </SplitSection>
   </main>
 
-  <Footer lang={lang} />
+  <SiteFooter lang={lang} />
 </BaseLayout>

@@ -1,0 +1,28 @@
+---
+/** Redesign FAQ: expandable rows on a light background. */
+interface Props {
+  items: { q: string; a: string }[];
+}
+const { items } = Astro.props;
+---
+
+<div class="flex flex-col" data-reveal-group>
+  {
+    items.map((item) => (
+      <details class="group border-t border-[rgba(17,18,22,0.12)] py-5 last:border-b">
+        <summary class="text-night flex cursor-pointer items-center justify-between gap-4 text-lg font-semibold tracking-[-0.015em] marker:content-none [&::-webkit-details-marker]:hidden">
+          {item.q}
+          <span
+            class="text-violet shrink-0 text-2xl leading-none transition-transform duration-200 group-open:rotate-45"
+            aria-hidden="true"
+          >
+            +
+          </span>
+        </summary>
+        <p class="text-slate m-0 mt-3 max-w-[68ch] text-[15px] leading-[1.6]">
+          {item.a}
+        </p>
+      </details>
+    ))
+  }
+</div>

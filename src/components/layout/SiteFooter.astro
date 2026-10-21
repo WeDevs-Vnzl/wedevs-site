@@ -1,0 +1,124 @@
+---
+import PixelGrid from "../ui/PixelGrid.astro";
+import { brandMailHref } from "../../lib/brand";
+import { useTranslations, type Lang } from "../../lib/i18n/ui";
+import { getLocalizedPath } from "../../lib/i18n/routes";
+
+/** Redesign footer: a violet contact call to action above the dark site footer. */
+interface Props {
+  lang: Lang;
+  /** Hide the contact call to action, e.g. on the contact page itself. */
+  showCta?: boolean;
+}
+const { lang, showCta = true } = Astro.props;
+const { t } = useTranslations(lang);
+
+const navLinks = [
+  { href: getLocalizedPath("/projects", lang), label: t("nav.projects") },
+  { href: getLocalizedPath("/services", lang), label: t("nav.services") },
+  { href: getLocalizedPath("/blog", lang), label: t("nav.blog") },
+  { href: getLocalizedPath("/about", lang), label: t("nav.about") },
+  { href: getLocalizedPath("/contact", lang), label: t("nav.contact") },
+];
+---
+
+{
+  showCta && (
+    <section
+      id="contact"
+      class="bg-violet relative grid grid-cols-[repeat(auto-fit,minmax(min(100%,360px),1fr))] items-center gap-x-16 gap-y-8 overflow-hidden px-[clamp(20px,4vw,56px)] py-[clamp(56px,8vw,104px)] text-white"
+      aria-labelledby="contact-heading"
+    >
+      <PixelGrid
+        cols={24}
+        rows={10}
+        seed={19}
+        hi={0.04}
+        lo={0.02}
+        color="#fff"
+      />
+
+      <div class="relative flex flex-col gap-5" data-reveal>
+        <span class="font-mono text-xs font-medium tracking-[0.12em] uppercase">
+          {t("nav.contact")}
+        </span>
+        <h2
+          id="contact-heading"
+          class="m-0 text-[clamp(44px,7vw,96px)] leading-[0.92] font-extrabold tracking-[-0.055em] text-balance text-white"
+        >
+          {t("contact.title")}
+        </h2>
+      </div>
+
+      <div class="relative flex flex-col items-start gap-6" data-reveal>
+        <p class="m-0 max-w-[460px] text-lg leading-normal text-white">
+          {t("contact.desc")}
+        </p>
+        <a
+          href={getLocalizedPath("/contact", lang)}
+          class="text-night hover:text-violet rounded-full bg-white px-[30px] py-[18px] font-bold no-underline"
+        >
+          {t("contact.cta")} ↗
+        </a>
+      </div>
+    </section>
+  )
+}
+
+<footer
+  class="bg-night text-paper flex flex-col gap-[clamp(40px,6vw,72px)] px-[clamp(20px,4vw,56px)] pt-[clamp(48px,6vw,80px)] pb-7"
+>
+  <div class="flex flex-wrap justify-between gap-x-16 gap-y-10">
+    <div class="flex flex-col items-start gap-5">
+      <span
+        class="text-paper text-[clamp(40px,5vw,64px)] leading-none font-extrabold tracking-[-0.05em]"
+      >
+        W<span class="text-violet-soft">/</span>edevs
+      </span>
+      <p class="m-0 text-[15px] text-[#c5c8d2]">{t("footer.reach")}</p>
+      <a
+        href={brandMailHref}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="text-paper hover:border-paper rounded-full border border-white/30 px-4 py-2.5 text-sm font-semibold no-underline"
+      >
+        Email ↗
+      </a>
+    </div>
+
+    <nav
+      class="flex min-w-[200px] flex-col gap-3 lg:w-[30%]"
+      aria-label={t("nav.navLabel")}
+    >
+      <span
+        class="text-violet-soft font-mono text-xs font-medium tracking-[0.12em] uppercase"
+      >
+        {t("footer.menuLabel")}
+      </span>
+      {
+        navLinks.map((link) => (
+          <a
+            href={link.href}
+            class="text-paper hover:text-violet-soft w-fit text-[15px] no-underline"
+          >
+            {link.label}
+          </a>
+        ))
+      }
+    </nav>
+  </div>
+
+  <div
+    class="flex flex-wrap justify-between gap-3 border-t border-white/15 pt-5 font-mono text-xs text-[#9a9da8]"
+  >
+    <span>{t("footer.copyright")}</span>
+    <span>
+      <a
+        href={getLocalizedPath("/privacy", lang)}
+        class="hover:text-paper text-[#9a9da8] no-underline"
+      >
+        {t("footer.privacy")}
+      </a>
+    </span>
+  </div>
+</footer>

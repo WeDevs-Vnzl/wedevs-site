@@ -1,13 +1,12 @@
 ---
 import { getCollection } from "astro:content";
 import BaseLayout from "../../../layouts/BaseLayout.astro";
-import Header from "../../../components/layout/Header.astro";
-import Footer from "../../../components/layout/Footer.astro";
-import PageHeader from "../../../components/ui/PageHeader.astro";
-import ProjectCard from "../../../components/ui/ProjectCard.astro";
-import ContactSection from "../../../components/sections/ContactSection.astro";
+import SiteHeader from "../../../components/layout/SiteHeader.astro";
+import SiteFooter from "../../../components/layout/SiteFooter.astro";
+import PageHero from "../../../components/ui/PageHero.astro";
 import { locales, useTranslations, type Lang } from "../../../lib/i18n/ui";
 import { getLocalizedPath } from "../../../lib/i18n/routes";
+import { itemIndex } from "../../../lib/utils/itemIndex";
 
 export function getStaticPaths() {
   return locales.map((lang) => ({ params: { lang } }));
@@ -25,40 +24,98 @@ const projects = (await getCollection("projects")).sort(
   lang={lang}
   path="/projects"
   title={t("projectsPage.seoTitle")}
-  description={t("projectsPage.support")}
+  description={t("projectsPage.seoDescription")}
   breadcrumbs={[
-    { name: t("project.breadcrumbHome"), url: `/${lang}/` },
-    { name: t("project.breadcrumbProjects"), url: `/${lang}/projects` },
+    { name: t("project.breadcrumbHome"), url: getLocalizedPath("/", lang) },
+    {
+      name: t("project.breadcrumbProjects"),
+      url: getLocalizedPath("/projects", lang),
+    },
   ]}
 >
-  <Header lang={lang} path="/projects" />
+  <SiteHeader lang={lang} path="/projects" />
 
-  <main id="main-content">
-    <PageHeader
+  <main id="main-content" class="bg-paper text-night">
+    <PageHero
       eyebrow={t("projectsPage.eyebrow")}
       titleBold={t("projectsPage.titleBold")}
       titleLight={t("projectsPage.titleLight")}
       support={t("projectsPage.support")}
-    />
+      seed={7}
+    >
+      <span class="text-fog text-violet font-mono text-xs font-medium">
+        {projects.length}{" "}
+        {t("projectsPage.count")}
+      </span>
+    </PageHero>
 
-    <section class="max-w-base mx-auto px-6 py-20 md:py-30">
-      <div class="flex flex-col gap-3" data-reveal-group>
-        {
-          projects.map((p) => (
-            <ProjectCard
-              lang={lang}
-              data={p.data[lang]}
-              type={p.data.type}
-              stack={p.data.stack}
-              href={getLocalizedPath(`/projects/${p.id}`, lang)}
-            />
-          ))
-        }
-      </div>
+    <section class="flex flex-col" data-reveal-group>
+      {
+        projects.map((entry, i) => {
+          const data = entry.data[lang];
+          const href = getLocalizedPath(`/projects/${entry.id}`, lang);
+          const transitionId = href.replace(/\//g, "-");
+          const cover = entry.data.coverImage ?? entry.data.gallery?.[0];
+          return (
+            <div class="grid grid-cols-[repeat(auto-fit,minmax(min(100%,260px),1fr))] border-b border-[rgba(17,18,22,0.12)]">
+              <div class="flex flex-col gap-2 px-[clamp(20px,4vw,56px)] pt-[clamp(28px,4vw,56px)] font-mono text-xs font-medium">
+                <span class="text-violet">{itemIndex("02", i)}</span>
+                <span class="tracking-[0.1em] uppercase">{data.client}</span>
+              </div>
+              <a
+                href={href}
+                class="group text-night hover:text-night col-span-2 grid min-w-0 grid-cols-[repeat(auto-fit,minmax(min(100%,300px),1fr))] items-center gap-7 px-[clamp(20px,4vw,56px)] py-[clamp(28px,4vw,56px)] no-underline max-[519px]:col-span-1"
+              >
+                {cover ? (
+                  <img
+                    src={cover}
+                    alt={`${data.title} cover`}
+                    width="800"
+                    height="500"
+                    loading="lazy"
+                    decoding="async"
+                    class="aspect-[16/10] w-full rounded-md object-cover"
+                  />
+                ) : (
+                  <div class="flex aspect-[16/10] items-end rounded-md bg-[repeating-linear-gradient(135deg,#ecebe5_0_10px,#e4e2db_10px_20px)] p-3">
+                    <span class="bg-paper text-slate rounded px-2 py-1 font-mono text-[11px]">
+                      {data.title}
+                    </span>
+                  </div>
+                )}
+                <div class="flex flex-col gap-3.5">
+                  <h2
+                    class="text-night group-hover:text-violet m-0 text-[clamp(26px,3.2vw,40px)] leading-[1.05] font-bold tracking-[-0.035em] transition-colors"
+                    transition:name={`project-title-${transitionId}`}
+                  >
+                    {data.title}
+                  </h2>
+                  <p class="text-slate m-0 text-[15px] leading-[1.6]">
+                    {data.summary ?? data.resultHeadline}
+                  </p>
+                  <div class="flex flex-wrap gap-1.5">
+                    {entry.data.stack.map((item) => (
+                      <span class="bg-paper-3 rounded px-[9px] py-[5px] font-mono text-[11px]">
+                        {item}
+                      </span>
+                    ))}
+                  </div>
+                  <div class="flex flex-wrap items-center justify-between gap-3 pt-1.5">
+                    <span class="text-slate font-mono text-xs">
+                      {data.period}
+                    </span>
+                    <span class="text-violet font-bold">
+                      {t("projectsPage.view")} →
+                    </span>
+                  </div>
+                </div>
+              </a>
+            </div>
+          );
+        })
+      }
     </section>
-
-    <ContactSection lang={lang} />
   </main>
 
-  <Footer lang={lang} />
+  <SiteFooter lang={lang} />
 </BaseLayout>

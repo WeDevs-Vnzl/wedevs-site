@@ -1,0 +1,156 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import SiteHeader from "../../components/layout/SiteHeader.astro";
+import SiteFooter from "../../components/layout/SiteFooter.astro";
+import PageHero from "../../components/ui/PageHero.astro";
+import SplitSection from "../../components/ui/SplitSection.astro";
+import { founders } from "../../lib/brand";
+import { locales, useTranslations, type Lang } from "../../lib/i18n/ui";
+import { getCanonicalUrl, getLocalizedPath } from "../../lib/i18n/routes";
+
+export function getStaticPaths() {
+  return locales.map((lang) => ({ params: { lang } }));
+}
+
+const { lang } = Astro.params as { lang: Lang };
+const { t, dict } = useTranslations(lang);
+const site = import.meta.env.SITE;
+import { itemIndex } from "../../lib/utils/itemIndex";
+
+// This page doubles as the author page the blog's Person schema points to.
+const people = founders.map((f) => ({
+  ...f,
+  ...dict.aboutPage.founders[f.id],
+}));
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "AboutPage",
+  name: t("aboutPage.seoTitle"),
+  description: t("aboutPage.seoDescription"),
+  url: getCanonicalUrl("/about", lang),
+  inLanguage: lang,
+  mainEntity: { "@id": `${site}/#organization` },
+  about: people.map((f) => ({
+    "@type": "Person",
+    "@id": `${site}/#${f.id}`,
+    name: f.name,
+    jobTitle: f.role,
+    description: f.bio,
+    worksFor: { "@id": `${site}/#organization` },
+    url: getCanonicalUrl("/about", lang),
+    sameAs: [f.linkedin],
+  })),
+};
+---
+
+<BaseLayout
+  lang={lang}
+  path="/about"
+  title={t("aboutPage.seoTitle")}
+  description={t("aboutPage.seoDescription")}
+  jsonLd={jsonLd}
+  breadcrumbs={[
+    { name: t("project.breadcrumbHome"), url: getLocalizedPath("/", lang) },
+    { name: t("nav.about"), url: getLocalizedPath("/about", lang) },
+  ]}
+>
+  <SiteHeader lang={lang} path="/about" />
+
+  <main id="main-content" class="bg-paper text-night">
+    <PageHero
+      eyebrow={t("aboutPage.eyebrow")}
+      titleBold={t("aboutPage.titleBold")}
+      titleLight={t("aboutPage.titleLight")}
+      support={t("aboutPage.support")}
+      seed={37}
+    />
+
+    <SplitSection
+      index="01"
+      label={t("aboutPage.studioLabel")}
+      headingId="studio-heading"
+    >
+      <div class="flex flex-col gap-5" data-reveal>
+        {
+          dict.aboutPage.studioText.map((p) => (
+            <p class="m-0 max-w-[760px] text-[clamp(17px,1.5vw,19px)] leading-[1.7] text-[#2a2c33]">
+              {p}
+            </p>
+          ))
+        }
+      </div>
+    </SplitSection>
+
+    <SplitSection
+      index="02"
+      label={t("aboutPage.principlesLabel")}
+      headingId="principles-heading"
+      class="bg-paper-2"
+    >
+      <div
+        class="grid grid-cols-[repeat(auto-fit,minmax(min(100%,200px),1fr))] gap-x-8 gap-y-7"
+        data-reveal-group
+      >
+        {
+          dict.aboutPage.principles.map((step, i) => (
+            <div class="border-night flex flex-col gap-2 border-t-2 pt-3.5">
+              <span class="text-violet font-mono text-xs font-medium">
+                {itemIndex("02", i)}
+              </span>
+              <h3 class="text-night m-0 text-[19px] font-bold tracking-[-0.02em]">
+                {step.title}
+              </h3>
+              <p class="text-slate m-0 text-[15px] leading-[1.55]">
+                {step.desc}
+              </p>
+            </div>
+          ))
+        }
+      </div>
+    </SplitSection>
+
+    <SplitSection
+      index="03"
+      label={t("aboutPage.founderLabel")}
+      headingId="founder-heading"
+    >
+      <div
+        class="grid grid-cols-[repeat(auto-fit,minmax(min(100%,300px),1fr))] gap-x-10 gap-y-8"
+        data-reveal-group
+      >
+        {
+          people.map((f) => (
+            <div class="flex flex-col items-start gap-4">
+              <div class="flex items-center gap-3">
+                <span
+                  class="bg-violet flex size-12 items-center justify-center rounded-full text-base font-extrabold text-white"
+                  aria-hidden="true"
+                >
+                  {f.initials}
+                </span>
+                <div class="flex flex-col gap-0.5">
+                  <h3 class="text-night m-0 text-2xl font-bold tracking-[-0.03em]">
+                    {f.name}
+                  </h3>
+                  <span class="text-slate font-mono text-xs">{f.role}</span>
+                </div>
+              </div>
+              <p class="text-slate m-0 text-[15px] leading-[1.6]">{f.bio}</p>
+              <a
+                href={f.linkedin}
+                target="_blank"
+                rel="noopener noreferrer me"
+                class="text-violet font-bold no-underline hover:underline"
+              >
+                LinkedIn ↗
+              </a>
+            </div>
+          ))
+        }
+      </div>
+    </SplitSection>
+  </main>
+
+  <SiteFooter lang={lang} />
+</BaseLayout>

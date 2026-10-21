@@ -25,12 +25,13 @@ gallery:
   - "/projects/kairos/kairos-4.webp"
   - "/projects/kairos/kairos-5.webp"
 
-repo_url: https://github.com/Novanet-Studio/kairos-fe/
 preview_url: https://kairos-fe-staging.netlify.app/
 
 # ─── English ─────────────────────────────────────────────────────────────────
 en:
   title: "Kairos CMS"
+  seoTitle: "Kairos CMS: multi-tenant headless CMS case study"
+  seoDescription: "Case study: Kairos CMS, a centralized headless CMS that replaces 8 separate Heroku and Strapi instances, aiming to cut infrastructure costs by 40%."
   client: "Novanet Studio"
   period: "May 2026 – Present"
   role: "Sole Full-Stack Developer & Architect (Freelance)"
@@ -118,6 +119,8 @@ en:
 # ─── Español ─────────────────────────────────────────────────────────────────
 es:
   title: "Kairos CMS"
+  seoTitle: "Kairos CMS: caso de estudio de un CMS multi-tenant"
+  seoDescription: "Caso de estudio: Kairos CMS, un headless CMS centralizado que reemplaza 8 instancias de Heroku y Strapi con la meta de reducir 40% el costo mensual."
   client: "Novanet Studio"
   period: "Mayo 2026 – Presente"
   role: "Arquitecto y Desarrollador Full-Stack único (Freelance)"

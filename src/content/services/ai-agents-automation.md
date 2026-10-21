@@ -5,6 +5,8 @@ relatedProjectIds: [maximiza]
 
 en:
   title: "AI agents & automation"
+  seoTitle: "AI agents and workflow automation | Wedevs"
+  seoDescription: "Auditable LLM agents and workflow automation for growing businesses, built to survive contact with real production data and to stay easy to review."
   problem: "A chatbot demo is easy. An agent that holds up against real customers, real data, and a compliance team asking how it makes decisions is not."
   desc: "Auditable LLM agents and workflow automation, built to survive contact with real production data."
   deliverables:
@@ -20,6 +22,8 @@ en:
 
 es:
   title: "Agentes de IA y automatización"
+  seoTitle: "Agentes de IA y automatización de flujos | Wedevs"
+  seoDescription: "Agentes LLM auditables y automatización de flujos para negocios en crecimiento, construidos para funcionar con datos reales de producción y revisarse."
   problem: "Un chatbot de demo es fácil. Un agente que resiste clientes reales, datos reales y un equipo de cumplimiento preguntando cómo decide, no lo es."
   desc: "Agentes LLM auditables y automatización de flujos, construidos para sobrevivir al contacto con datos reales de producción."
   deliverables:

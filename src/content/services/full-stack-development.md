@@ -5,6 +5,8 @@ relatedProjectIds: [kairos-cms, maximiza]
 
 en:
   title: "Full-stack development"
+  seoTitle: "Full-stack web and mobile development | Wedevs"
+  seoDescription: "End-to-end web and mobile applications, from architecture to production deployment, with a single owner across the whole stack, frontend to backend."
   problem: "You need a product shipped end to end, not a handoff between three different contractors who never talk to each other."
   desc: "End-to-end web and mobile applications, from architecture to production deployment, with a single owner across the whole stack."
   deliverables:
@@ -20,6 +22,8 @@ en:
 
 es:
   title: "Desarrollo full-stack"
+  seoTitle: "Desarrollo web y móvil full-stack | Wedevs"
+  seoDescription: "Aplicaciones web y móviles de extremo a extremo, desde la arquitectura hasta producción, con un solo responsable en todo el stack, del frontend al backend."
   problem: "Necesitas un producto entregado de extremo a extremo, no una posta entre tres contratistas distintos que nunca se hablan entre sí."
   desc: "Aplicaciones web y móviles de extremo a extremo, desde la arquitectura hasta el despliegue a producción, con un solo responsable en todo el stack."
   deliverables:

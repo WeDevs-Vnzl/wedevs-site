@@ -1,0 +1,57 @@
+---
+/**
+ * Decorative mosaic of square cells with scattered opacities, anchored to the
+ * top of its (relatively positioned) parent. Rendered as one inline SVG so a
+ * few hundred cells cost a single DOM node per rect that is actually visible.
+ */
+interface Props {
+  cols: number;
+  rows: number;
+  /** Deterministic seed: the same seed always yields the same pattern. */
+  seed: number;
+  /** Maximum extra opacity for "bright" cells. */
+  hi?: number;
+  /** Opacity for "dim" cells. */
+  lo?: number;
+  color?: string;
+  /** Stretch to the parent's full height, cropping cells instead of leaving the bottom empty. */
+  cover?: boolean;
+}
+
+const {
+  cols,
+  rows,
+  seed,
+  hi = 0.12,
+  lo = 0.03,
+  color = "#8f94ff",
+  cover = false,
+} = Astro.props;
+
+let s = seed;
+const rand = () => (s = (s * 9301 + 49297) % 233280) / 233280;
+
+const cells: { x: number; y: number; o: number }[] = [];
+for (let i = 0; i < cols * rows; i++) {
+  const v = rand();
+  const o = v > 0.82 ? +(0.02 + rand() * hi).toFixed(3) : v > 0.6 ? lo : 0;
+  if (o > 0) cells.push({ x: i % cols, y: Math.floor(i / cols), o });
+}
+---
+
+<svg
+  class:list={[
+    "pointer-events-none absolute inset-x-0 top-0 w-full",
+    cover ? "h-full" : "h-auto",
+  ]}
+  viewBox={`0 0 ${cols} ${rows}`}
+  preserveAspectRatio={cover ? "xMidYMin slice" : undefined}
+  aria-hidden="true"
+  focusable="false"
+>
+  {
+    cells.map((c) => (
+      <rect x={c.x} y={c.y} width="1" height="1" fill={color} opacity={c.o} />
+    ))
+  }
+</svg>

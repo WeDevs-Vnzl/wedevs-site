@@ -1,16 +1,17 @@
 ---
 import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import Header from "../../components/layout/Header.astro";
-import Footer from "../../components/layout/Footer.astro";
+import SiteHeader from "../../components/layout/SiteHeader.astro";
+import SiteFooter from "../../components/layout/SiteFooter.astro";
 import HeroSection from "../../components/sections/HeroSection.astro";
 import HowSection from "../../components/sections/HowSection.astro";
 import ProjectsSection from "../../components/sections/ProjectsSection.astro";
 import ServicesTeaserSection from "../../components/sections/ServicesTeaserSection.astro";
-import ContactSection from "../../components/sections/ContactSection.astro";
+import ProofSection from "../../components/sections/ProofSection.astro";
 
 import { brandEmail } from "../../lib/brand";
 import { locales, useTranslations, type Lang } from "../../lib/i18n/ui";
+import { getLocalizedPath } from "../../lib/i18n/routes";
 
 export function getStaticPaths() {
   return locales.map((lang) => ({ params: { lang } }));
@@ -27,14 +28,19 @@ const services = (await getCollection("services")).sort(
   (a, b) => a.data.order - b.data.order,
 );
 
+const [latestPost] = (
+  await getCollection("blog", ({ data }) => data.lang === lang)
+).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "ProfessionalService",
-  name: "WedevsVnzla",
+  // Same entity as the site-wide Organization; this node adds the service details.
+  "@id": `${import.meta.env.SITE}/#organization`,
+  name: "Wedevs",
   description: t("home.seoDescription"),
   areaServed: "Worldwide",
   email: brandEmail,
-  url: import.meta.env.SITE,
   knowsAbout: [
     "Mobile apps",
     "Websites",
@@ -53,17 +59,20 @@ const jsonLd = {
   title={t("home.seoTitle")}
   description={t("home.seoDescription")}
   jsonLd={jsonLd}
+  breadcrumbs={[
+    { name: t("project.breadcrumbHome"), url: getLocalizedPath("/", lang) },
+  ]}
 >
-  <Header lang={lang} path="/" />
+  <SiteHeader lang={lang} path="/" overlay />
 
-  <main id="main-content">
+  <main id="main-content" class="bg-paper text-night">
     <HeroSection lang={lang} />
 
     <ServicesTeaserSection lang={lang} services={services} />
     <ProjectsSection lang={lang} projects={projects} />
     <HowSection lang={lang} />
-    <ContactSection lang={lang} labelIndex={4} />
+    <ProofSection lang={lang} post={latestPost} />
   </main>
 
-  <Footer lang={lang} />
+  <SiteFooter lang={lang} />
 </BaseLayout>

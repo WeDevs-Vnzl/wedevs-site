@@ -86,7 +86,7 @@
     U+2215, U+FEFF, U+FFFD;
 }
 
-/* ─── Design tokens — dark-only, WedevsVnzla brand manual v1 ──────────────────────────────────────────────── */
+/* ─── Design tokens — dark-only, Wedevs brand manual v1 ──────────────────────────────────────────────── */
 
 :root {
   --color-bg: #0e0f12;
@@ -123,6 +123,19 @@
   --color-line-dashed: rgba(246, 245, 242, 0.1);
   --color-glow: rgba(246, 245, 242, 0.06);
   --color-success: #40be57;
+
+  /* Home redesign: light "paper" surfaces, night bands and violet accents */
+  --color-paper: #fafaf7;
+  --color-paper-2: #f4f2ee;
+  --color-paper-3: #ecebe5;
+  --color-mist: #eef0f5;
+  --color-night: #111216;
+  --color-night-2: #22242b;
+  --color-graphite: #40424b;
+  --color-slate: #55575f;
+  --color-fog: #b4b7c2;
+  --color-violet: #4f55e8;
+  --color-violet-soft: #8f94ff;
 
   /* Typography */
   --font-sans: "Manrope", system-ui, sans-serif;

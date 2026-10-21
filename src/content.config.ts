@@ -10,6 +10,9 @@ export const projectTranslation = z.object({
   period: z.string(),
   role: z.string(),
   resultHeadline: z.string(),
+  // Search snippet overrides: title ≤60 chars, description 140–160 chars.
+  seoTitle: z.string().optional(),
+  seoDescription: z.string().optional(),
   // Card/list view (used by ProjectCard)
   summary: z.string().optional(),
   highlights: z.array(z.string()).optional(),
@@ -32,7 +35,6 @@ const projects = defineCollection({
     // Image paths under /public, shared across languages
     coverImage: z.string().optional(),
     gallery: z.array(z.string()).optional(),
-    repo_url: z.string().optional(),
     preview_url: z.string().optional(),
     en: projectTranslation,
     es: projectTranslation,
@@ -45,6 +47,9 @@ export const serviceTranslation = z.object({
   title: z.string(),
   problem: z.string(),
   desc: z.string(),
+  // Search snippet overrides: title ≤60 chars, description 140–160 chars.
+  seoTitle: z.string().optional(),
+  seoDescription: z.string().optional(),
   deliverables: z.array(z.string()),
   faq: z.array(faqItem),
 });
@@ -67,6 +72,9 @@ const blog = defineCollection({
     lang: z.enum(["en", "es"]),
     title: z.string(),
     excerpt: z.string(),
+    // Search snippet overrides: title ≤60 chars, description 140–160 chars.
+    seoTitle: z.string().optional(),
+    seoDescription: z.string().optional(),
     date: z.coerce.date(),
     updatedDate: z.coerce.date().optional(),
     tags: z.array(z.string()),
