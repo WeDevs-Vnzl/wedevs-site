@@ -1,11 +1,6 @@
 import { coverCurtain, liftCurtain } from "./curtain";
 import { initMagnetic } from "./emphasis";
-import {
-  FINE_POINTER,
-  gsap,
-  prefersReducedMotion,
-  REDUCED_MOTION,
-} from "./gsap";
+import { FINE_POINTER, FULL_MOTION, gsap, prefersReducedMotion } from "./gsap";
 import { initHomeHero, initPageHero } from "./hero";
 import { initReveal } from "./reveal";
 import { initScrollProgress } from "./scroll";
@@ -16,9 +11,11 @@ let mm: gsap.MatchMedia | null = null;
 function setupPage(): void {
   mm?.revert();
   mm = gsap.matchMedia();
-  mm.add({ reduce: REDUCED_MOTION, finePointer: FINE_POINTER }, (ctx) => {
+  // A conditions object only runs when at least one query matches, so
+  // `motion` must be listed too: touch devices match neither of the others.
+  mm.add({ motion: FULL_MOTION, finePointer: FINE_POINTER }, (ctx) => {
     // Under reduced motion global.css never hides anything, so skip it all.
-    if (ctx.conditions?.reduce) return;
+    if (!ctx.conditions?.motion) return;
     // Top-to-bottom order, so ScrollTriggers refresh in page order.
     initHomeHero();
     initPageHero();

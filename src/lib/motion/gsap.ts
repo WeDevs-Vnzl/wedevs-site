@@ -11,6 +11,7 @@ CustomEase.create("signature", "0.22,1,0.36,1");
 gsap.defaults({ ease: "signature", duration: 0.5 });
 
 export const REDUCED_MOTION = "(prefers-reduced-motion: reduce)";
+export const FULL_MOTION = "(prefers-reduced-motion: no-preference)";
 export const FINE_POINTER = "(hover: hover) and (pointer: fine)";
 
 export function prefersReducedMotion(): boolean {
