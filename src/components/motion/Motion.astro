@@ -2,31 +2,62 @@
 // Page-transition curtain (src/lib/motion/curtain.ts) plus the GSAP motion
 // lifecycle. The curtain persists across ClientRouter swaps so it can stay
 // down while the next page is fetched and swapped in.
-const COLUMNS = 6;
+//
+// Each cell is a night square, and some carry a violet tint picked with the
+// same seeded formula as PixelGrid, so a covered screen reads as one of the
+// site's dark pixel-grid heroes.
+const COLS = 24;
+const ROWS = 24;
+const HI = 0.05;
+const LO = 0.015;
+
+let s = 7;
+const rand = () => (s = (s * 9301 + 49297) % 233280) / 233280;
+
+const cells = Array.from({ length: COLS * ROWS }, (_, i) => {
+  const v = rand();
+  const tint = v > 0.82 ? +(0.02 + rand() * HI).toFixed(3) : v > 0.6 ? LO : 0;
+  return { x: i % COLS, y: Math.floor(i / COLS), tint };
+});
 ---
 
 <div
-  class="pointer-events-none fixed inset-0 z-[100] grid grid-cols-6 motion-reduce:hidden"
+  class="pointer-events-none fixed inset-0 z-[100] motion-reduce:hidden"
   aria-hidden="true"
   data-curtain
   transition:persist="page-curtain"
 >
-  {
-    Array.from({ length: COLUMNS }, () => (
-      <div class="relative">
-        <span
-          class="bg-violet absolute inset-0"
-          style="transform: scaleY(0)"
-          data-curtain-violet
-        />
-        <span
-          class="bg-night absolute -inset-x-px inset-y-0"
-          style="transform: scaleY(0)"
-          data-curtain-night
-        />
-      </div>
-    ))
-  }
+  <svg
+    class="absolute inset-0 size-full"
+    viewBox={`0 0 ${COLS} ${ROWS}`}
+    preserveAspectRatio="xMidYMid slice"
+    focusable="false"
+    shape-rendering="crispEdges"
+  >
+    {
+      cells.map((c) => (
+        <g style="opacity: 0" data-curtain-cell>
+          <rect
+            x={c.x}
+            y={c.y}
+            width="1.02"
+            height="1.02"
+            fill="var(--color-night)"
+          />
+          {c.tint > 0 && (
+            <rect
+              x={c.x}
+              y={c.y}
+              width="1"
+              height="1"
+              fill="var(--color-violet-soft)"
+              opacity={c.tint}
+            />
+          )}
+        </g>
+      ))
+    }
+  </svg>
   <span
     class="bg-violet absolute inset-0 m-auto size-5 opacity-0"
     data-curtain-mark></span>

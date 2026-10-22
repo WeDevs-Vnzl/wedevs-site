@@ -2,20 +2,22 @@ import { gsap } from "./gsap";
 
 /**
  * Page-transition curtain (markup in Motion.astro, persisted across swaps).
- * Each column holds a violet and a night layer: on exit the violet layer
- * sweeps up and the night layer chases it, then a violet pixel blinks in
- * the center while the next page loads. On enter the layers lift off the
- * top in reverse order.
+ * On exit the mosaic cells pop in at random until the screen is a dark
+ * pixel grid, then a violet pixel blinks in the center while the next page
+ * loads. On enter the cells dissolve away at random.
  */
-const SWEEP = { duration: 0.5, ease: "power3.inOut", stagger: 0.04 };
+const DISSOLVE = {
+  duration: 0.14,
+  ease: "none",
+  stagger: { amount: 0.5, from: "random" },
+} as const;
 
 function parts() {
   const curtain = document.querySelector<HTMLElement>("[data-curtain]");
   if (!curtain) return null;
   return {
     curtain,
-    violet: curtain.querySelectorAll("[data-curtain-violet]"),
-    night: curtain.querySelectorAll("[data-curtain-night]"),
+    cells: curtain.querySelectorAll("[data-curtain-cell]"),
     mark: curtain.querySelector("[data-curtain-mark]"),
   };
 }
@@ -27,22 +29,12 @@ export function coverCurtain(): Promise<unknown> {
   return gsap
     .timeline()
     .set(p.curtain, { pointerEvents: "auto" })
-    .fromTo(
-      p.violet,
-      { scaleY: 0, transformOrigin: "50% 100%" },
-      { scaleY: 1, ...SWEEP },
-    )
-    .fromTo(
-      p.night,
-      { scaleY: 0, transformOrigin: "50% 100%" },
-      { scaleY: 1, ...SWEEP },
-      "<0.12",
-    )
+    .fromTo(p.cells, { opacity: 0 }, { opacity: 1, ...DISSOLVE })
     .fromTo(
       p.mark,
       { autoAlpha: 0, scale: 0 },
       { autoAlpha: 1, scale: 1, duration: 0.25, ease: "back.out(2.5)" },
-      "-=0.1",
+      "-=0.05",
     )
     .then();
 }
@@ -53,14 +45,13 @@ export function coverCurtain(): Promise<unknown> {
  */
 export function liftCurtain(): boolean {
   const p = parts();
-  if (!p || Number(gsap.getProperty(p.night[0], "scaleY")) === 0) {
+  if (!p || Number(gsap.getProperty(p.cells[0], "opacity")) === 0) {
     return false;
   }
   gsap
     .timeline()
     .to(p.mark, { autoAlpha: 0, scale: 0, duration: 0.2, ease: "power2.in" })
-    .to(p.night, { scaleY: 0, transformOrigin: "50% 0%", ...SWEEP })
-    .to(p.violet, { scaleY: 0, transformOrigin: "50% 0%", ...SWEEP }, "<0.1")
+    .to(p.cells, { opacity: 0, ...DISSOLVE })
     .set(p.curtain, { pointerEvents: "none" });
   return true;
 }
