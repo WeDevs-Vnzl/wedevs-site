@@ -16,15 +16,15 @@ const { lang } = Astro.props;
 const { t, dict } = useTranslations(lang);
 
 const labelClass =
-  "text-night font-mono text-xs font-medium tracking-[0.1em] uppercase";
+  "text-violet font-mono text-xs font-medium tracking-[0.1em] uppercase";
 const fieldClass =
-  "text-night placeholder:text-slate/70 focus-visible:border-violet w-full rounded-md border border-[rgba(17,18,22,0.2)] bg-white py-3 pr-4 pl-11 text-[15px] outline-none";
+  "text-night placeholder:text-slate/70 hover:border-violet w-full rounded-md border border-[rgba(17,18,22,0.2)] bg-white py-3 pr-4 pl-11 text-[15px] outline-none focus-visible:ring-0 focus-visible:ring-offset-0";
 const iconClass =
   "text-slate pointer-events-none absolute left-4 transition-colors";
 ---
 
-<form id="contact-form" class="flex flex-col gap-6" novalidate>
-  <div class="grid gap-6">
+<form id="contact-form" class="flex flex-col gap-4" novalidate>
+  <div class="grid sm:grid-cols-2 gap-6">
     <div class="flex flex-col gap-1.5">
       <label for="cf-name" class={labelClass}>
         {t("contactPage.formNameLabel")}
@@ -33,7 +33,7 @@ const iconClass =
         <User
           size={18}
           aria-hidden="true"
-          class={`${iconClass} group-focus-within:text-violet`}
+          class={`${iconClass} group-hover:text-violet`}
         />
         <input
           id="cf-name"
@@ -62,7 +62,7 @@ const iconClass =
         <Mail
           size={18}
           aria-hidden="true"
-          class={`${iconClass} group-focus-within:text-violet`}
+          class={`${iconClass} group-hover:text-violet`}
         />
         <input
           id="cf-email"
@@ -100,7 +100,7 @@ const iconClass =
         <BriefcaseBusiness
           size={18}
           aria-hidden="true"
-          class={`${iconClass} top-1/2 -translate-y-1/2 group-focus-within:text-violet`}
+          class={`${iconClass} top-1/2 -translate-y-1/2 group-hover:text-violet`}
         />
       </Select>
       <p
@@ -124,7 +124,7 @@ const iconClass =
         <Wallet
           size={18}
           aria-hidden="true"
-          class={`${iconClass} top-1/2 -translate-y-1/2 group-focus-within:text-violet`}
+          class={`${iconClass} top-1/2 -translate-y-1/2 group-hover:text-violet`}
         />
       </Select>
     </div>
@@ -138,17 +138,16 @@ const iconClass =
       <MessageSquareText
         size={18}
         aria-hidden="true"
-        class={`${iconClass} top-3.5 group-focus-within:text-violet`}
+        class={`${iconClass} top-3.5 group-hover:text-violet`}
       />
       <textarea
         id="cf-message"
         name="message"
-        rows="5"
+        rows="3"
         required
         placeholder={t("contactPage.formMessagePlaceholder")}
         aria-describedby="cf-message-error"
-        class={`${fieldClass} resize-none`}
-      ></textarea>
+        class={`${fieldClass} resize-none`}></textarea>
     </div>
     <p
       id="cf-message-error"
@@ -178,7 +177,7 @@ const iconClass =
   <button
     id="cf-submit"
     type="submit"
-    class="bg-violet mt-2 w-full cursor-pointer rounded-full border-0 px-[26px] py-4 font-bold text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60 sm:w-fit"
+    class="bg-violet w-full cursor-pointer rounded-full border-0 px-[26px] py-4 font-bold text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60 sm:w-fit"
   >
     {t("contactPage.formSubmit")}
   </button>
