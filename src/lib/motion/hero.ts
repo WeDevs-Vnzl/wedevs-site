@@ -54,11 +54,7 @@ export function initPageHero(): void {
     .addLabel("copy", "-=0.5");
 
   if (support) {
-    tl.from(
-      support.children,
-      { autoAlpha: 0, y: 16, stagger: 0.08 },
-      "copy",
-    );
+    tl.from(support.children, { autoAlpha: 0, y: 16, stagger: 0.08 }, "copy");
   }
 
   const grid = hero.querySelector(":scope > svg");
