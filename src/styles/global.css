@@ -254,6 +254,14 @@
       transition-duration: 150ms;
       transition-timing-function: ease;
     }
+
+    /* Motion targets start hidden; src/lib/motion reveals them with GSAP
+       autoAlpha. Under reduced motion they are never hidden. */
+    [data-reveal],
+    [data-reveal-group] > *,
+    [data-hero-item] {
+      visibility: hidden;
+    }
   }
 
   :focus-visible {

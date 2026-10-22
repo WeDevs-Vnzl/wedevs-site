@@ -9,7 +9,7 @@ import { getCanonicalUrl } from "../lib/i18n/routes";
 import { brandEmail, founders } from "../lib/brand";
 
 import HeroBg from "../components/ui/HeroBg.astro";
-import ScrollReveal from "../components/motion/ScrollReveal.astro";
+import Motion from "../components/motion/Motion.astro";
 
 interface Breadcrumb {
   name: string;
@@ -235,12 +235,23 @@ const breadcrumbJsonLd = breadcrumbs?.length
     }
 
     {import.meta.env.G_TAG && <Analytics gaId={import.meta.env.G_TAG} />}
+
+    <!-- Without JS nothing would ever un-hide the motion targets (see global.css). -->
+    <noscript>
+      <style>
+        [data-reveal],
+        [data-reveal-group] > *,
+        [data-hero-item] {
+          visibility: visible !important;
+        }
+      </style>
+    </noscript>
   </head>
   <body
     class="relative flex min-h-screen flex-col"
     transition:animate={fade({ duration: "0.3s" })}
   >
     <slot />
-    <ScrollReveal />
+    <Motion />
   </body>
 </html>

@@ -21,7 +21,7 @@
     "@lucide/astro": "^1.61.0",
     "@tailwindcss/vite": "^4.3.0",
     "astro": "7.1.6",
-    "motion": "^11.15.0",
+    "gsap": "^3.15.0",
     "tailwindcss": "^4.3.0"
   },
   "devDependencies": {
