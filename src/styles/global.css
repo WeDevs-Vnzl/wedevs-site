@@ -264,6 +264,13 @@
     }
   }
 
+  /* SplitText masks clip to the line box, which cuts off descenders at
+     tight line-heights. Grow the clip area without shifting the layout. */
+  .split-mask-mask {
+    padding-bottom: 0.15em;
+    margin-bottom: -0.15em;
+  }
+
   :focus-visible {
     @apply ring-accent ring-offset-bg rounded-sm ring-2 ring-offset-2 outline-none;
   }

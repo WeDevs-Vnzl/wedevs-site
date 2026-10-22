@@ -12,7 +12,11 @@ export function initHomeHero(): void {
   const copy = hero.querySelectorAll<HTMLElement>("[data-hero-copy]");
   if (!title) return;
 
-  const split = SplitText.create(title, { type: "words", mask: "words" });
+  const split = SplitText.create(title, {
+    type: "words",
+    mask: "words",
+    wordsClass: "split-mask",
+  });
   const tl = gsap.timeline({ defaults: { duration: 0.8 }, delay: 0.1 });
 
   tl.set(hero.querySelectorAll("[data-hero-item]"), { autoAlpha: 1 })
@@ -44,7 +48,11 @@ export function initPageHero(): void {
   const support = hero.querySelector<HTMLElement>("[data-hero-support]");
   if (!title) return;
 
-  const split = SplitText.create(title, { type: "lines", mask: "lines" });
+  const split = SplitText.create(title, {
+    type: "lines",
+    mask: "lines",
+    linesClass: "split-mask",
+  });
   const tl = gsap.timeline({ defaults: { duration: 0.8 }, delay: 0.05 });
 
   tl.set(hero.querySelectorAll("[data-hero-item]"), { autoAlpha: 1 })
