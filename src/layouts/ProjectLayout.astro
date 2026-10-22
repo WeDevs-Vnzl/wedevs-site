@@ -41,9 +41,6 @@ const {
 } = Astro.props;
 const { t } = useTranslations(lang);
 const home = getLocalizedPath("/", lang);
-// Same id formula as the projects index href-derived transition:name, so the
-// browser can match list <-> detail titles for the shared-element morph.
-const transitionId = getLocalizedPath(path, lang).replace(/\//g, "-");
 const heroImage = coverImage ?? gallery?.[0];
 const projectSlug = path.replace(/^\/projects\//, "");
 const ogImage = `/og/projects/${projectSlug}-${lang}.png`;
@@ -140,12 +137,15 @@ const bodyText =
   <main id="main-content" class="bg-paper text-night">
     <section
       class="bg-night text-paper relative flex flex-col gap-[clamp(40px,6vw,88px)] overflow-hidden px-[clamp(20px,4vw,56px)] pt-7 pb-[clamp(40px,5vw,72px)]"
+      data-page-hero
     >
       <PixelGrid cols={24} rows={24} seed={7} hi={0.05} lo={0.015} />
 
       <nav
         class="text-fog relative flex flex-wrap gap-2.5 font-mono text-xs"
         aria-label="Breadcrumb"
+        data-hero-item
+        data-hero-eyebrow
       >
         <a href={home} class="text-fog hover:text-paper no-underline">
           {t("project.breadcrumbHome")}
@@ -164,23 +164,28 @@ const bodyText =
       <div class="relative flex flex-col gap-6">
         <span
           class="self-start rounded-full border border-[rgba(250,250,247,0.3)] px-[11px] py-[5px] text-xs"
+          data-hero-item
+          data-hero-fade
         >
           {t("project.client")} · {data.client}
         </span>
         <h1
           class="text-paper m-0 text-[clamp(52px,11vw,168px)] leading-[0.88] font-extrabold tracking-[-0.06em] text-balance"
-          transition:name={`project-title-${transitionId}`}
+          data-hero-item
+          data-hero-title
         >
           {data.title}
         </h1>
         <p
           class="m-0 max-w-[720px] text-[clamp(18px,1.8vw,22px)] leading-normal text-pretty text-[#c5c8d2]"
+          data-hero-item
+          data-hero-fade
         >
           {data.summary ?? data.resultHeadline}
         </p>
         {
           preview_url && (
-            <div class="flex flex-wrap gap-2.5">
+            <div class="flex flex-wrap gap-2.5" data-hero-item data-hero-fade>
               <a
                 href={preview_url}
                 target="_blank"
@@ -196,6 +201,8 @@ const bodyText =
 
       <dl
         class="relative m-0 grid grid-cols-[repeat(auto-fit,minmax(min(100%,200px),1fr))] gap-x-8 gap-y-5 border-t border-[rgba(250,250,247,0.18)] pt-6"
+        data-hero-item
+        data-hero-fade
       >
         {
           meta.map((item) => (
@@ -228,7 +235,10 @@ const bodyText =
 
     {
       heroImage && (
-        <section class="px-[clamp(20px,4vw,56px)] pt-[clamp(20px,4vw,56px)]">
+        <section
+          class="px-[clamp(20px,4vw,56px)] pt-[clamp(20px,4vw,56px)]"
+          data-reveal
+        >
           <img
             src={heroImage}
             alt={`${data.title} cover`}
@@ -255,7 +265,9 @@ const bodyText =
                 data-index-link={s.id}
                 class="index-link text-slate hover:text-night flex items-baseline gap-3 border-l-2 border-[rgba(17,18,22,0.12)] py-2.5 pl-3.5 text-sm font-medium no-underline"
               >
-                <span class="text-violet font-mono text-[11px]">{itemIndex("02", i)}</span>
+                <span class="text-violet font-mono text-[11px]">
+                  {itemIndex("02", i)}
+                </span>
                 {s.label}
               </a>
             ))}
@@ -283,6 +295,7 @@ const bodyText =
                   <article
                     id={s.id}
                     class="bg-violet relative flex scroll-mt-5 flex-col gap-6 overflow-hidden rounded-md p-[clamp(24px,3.5vw,44px)] text-white"
+                    data-reveal
                   >
                     <PixelGrid
                       cols={16}
@@ -312,7 +325,11 @@ const bodyText =
                 );
               }
               return (
-                <article id={s.id} class="flex scroll-mt-5 flex-col gap-[18px]">
+                <article
+                  id={s.id}
+                  class="flex scroll-mt-5 flex-col gap-[18px]"
+                  data-reveal
+                >
                   <h2 class={`${sectionLabel} m-0`}>{label}</h2>
                   {s.kind === "prose" && (
                     <p class={bodyText} set:html={md(s.body)} />

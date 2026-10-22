@@ -58,10 +58,6 @@ const dateFormatter = new Intl.DateTimeFormat(
   },
 );
 
-// Same id formula as blog/index.astro's post-title transition:name
-// (post slug, derived from `path` = `/blog/<slug>`), so card <-> article
-// titles morph together.
-const postSlug = path.replace(/^\/blog\//, "").replace(/\//g, "-");
 const ogImage = `/og/blog/${path.replace(/^\/blog\//, "")}.png`;
 const breadcrumbs = [
   { name: t("project.breadcrumbHome"), url: getLocalizedPath("/", lang) },
@@ -91,6 +87,7 @@ const breadcrumbs = [
   <main id="main-content" class="bg-paper text-night">
     <section
       class="bg-night text-paper relative flex flex-col items-center overflow-hidden px-[clamp(20px,4vw,56px)] pt-7 pb-[clamp(40px,5vw,72px)]"
+      data-page-hero
     >
       <PixelGrid cols={24} rows={16} seed={53} hi={0.05} lo={0.015} />
       <div
@@ -99,6 +96,8 @@ const breadcrumbs = [
         <nav
           class="text-fog flex flex-wrap gap-2.5 font-mono text-xs"
           aria-label="Breadcrumb"
+          data-hero-item
+          data-hero-eyebrow
         >
           <a href={home} class="text-fog hover:text-violet-soft no-underline">
             {t("project.breadcrumbHome")}
@@ -115,7 +114,7 @@ const breadcrumbs = [
         <div class="flex flex-col gap-6">
           {
             tags.length > 0 && (
-              <div class="flex flex-wrap gap-1.5">
+              <div class="flex flex-wrap gap-1.5" data-hero-item data-hero-fade>
                 {tags.map((tag) => (
                   <span class="text-paper rounded-full border border-white/20 px-[11px] py-[5px] text-xs">
                     {tag}
@@ -126,15 +125,22 @@ const breadcrumbs = [
           }
           <h1
             class="text-paper m-0 text-[clamp(36px,5.6vw,72px)] leading-none font-extrabold tracking-[-0.045em] text-balance"
-            transition:name={`post-title-${postSlug}`}
+            data-hero-item
+            data-hero-title
           >
             {title}
           </h1>
-          <p class="m-0 max-w-[620px] text-lg leading-[1.55] text-[#c5c8d2]">
+          <p
+            class="m-0 max-w-[620px] text-lg leading-[1.55] text-[#c5c8d2]"
+            data-hero-item
+            data-hero-fade
+          >
             {excerpt}
           </p>
           <div
             class="flex flex-wrap items-center justify-between gap-3 border-t border-white/15 pt-5"
+            data-hero-item
+            data-hero-fade
           >
             <div class="flex items-center gap-3">
               <span
@@ -186,7 +192,10 @@ const breadcrumbs = [
 
     {
       coverImage && (
-        <section class="px-[clamp(20px,4vw,56px)] pt-[clamp(28px,4vw,48px)]">
+        <section
+          class="px-[clamp(20px,4vw,56px)] pt-[clamp(28px,4vw,48px)]"
+          data-reveal
+        >
           <img
             src={coverImage}
             alt={title}
@@ -204,13 +213,13 @@ const breadcrumbs = [
       class="flex justify-center px-[clamp(20px,4vw,56px)] py-[clamp(40px,5vw,72px)]"
     >
       <div class="flex w-full max-w-[680px] flex-col">
-        <article class="prose">
+        <article class="prose" data-reveal>
           <slot />
         </article>
 
         {
           related.length > 0 && (
-            <div class="mt-10 flex flex-col gap-3">
+            <div class="mt-10 flex flex-col gap-3" data-reveal>
               {related.map((post) => (
                 <a
                   href={post.href}

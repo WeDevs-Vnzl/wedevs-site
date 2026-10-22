@@ -42,8 +42,6 @@ const meta = (post: (typeof posts)[number]) =>
 const tags = [...new Set(posts.flatMap((p) => p.data.tags))];
 const postHref = (post: (typeof posts)[number]) =>
   getLocalizedPath(`/blog/${getPostSlug(post.id)}`, lang);
-const titleTransition = (post: (typeof posts)[number]) =>
-  `post-title-${getPostSlug(post.id).replace(/\//g, "-")}`;
 ---
 
 <BaseLayout
@@ -104,10 +102,7 @@ const titleTransition = (post: (typeof posts)[number]) =>
                 ))}
               </div>
               <div class="flex flex-col gap-4">
-                <h2
-                  class="text-paper m-0 text-[clamp(28px,3.6vw,48px)] leading-[1.05] font-bold tracking-[-0.035em] text-balance"
-                  transition:name={titleTransition(featured)}
-                >
+                <h2 class="text-paper m-0 text-[clamp(28px,3.6vw,48px)] leading-[1.05] font-bold tracking-[-0.035em] text-balance">
                   {featured.data.title}
                 </h2>
                 <div class="flex flex-wrap items-center justify-between gap-3">
@@ -150,10 +145,7 @@ const titleTransition = (post: (typeof posts)[number]) =>
               >
                 <span class="text-slate font-mono text-xs">{meta(post)}</span>
                 <span class="col-span-2 flex flex-col gap-1.5 max-[519px]:col-span-1">
-                  <span
-                    class="group-hover:text-violet text-[clamp(20px,2.2vw,26px)] font-bold tracking-[-0.025em] transition-colors"
-                    transition:name={titleTransition(post)}
-                  >
+                  <span class="group-hover:text-violet text-[clamp(20px,2.2vw,26px)] font-bold tracking-[-0.025em] transition-colors">
                     {post.data.title}
                   </span>
                   <span class="text-slate text-[15px] leading-[1.55]">

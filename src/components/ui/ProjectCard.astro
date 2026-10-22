@@ -19,7 +19,6 @@ interface Props {
 const { lang, data, type, href } = Astro.props;
 const { t } = useTranslations(lang);
 const meta = projectTypeMeta(type);
-const transitionId = href.replace(/\//g, "-");
 ---
 
 <a
@@ -44,18 +43,12 @@ const transitionId = href.replace(/\//g, "-");
     <polyline points="7 7 17 7 17 17"></polyline>
   </svg>
 
-  <span
-    class={`chip mb-4 w-fit ${meta.className}`}
-    transition:name={`project-chip-${transitionId}`}
-  >
+  <span class={`chip mb-4 w-fit ${meta.className}`}>
     {t(`project.${meta.labelKey}`)}
   </span>
 
   <p class="text-muted mb-1 font-mono text-xs">{data.client}</p>
-  <h3
-    class="text-h3 text-ink mb-1"
-    transition:name={`project-title-${transitionId}`}
-  >
+  <h3 class="text-h3 text-ink mb-1">
     {data.title}
   </h3>
   <p class="text-muted text-[13px] leading-relaxed">{data.resultHeadline}</p>

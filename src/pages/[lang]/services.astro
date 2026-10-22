@@ -48,7 +48,6 @@ import { itemIndex } from "../../lib/utils/itemIndex";
         services.map((entry, i) => {
           const data = entry.data[lang];
           const href = getLocalizedPath(`/services/${entry.id}`, lang);
-          const transitionId = href.replace(/\//g, "-");
           return (
             <div class="grid grid-cols-[repeat(auto-fit,minmax(min(100%,260px),1fr))] border-b border-[rgba(17,18,22,0.12)]">
               <div class="flex flex-col gap-2 px-[clamp(20px,4vw,56px)] pt-[clamp(28px,4vw,56px)] font-mono text-xs font-medium">
@@ -62,10 +61,7 @@ import { itemIndex } from "../../lib/utils/itemIndex";
                 class="group text-night hover:text-night col-span-2 grid min-w-0 grid-cols-[repeat(auto-fit,minmax(min(100%,300px),1fr))] gap-x-10 gap-y-5 px-[clamp(20px,4vw,56px)] py-[clamp(28px,4vw,56px)] no-underline max-[519px]:col-span-1"
               >
                 <div class="flex flex-col gap-3.5">
-                  <h2
-                    class="text-night group-hover:text-violet m-0 text-[clamp(26px,3.2vw,40px)] leading-[1.05] font-bold tracking-[-0.035em] transition-colors"
-                    transition:name={`service-title-${transitionId}`}
-                  >
+                  <h2 class="text-night group-hover:text-violet m-0 text-[clamp(26px,3.2vw,40px)] leading-[1.05] font-bold tracking-[-0.035em] transition-colors">
                     {data.title}
                   </h2>
                   <p class="text-slate m-0 text-[15px] leading-[1.6]">

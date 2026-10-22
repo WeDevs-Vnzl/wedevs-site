@@ -36,7 +36,7 @@ export function initHomeHero(): void {
 }
 
 /**
- * Subpage hero entrance (PageHero): eyebrow slides in, title lines rise out
+ * Subpage hero entrance (PageHero and detail heroes): eyebrow slides in, title lines rise out
  * of a mask, support copy follows. The pixel grid drifts slower than the
  * page while the hero scrolls away.
  */
@@ -61,8 +61,14 @@ export function initPageHero(): void {
     .from(split.lines, { yPercent: 105, stagger: 0.08, duration: 0.9 }, "<0.1")
     .addLabel("copy", "-=0.5");
 
-  if (support) {
-    tl.from(support.children, { autoAlpha: 0, y: 16, stagger: 0.08 }, "copy");
+  // PageHero groups its copy in one support slot; detail heroes (project,
+  // service, post) mark each block with data-hero-fade instead.
+  const copy = [
+    ...(support ? Array.from(support.children) : []),
+    ...hero.querySelectorAll("[data-hero-fade]"),
+  ];
+  if (copy.length > 0) {
+    tl.from(copy, { autoAlpha: 0, y: 16, stagger: 0.08 }, "copy");
   }
 
   const grid = hero.querySelector(":scope > svg");

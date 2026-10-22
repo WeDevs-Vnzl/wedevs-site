@@ -1,3 +1,4 @@
+import { coverCurtain, liftCurtain } from "./curtain";
 import { initMagnetic } from "./emphasis";
 import {
   FINE_POINTER,
@@ -29,29 +30,7 @@ function setupPage(): void {
 }
 
 /**
- * Fades the outgoing page's content up and out. Sections holding a
- * `transition:name` element are left alone: fading them would make the
- * browser morph an invisible snapshot into the new page's title.
- */
-function playExit(): Promise<unknown> {
-  const targets = gsap.utils
-    .toArray<HTMLElement>("main > *")
-    .filter((el) => !el.querySelector("[data-astro-transition-scope]"));
-  if (targets.length === 0) return Promise.resolve();
-  return gsap
-    .to(targets, {
-      autoAlpha: 0,
-      y: -12,
-      duration: 0.25,
-      stagger: 0.03,
-      ease: "power2.in",
-      overwrite: true,
-    })
-    .then();
-}
-
-/**
- * Runs the exit animation in parallel with the next page's fetch, so the
+ * Drops the curtain in parallel with the next page's fetch, so the
  * transition never waits longer than the slower of the two.
  */
 function onBeforePreparation(event: Event): void {
@@ -59,7 +38,7 @@ function onBeforePreparation(event: Event): void {
   const prep = event as Event & { loader: () => Promise<void> };
   const load = prep.loader;
   prep.loader = async () => {
-    await Promise.all([playExit(), load()]);
+    await Promise.all([coverCurtain(), load()]);
   };
 }
 
@@ -76,7 +55,11 @@ function teardownPage(): void {
  */
 export function initPageMotion(): void {
   document.addEventListener("astro:page-load", () => {
-    document.fonts.ready.then(setupPage);
+    document.fonts.ready.then(() => {
+      // After a navigation, start the entrances as the curtain clears.
+      if (liftCurtain()) gsap.delayedCall(0.35, setupPage);
+      else setupPage();
+    });
   });
   document.addEventListener("astro:before-preparation", onBeforePreparation);
   document.addEventListener("astro:before-swap", teardownPage);

@@ -49,21 +49,17 @@ const visible = projects.slice(0, 4);
         visible.map((p) => {
           const data = p.data[lang];
           const href = getLocalizedPath(`/projects/${p.id}`, lang);
-          const transitionId = href.replace(/\//g, "-");
           return (
             <a
               href={href}
-              class="text-paper hover:text-paper grid grid-cols-[repeat(auto-fit,minmax(min(100%,240px),1fr))] gap-x-8 gap-y-5 border-t border-[rgba(250,250,247,0.15)] py-7 px-4 no-underline transition-colors hover:bg-[rgba(250,250,247,0.03)]"
+              class="text-paper hover:text-paper grid grid-cols-[repeat(auto-fit,minmax(min(100%,240px),1fr))] gap-x-8 gap-y-5 border-t border-[rgba(250,250,247,0.15)] px-4 py-7 no-underline transition-colors hover:bg-[rgba(250,250,247,0.03)]"
               title={`${data.title} - ${t("home.viewProject")}`}
             >
               <div class="flex flex-col gap-2.5">
                 <span class="text-fog font-mono text-xs">
                   {t("home.clientLabel")} · {data.client}
                 </span>
-                <h3
-                  class="text-paper m-0 text-[clamp(24px,2.6vw,34px)] leading-[1.05] font-bold tracking-[-0.03em]"
-                  transition:name={`project-title-${transitionId}`}
-                >
+                <h3 class="text-paper m-0 text-[clamp(24px,2.6vw,34px)] leading-[1.05] font-bold tracking-[-0.03em]">
                   {data.title} ↗
                 </h3>
                 <div class="flex flex-wrap gap-1.5">

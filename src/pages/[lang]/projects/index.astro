@@ -54,7 +54,6 @@ const projects = (await getCollection("projects")).sort(
         projects.map((entry, i) => {
           const data = entry.data[lang];
           const href = getLocalizedPath(`/projects/${entry.id}`, lang);
-          const transitionId = href.replace(/\//g, "-");
           const cover = entry.data.coverImage ?? entry.data.gallery?.[0];
           return (
             <div class="grid grid-cols-[repeat(auto-fit,minmax(min(100%,260px),1fr))] border-b border-[rgba(17,18,22,0.12)]">
@@ -84,10 +83,7 @@ const projects = (await getCollection("projects")).sort(
                   </div>
                 )}
                 <div class="flex flex-col gap-3.5">
-                  <h2
-                    class="text-night group-hover:text-violet m-0 text-[clamp(26px,3.2vw,40px)] leading-[1.05] font-bold tracking-[-0.035em] transition-colors"
-                    transition:name={`project-title-${transitionId}`}
-                  >
+                  <h2 class="text-night group-hover:text-violet m-0 text-[clamp(26px,3.2vw,40px)] leading-[1.05] font-bold tracking-[-0.035em] transition-colors">
                     {data.title}
                   </h2>
                   <p class="text-slate m-0 text-[15px] leading-[1.6]">

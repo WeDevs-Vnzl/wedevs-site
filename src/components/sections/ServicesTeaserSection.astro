@@ -35,7 +35,6 @@ const { t } = useTranslations(lang);
     {
       services.map((entry, i) => {
         const href = getLocalizedPath(`/services/${entry.id}`, lang);
-        const transitionId = href.replace(/\//g, "-");
         const data = entry.data[lang];
         return (
           <a
@@ -46,15 +45,10 @@ const { t } = useTranslations(lang);
               {itemIndex("01", i)}
             </span>
             <div class="flex flex-col gap-2.5">
-              <h3
-                class="text-night group-hover:text-violet m-0 text-[clamp(22px,2.8vw,36px)] leading-[1.1] font-bold tracking-[-0.035em] transition-colors"
-                transition:name={`service-title-${transitionId}`}
-              >
+              <h3 class="text-night group-hover:text-violet m-0 text-[clamp(22px,2.8vw,36px)] leading-[1.1] font-bold tracking-[-0.035em] transition-colors">
                 {data.title}
               </h3>
-              <p class="text-slate m-0 text-base leading-[1.55]">
-                {data.desc}
-              </p>
+              <p class="text-slate m-0 text-base leading-[1.55]">{data.desc}</p>
             </div>
             <span
               class="text-lg transition-transform group-hover:translate-x-1"
