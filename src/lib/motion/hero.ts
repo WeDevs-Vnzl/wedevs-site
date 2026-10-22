@@ -17,10 +17,13 @@ export function initHomeHero(): void {
     mask: "words",
     wordsClass: "split-mask",
   });
+  // Un-hide before building the tweens: each .from() renders its start
+  // state immediately, so later items stay hidden until their turn. Doing
+  // this inside the timeline would re-show them when it starts playing.
+  gsap.set(hero.querySelectorAll("[data-hero-item]"), { autoAlpha: 1 });
   const tl = gsap.timeline({ defaults: { duration: 0.8 }, delay: 0.1 });
 
-  tl.set(hero.querySelectorAll("[data-hero-item]"), { autoAlpha: 1 })
-    .addLabel("intro")
+  tl.addLabel("intro")
     .from(split.words, { yPercent: 110, stagger: 0.05 }, "intro")
     .addLabel("copy", "-=0.4");
 
@@ -53,10 +56,13 @@ export function initPageHero(): void {
     mask: "lines",
     linesClass: "split-mask",
   });
+  // Un-hide before building the tweens: each .from() renders its start
+  // state immediately, so later items stay hidden until their turn. Doing
+  // this inside the timeline would re-show them when it starts playing.
+  gsap.set(hero.querySelectorAll("[data-hero-item]"), { autoAlpha: 1 });
   const tl = gsap.timeline({ defaults: { duration: 0.8 }, delay: 0.05 });
 
-  tl.set(hero.querySelectorAll("[data-hero-item]"), { autoAlpha: 1 })
-    .addLabel("intro")
+  tl.addLabel("intro")
     .from(eyebrow, { autoAlpha: 0, x: -12, duration: 0.5 }, "intro")
     .from(split.lines, { yPercent: 105, stagger: 0.08, duration: 0.9 }, "<0.1")
     .addLabel("copy", "-=0.5");
