@@ -1,4 +1,4 @@
-import { gsap, REDUCED_MOTION } from "./gsap";
+import { gsap, prefersReducedMotion, REDUCED_MOTION } from "./gsap";
 import { initReveal } from "./reveal";
 
 let mm: gsap.MatchMedia | null = null;
@@ -12,6 +12,41 @@ function setupPage(): void {
     if (ctx.conditions?.reduce) return;
     initReveal();
   });
+}
+
+/**
+ * Fades the outgoing page's content up and out. Sections holding a
+ * `transition:name` element are left alone: fading them would make the
+ * browser morph an invisible snapshot into the new page's title.
+ */
+function playExit(): Promise<unknown> {
+  const targets = gsap.utils
+    .toArray<HTMLElement>("main > *")
+    .filter((el) => !el.querySelector("[data-astro-transition-scope]"));
+  if (targets.length === 0) return Promise.resolve();
+  return gsap
+    .to(targets, {
+      autoAlpha: 0,
+      y: -12,
+      duration: 0.25,
+      stagger: 0.03,
+      ease: "power2.in",
+      overwrite: true,
+    })
+    .then();
+}
+
+/**
+ * Runs the exit animation in parallel with the next page's fetch, so the
+ * transition never waits longer than the slower of the two.
+ */
+function onBeforePreparation(event: Event): void {
+  if (prefersReducedMotion()) return;
+  const prep = event as Event & { loader: () => Promise<void> };
+  const load = prep.loader;
+  prep.loader = async () => {
+    await Promise.all([playExit(), load()]);
+  };
 }
 
 /** Kills the old page's tweens and ScrollTriggers before the DOM is swapped. */
@@ -29,5 +64,6 @@ export function initPageMotion(): void {
   document.addEventListener("astro:page-load", () => {
     document.fonts.ready.then(setupPage);
   });
+  document.addEventListener("astro:before-preparation", onBeforePreparation);
   document.addEventListener("astro:before-swap", teardownPage);
 }

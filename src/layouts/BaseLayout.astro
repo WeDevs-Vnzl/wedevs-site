@@ -1,7 +1,6 @@
 ---
 import "../styles/global.css";
 import { ClientRouter } from "astro:transitions";
-import { fade } from "astro:transitions";
 import Hreflang from "../components/seo/Hreflang.astro";
 import Analytics from "../components/seo/Analytics.astro";
 import { useTranslations, type Lang } from "../lib/i18n/ui";
@@ -247,10 +246,9 @@ const breadcrumbJsonLd = breadcrumbs?.length
       </style>
     </noscript>
   </head>
-  <body
-    class="relative flex min-h-screen flex-col"
-    transition:animate={fade({ duration: "0.3s" })}
-  >
+  <!-- GSAP (src/lib/motion/page.ts) animates content out and in; named
+       transition:name elements still morph through View Transitions. -->
+  <body class="relative flex min-h-screen flex-col" transition:animate="none">
     <slot />
     <Motion />
   </body>
