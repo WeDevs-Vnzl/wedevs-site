@@ -60,9 +60,11 @@ function heroColumn(column: HTMLElement): gsap.core.Timeline {
       clipPath: "inset(0% 0% 0% 0%)",
       duration: 0.8,
       ease: "power3.inOut",
-      clearProps: "clipPath",
     },
-  );
+  )
+    // An inline "none" beats the hidden state in global.css; clearProps
+    // would hand the column back to that rule and hide it again.
+    .set(column, { clipPath: "none" });
 
   if (grid) {
     tl.set(grid, { autoAlpha: 1 }, 0.3).from(
