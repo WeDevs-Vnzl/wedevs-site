@@ -1,4 +1,5 @@
 import { gsap, prefersReducedMotion, REDUCED_MOTION } from "./gsap";
+import { initHomeHero, initPageHero } from "./hero";
 import { initReveal } from "./reveal";
 
 let mm: gsap.MatchMedia | null = null;
@@ -10,6 +11,9 @@ function setupPage(): void {
   mm.add({ reduce: REDUCED_MOTION }, (ctx) => {
     // Under reduced motion global.css never hides anything, so skip it all.
     if (ctx.conditions?.reduce) return;
+    // Top-to-bottom order, so ScrollTriggers refresh in page order.
+    initHomeHero();
+    initPageHero();
     initReveal();
   });
 }

@@ -86,25 +86,30 @@ const navLinks = [
       </a>
     </nav>
 
-    <div class="flex flex-1 flex-col justify-center gap-7" data-reveal-group>
+    <div class="flex flex-1 flex-col justify-center gap-7" data-hero>
       <h1
         id="hero-heading"
         class="text-night m-0 text-[clamp(42px,6vw,88px)] leading-[1.1] font-light tracking-[-0.05em] text-balance"
+        data-hero-item
+        data-hero-title
       >
         {t("home.heroTitle")}
         <span
           class="text-violet rounded-[2rem] [box-decoration-break:clone] px-[0.12em] font-extrabold "
-          >{t("home.heroTitleEmphasis")}</span
+          data-hero-emphasis>{t("home.heroTitleEmphasis")}</span
         >
       </h1>
       <p
         class="text-graphite m-0 max-w-[480px] text-lg leading-[1.55]"
+        data-hero-item
+        data-hero-copy
         set:html={`${md(t("home.heroPara1"))} ${md(t("home.heroPara2"))}`}
       />
-      <div class="flex flex-wrap gap-2.5">
+      <div class="flex flex-wrap gap-2.5" data-hero-item data-hero-copy>
         <a
           href={getLocalizedPath("/contact", lang)}
           class="bg-violet rounded-full px-[26px] py-4 font-bold text-white no-underline transition-opacity hover:opacity-90"
+          data-magnetic
         >
           {t("home.heroCta")}
         </a>
