@@ -36,6 +36,56 @@ export function initHomeHero(): void {
   }
 
   tl.from(copy, { autoAlpha: 0, y: 16, stagger: 0.1 }, "copy");
+
+  const column = hero.querySelector<HTMLElement>("[data-hero-column]");
+  if (column) tl.add(heroColumn(column), 0);
+}
+
+/**
+ * Dark column of the home hero: the panel wipes down, its pixel grid
+ * flickers on cell by cell, the "w" is drawn stroke by stroke and the violet
+ * slash strikes through, then the small brand bar and eyebrow fade in.
+ */
+function heroColumn(column: HTMLElement): gsap.core.Timeline {
+  const grid = column.querySelector(":scope > svg");
+  const w = column.querySelector("[data-hero-logo] [data-logo-w]");
+  const slash = column.querySelector("[data-hero-logo] [data-logo-slash]");
+  const chrome = column.querySelectorAll("[data-hero-chrome]");
+  const tl = gsap.timeline();
+
+  tl.fromTo(
+    column,
+    { clipPath: "inset(0% 0% 100% 0%)" },
+    {
+      clipPath: "inset(0% 0% 0% 0%)",
+      duration: 0.8,
+      ease: "power3.inOut",
+      clearProps: "clipPath",
+    },
+  );
+
+  if (grid) {
+    tl.set(grid, { autoAlpha: 1 }, 0.3).from(
+      grid.querySelectorAll("rect"),
+      { opacity: 0, duration: 0.3, stagger: { amount: 0.9, from: "random" } },
+      0.3,
+    );
+  }
+
+  tl.from(w, { drawSVG: "0%", duration: 0.9, ease: "power2.inOut" }, 0.45)
+    .from(
+      slash,
+      { drawSVG: "0%", duration: 0.35, ease: "power3.out" },
+      "-=0.15",
+    )
+    .from(
+      slash,
+      { scale: 1.25, transformOrigin: "50% 50%", duration: 0.5 },
+      "<",
+    )
+    .from(chrome, { autoAlpha: 0, y: 8, stagger: 0.08 }, "-=0.2");
+
+  return tl;
 }
 
 /**

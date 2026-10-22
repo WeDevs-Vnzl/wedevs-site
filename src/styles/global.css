@@ -259,8 +259,14 @@
        autoAlpha. Under reduced motion they are never hidden. */
     [data-reveal],
     [data-reveal-group] > *,
-    [data-hero-item] {
+    [data-hero-item],
+    [data-hero-column] > svg {
       visibility: hidden;
+    }
+
+    /* The home hero's dark column wipes in from the top. */
+    [data-hero-column] {
+      clip-path: inset(0 0 100% 0);
     }
   }
 

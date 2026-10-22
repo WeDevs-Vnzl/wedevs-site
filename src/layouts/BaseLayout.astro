@@ -240,8 +240,12 @@ const breadcrumbJsonLd = breadcrumbs?.length
       <style>
         [data-reveal],
         [data-reveal-group] > *,
-        [data-hero-item] {
+        [data-hero-item],
+        [data-hero-column] > svg {
           visibility: visible !important;
+        }
+        [data-hero-column] {
+          clip-path: none !important;
         }
       </style>
     </noscript>
