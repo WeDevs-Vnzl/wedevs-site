@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "gsap-master": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@vinhnguyen/gsap-mcp"
+      ],
+      "env": {}
+    }
+  }
+}
