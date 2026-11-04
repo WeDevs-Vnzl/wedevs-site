@@ -35,4 +35,4 @@ Disallow: /
 User-agent: *
 Allow: /
 
-Sitemap: https://wedevs.page/sitemap-index.xml
+Sitemap: https://we-devs.com/sitemap-index.xml

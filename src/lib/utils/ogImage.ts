@@ -33,7 +33,7 @@ export function renderOgImage(
   <rect x="60" y="320" width="1080" height="4" fill="#6b80ff"/>
   <text x="60" y="230" font-family="Manrope, system-ui, sans-serif" font-size="52" font-weight="800" letter-spacing="-2" fill="#f6f5f2">${escapeXml(truncate(title, 48))}</text>
   <text x="60" y="285" font-family="Manrope, system-ui, sans-serif" font-size="26" font-weight="400" fill="#a9aab0">${escapeXml(truncate(subtitle, 80))}</text>
-  <text x="60" y="380" font-family="JetBrains Mono, monospace" font-size="18" fill="#a9aab0">wedevs.page</text>
+  <text x="60" y="380" font-family="JetBrains Mono, monospace" font-size="18" fill="#a9aab0">we-devs.com</text>
 </svg>
 `);
   return sharp(svg).png().toBuffer();

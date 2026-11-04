@@ -4,7 +4,7 @@ import tailwindcss from "@tailwindcss/vite";
 import sitemap from "@astrojs/sitemap";
 
 const { BASE_URL } = loadEnv(process.env.NODE_ENV || "", process.cwd(), "");
-const site = BASE_URL || "https://wedevs.page";
+const site = BASE_URL || "https://we-devs.com";
 
 export default defineConfig({
   site,

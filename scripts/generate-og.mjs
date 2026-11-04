@@ -10,7 +10,7 @@ const iconsDir = join(publicDir, "icons");
 mkdirSync(imagesDir, { recursive: true });
 mkdirSync(iconsDir, { recursive: true });
 
-const siteHostname = (process.env.BASE_URL || "https://wedevs.page").replace(
+const siteHostname = (process.env.BASE_URL || "https://we-devs.com").replace(
   /^https?:\/\//,
   "",
 );
