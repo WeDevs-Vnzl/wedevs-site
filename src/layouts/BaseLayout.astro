@@ -3,6 +3,7 @@ import "../styles/global.css";
 import { ClientRouter } from "astro:transitions";
 import Hreflang from "../components/seo/Hreflang.astro";
 import Analytics from "../components/seo/Analytics.astro";
+import { analyticsEnabled, gaId } from "../lib/analytics";
 import { useTranslations, type Lang } from "../lib/i18n/ui";
 import { getCanonicalUrl } from "../lib/i18n/routes";
 import { brandEmail, founders } from "../lib/brand";
@@ -17,7 +18,7 @@ interface Breadcrumb {
 
 interface Props {
   lang: Lang;
-  /** Path without the /en//es/ prefix, used for canonical + hreflang. e.g. "/" or "/projects/kairos-cms" */
+  /** Path without the /en//es/ prefix, used for canonical + hreflang. e.g. "/" or "/projects/my-project" */
   path: string;
   title: string;
   description: string;
@@ -233,7 +234,7 @@ const breadcrumbJsonLd = breadcrumbs?.length
       )
     }
 
-    {import.meta.env.G_TAG && <Analytics gaId={import.meta.env.G_TAG} />}
+    {analyticsEnabled && gaId && <Analytics gaId={gaId} />}
 
     <!-- Without JS nothing would ever un-hide the motion targets (see global.css). -->
     <noscript>

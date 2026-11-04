@@ -14,6 +14,7 @@ interface Props {
 }
 const { lang } = Astro.props;
 const { t, dict } = useTranslations(lang);
+const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
 
 const labelClass =
   "text-violet font-mono text-xs font-medium tracking-[0.1em] uppercase";
@@ -23,7 +24,14 @@ const iconClass =
   "text-slate pointer-events-none absolute left-4 transition-colors";
 ---
 
-<form id="contact-form" class="flex flex-col gap-4" novalidate>
+<form
+  id="contact-form"
+  class="flex flex-col gap-4"
+  method="POST"
+  action="/api/contact"
+  novalidate
+>
+  <input type="hidden" name="lang" value={lang} />
   <div class="grid sm:grid-cols-2 gap-6">
     <div class="flex flex-col gap-1.5">
       <label for="cf-name" class={labelClass}>
@@ -167,11 +175,22 @@ const iconClass =
     <label for="cf-bot-field">Do not fill this field</label>
     <input
       id="cf-bot-field"
-      name="bot-field"
+      name="company_website"
       type="text"
       tabindex="-1"
       autocomplete="off"
     />
+  </div>
+
+  <!-- Turnstile widget, rendered explicitly by the script below so it also
+       appears after ClientRouter navigations. It injects the hidden
+       cf-turnstile-response input that the server verifies. -->
+  <div
+    id="cf-turnstile"
+    class="min-h-[65px]"
+    data-sitekey={turnstileSiteKey}
+    data-language={lang}
+  >
   </div>
 
   <button
@@ -192,6 +211,7 @@ const iconClass =
     i18n: {
       requiredError: t("contactPage.formRequiredError"),
       emailError: t("contactPage.formEmailError"),
+      captchaError: t("contactPage.formCaptchaError"),
       submitting: t("contactPage.formSubmitting"),
       submit: t("contactPage.formSubmit"),
       success: t("contactPage.formSuccess"),
@@ -209,9 +229,65 @@ const iconClass =
     getMissingRequiredFields,
   } from "../../lib/utils/form";
 
+  interface Turnstile {
+    render: (el: HTMLElement, opts: Record<string, unknown>) => string;
+    reset: (widgetId?: string) => void;
+    remove: (widgetId: string) => void;
+  }
+  const w = window as Window & {
+    turnstile?: Turnstile;
+    gtag?: (...args: unknown[]) => void;
+  };
+
+  const TURNSTILE_SRC =
+    "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
+  let turnstileLoading: Promise<Turnstile> | undefined;
+  let widgetId: string | undefined;
+
+  // Loads api.js once per session; ClientRouter keeps window state across swaps.
+  function loadTurnstile(): Promise<Turnstile> {
+    if (w.turnstile) return Promise.resolve(w.turnstile);
+    turnstileLoading ??= new Promise((resolve, reject) => {
+      const script = document.createElement("script");
+      script.src = TURNSTILE_SRC;
+      script.async = true;
+      script.onload = () =>
+        w.turnstile ? resolve(w.turnstile) : reject(new Error("turnstile"));
+      script.onerror = () => {
+        turnstileLoading = undefined; // allow a retry on the next page
+        reject(new Error("turnstile"));
+      };
+      document.head.appendChild(script);
+    });
+    return turnstileLoading;
+  }
+
+  async function renderTurnstile() {
+    const slot = document.getElementById("cf-turnstile");
+    if (!slot?.dataset.sitekey) return;
+    try {
+      const turnstile = await loadTurnstile();
+      if (!slot.isConnected) return; // navigated away while loading
+      widgetId = turnstile.render(slot, {
+        sitekey: slot.dataset.sitekey,
+        language: slot.dataset.language,
+        theme: "light",
+      });
+    } catch {
+      // Widget unavailable: the server rejects the submit and the user sees
+      // the captcha message.
+    }
+  }
+
+  function removeTurnstile() {
+    if (widgetId && w.turnstile) w.turnstile.remove(widgetId);
+    widgetId = undefined;
+  }
+
   function initContactForm() {
     const form = document.getElementById("contact-form") as HTMLFormElement;
     if (!form) return;
+    renderTurnstile();
 
     const i18n = (
       window as unknown as { __contactFormI18n: Record<string, string> }
@@ -258,20 +334,31 @@ const iconClass =
         return;
       }
 
+      if (!data["cf-turnstile-response"]) {
+        status.textContent = i18n.captchaError;
+        status.className = "text-sm text-red-700";
+        return;
+      }
+
       submitBtn.disabled = true;
       submitBtn.textContent = i18n.submitting;
       status.textContent = "";
       status.className = "text-sm";
 
       try {
-        await submitContactForm(data);
+        await submitContactForm(formData);
         status.textContent = i18n.success;
         status.className = "text-sm text-green-700";
         form.reset();
-      } catch {
-        status.textContent = i18n.error;
+        // GA4 conversion; mark generate_lead as a Key event in GA Admin.
+        w.gtag?.("event", "generate_lead", { form: "contact", lang: data.lang });
+      } catch (err) {
+        status.textContent =
+          (err as Error).message === "captcha" ? i18n.captchaError : i18n.error;
         status.className = "text-sm text-red-700";
       } finally {
+        // Turnstile tokens are single-use: request a fresh one per attempt.
+        if (widgetId) w.turnstile?.reset(widgetId);
         submitBtn.disabled = false;
         submitBtn.textContent = i18n.submit;
       }
@@ -281,5 +368,6 @@ const iconClass =
   }
 
   initContactForm();
+  document.addEventListener("astro:before-swap", removeTurnstile);
   document.addEventListener("astro:after-swap", initContactForm);
 </script>

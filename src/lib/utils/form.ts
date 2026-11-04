@@ -1,13 +1,14 @@
-/** Submits to the Netlify Forms endpoint registered via public/forms/__forms.html. */
-export async function submitContactForm(
-  data: Record<string, string>,
-): Promise<void> {
-  const res = await fetch("/forms/__forms.html", {
-    method: "POST",
-    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-    body: new URLSearchParams({ "form-name": "contact", ...data }).toString(),
-  });
-  if (!res.ok) throw new Error(`Form submission failed: ${res.status}`);
+/**
+ * Posts the form to the Netlify Function at netlify/functions/contact.mts.
+ * Throws an Error whose message is the server error code (e.g. "captcha").
+ */
+export async function submitContactForm(data: FormData): Promise<void> {
+  const res = await fetch("/api/contact", { method: "POST", body: data });
+  const body = (await res.json().catch(() => ({ ok: false }))) as {
+    ok?: boolean;
+    error?: string;
+  };
+  if (!res.ok || !body.ok) throw new Error(body.error ?? "error");
 }
 
 export function isValidEmail(email: string): boolean {
