@@ -1,4 +1,4 @@
-import { defineCollection, z } from "astro:content";
+import { defineCollection, reference, z } from "astro:content";
 import { glob } from "astro/loaders";
 
 // Item with a title and a lower-hierarchy description (tools, features, results)
@@ -79,7 +79,28 @@ const blog = defineCollection({
     updatedDate: z.coerce.date().optional(),
     tags: z.array(z.string()),
     coverImage: z.string().optional(),
+    // Project ids (filenames in src/content/projects) this post writes about.
+    // The project page lists these posts back, so the link is declared only here.
+    relatedProjects: z.array(reference("projects")).optional(),
   }),
 });
 
-export const collections = { projects, blog, services };
+export const testimonialTranslation = z.object({
+  quote: z.string(),
+  role: z.string(),
+});
+
+const testimonials = defineCollection({
+  loader: glob({ pattern: "**/*.md", base: "./src/content/testimonials" }),
+  schema: z.object({
+    order: z.number(),
+    name: z.string(),
+    company: z.string(),
+    // Image path under /public
+    avatar: z.string().optional(),
+    en: testimonialTranslation,
+    es: testimonialTranslation,
+  }),
+});
+
+export const collections = { projects, blog, services, testimonials };

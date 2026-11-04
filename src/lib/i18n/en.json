@@ -64,9 +64,7 @@
     "blogTitle": "From the blog",
     "blogAll": "All articles",
     "testimonial": {
-      "title": "What clients say",
-      "quote": "Client testimonial goes here. Add a real quote from Novanet Studio or another client.",
-      "who": "Name · Role · Company"
+      "title": "What clients say"
     }
   },
   "contact": {
@@ -92,6 +90,7 @@
     "linkBlog": "Blog"
   },
   "project": {
+    "relatedPostsHeading": "Articles about this project",
     "breadcrumbHome": "Home",
     "breadcrumbProjects": "Projects",
     "roleLabel": "Role:",
@@ -255,6 +254,7 @@
     "formError": "Something went wrong. Try emailing us directly.",
     "formRequiredError": "This field is required.",
     "formEmailError": "Enter a valid email address.",
+    "formCaptchaError": "Please complete the verification before sending.",
     "channelsLabel": "Other ways to reach us",
     "availabilityLabel": "Availability",
     "availabilityText": "UTC-4. Currently accepting new projects.",
@@ -274,6 +274,7 @@
     "updatedLabel": "Updated",
     "readingTime": "{n} min read",
     "relatedHeading": "Related posts",
+    "relatedProjectHeading": "Case study",
     "backToBlog": "← Back to blog",
     "authorBioText": "Co-founder of WedevsVnzla. Full-stack software engineer specialized in fintech and ERP systems.",
     "all": "All",
@@ -334,7 +335,7 @@
     "sections": [
       {
         "title": "What do we collect through the contact form?",
-        "body": "When you send the contact form we receive your name, email, project type, budget range and message. The form is processed by Netlify Forms, our hosting provider. We use this data only to reply to your request."
+        "body": "When you send the contact form we receive your name, email, project type, budget range and message. Cloudflare Turnstile checks that the submission comes from a person, and the message reaches us by email through Resend. We use this data only to reply to your request."
       },
       {
         "title": "Do we sell or share your data?",

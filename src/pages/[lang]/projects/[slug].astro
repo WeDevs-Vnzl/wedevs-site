@@ -3,6 +3,7 @@ import { getCollection } from "astro:content";
 import ProjectLayout from "../../../layouts/ProjectLayout.astro";
 import { locales, type Lang } from "../../../lib/i18n/ui";
 import { getCanonicalUrl, getLocalizedPath } from "../../../lib/i18n/routes";
+import { getPostSlug } from "../../../lib/utils/blog";
 
 export async function getStaticPaths() {
   const projects = (await getCollection("projects")).sort(
@@ -25,6 +26,22 @@ const { lang } = Astro.params as { lang: Lang };
 const { entry, nextEntry } = Astro.props;
 const { stack, coverImage, gallery, preview_url } = entry.data;
 const data = entry.data[lang];
+
+// Reverse side of the blog `relatedProjects` field: posts that cite this project.
+const relatedPosts = (
+  await getCollection(
+    "blog",
+    ({ data }) =>
+      data.lang === lang &&
+      (data.relatedProjects ?? []).some((ref) => ref.id === entry.id),
+  )
+)
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .map((post) => ({
+    href: getLocalizedPath(`/blog/${getPostSlug(post.id)}`, lang),
+    title: post.data.title,
+    date: post.data.date,
+  }));
 
 const path = `/projects/${entry.id}`;
 const canonicalUrl = getCanonicalUrl(path, lang);
@@ -56,5 +73,6 @@ const jsonLd = {
   gallery={gallery}
   preview_url={preview_url}
   next={next}
+  relatedPosts={relatedPosts}
   jsonLd={jsonLd}
 />

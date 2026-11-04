@@ -1,6 +1,6 @@
 ---
 import { blogAuthor } from "../../../lib/brand";
-import { getCollection, render } from "astro:content";
+import { getCollection, getEntries, render } from "astro:content";
 import BlogLayout from "../../../layouts/BlogLayout.astro";
 import type { Lang } from "../../../lib/i18n/ui";
 import { getCanonicalUrl, getLocalizedPath } from "../../../lib/i18n/routes";
@@ -35,6 +35,22 @@ const related = (
     href: getLocalizedPath(`/blog/${getPostSlug(p.id)}`, lang),
     title: p.data.title,
     date: p.data.date,
+  }));
+
+const relatedRefs = entry.data.relatedProjects ?? [];
+const relatedProjects = (await getEntries(relatedRefs))
+  .map((project, i) => {
+    if (!project) {
+      throw new Error(
+        `Blog post "${entry.id}" lists relatedProjects "${relatedRefs[i].id}", which is not a file in src/content/projects.`,
+      );
+    }
+    return project;
+  })
+  .map((project) => ({
+    href: getLocalizedPath(`/projects/${project.id}`, lang),
+    title: project.data[lang].title,
+    client: project.data[lang].client,
   }));
 
 const path = `/blog/${getPostSlug(entry.id)}`;
@@ -73,6 +89,7 @@ const jsonLd = {
   readingTime={readingTime}
   coverImage={entry.data.coverImage}
   related={related}
+  relatedProjects={relatedProjects}
   jsonLd={jsonLd}
 >
   <Content />

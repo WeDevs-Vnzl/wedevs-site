@@ -3,14 +3,14 @@
 Un proyecto = **un solo archivo `.md` bilingüe** en `src/content/projects/`.
 
 - El nombre del archivo es el **slug**: `src/content/projects/<slug>.md` → URL `/projects/<slug>`.
-  Usa kebab-case, sin espacios (p. ej. `kairos-cms.md`).
+  Usa kebab-case, sin espacios (p. ej. `my-project.md`).
 - **Todo el contenido va en el frontmatter** (entre los `---`). No hay cuerpo Markdown.
 - Debes llenar **ambos** bloques `en:` y `es:`. El HTML estático se renderiza en inglés; el
   script cliente (`src/scripts/i18n-client.ts`) intercambia al español según el idioma del usuario.
 - En cualquier string puedes usar **`**negrita**`** e **`*itálica*`** — las renderiza `src/utils/md.ts`.
 - Las rutas de `gallery` apuntan a archivos bajo `/public` (p. ej. `/projects/<slug>/img-1.webp`).
 
-Fuente de verdad del schema: `src/content.config.ts`. Ejemplo completo: `src/content/projects/kairos-cms.md`.
+Fuente de verdad del schema: `src/content.config.ts`.
 
 ---
 

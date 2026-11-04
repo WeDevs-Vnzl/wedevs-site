@@ -1,5 +1,5 @@
 ---
-import type { CollectionEntry } from "astro:content";
+import { getCollection, type CollectionEntry } from "astro:content";
 import PixelGrid from "../ui/PixelGrid.astro";
 import { useTranslations, type Lang } from "../../lib/i18n/ui";
 import { getLocalizedPath } from "../../lib/i18n/routes";
@@ -13,9 +13,11 @@ interface Props {
 const { lang, post } = Astro.props;
 const { t, dict } = useTranslations(lang);
 
-// The testimonial card stays hidden until a real client quote is added.
-const testimonial = dict.home.testimonial;
-const hasTestimonial = testimonial.quote.trim().length > 0;
+// One card per file in src/content/testimonials; none renders until one is added.
+const testimonials = (await getCollection("testimonials")).sort(
+  (a, b) => a.data.order - b.data.order,
+);
+const hasTestimonial = testimonials.length > 0;
 
 const dateFormatter = new Intl.DateTimeFormat(
   lang === "es" ? "es-ES" : "en-US",
@@ -30,10 +32,12 @@ const readingTime = post
   (hasTestimonial || post) && (
     <section
       class="bg-mist grid grid-cols-[repeat(auto-fit,minmax(min(100%,380px),1fr))] content-center gap-6 px-[clamp(20px,5vw,64px)] py-[clamp(64px,9vw,128px)] text-[#0e0f13] lg:min-h-[80dvh]"
-      aria-label={hasTestimonial ? testimonial.title : t("home.blogTitle")}
+      aria-label={
+        hasTestimonial ? dict.home.testimonial.title : t("home.blogTitle")
+      }
       data-reveal-group
     >
-      {hasTestimonial && (
+      {testimonials.map(({ data }) => (
         <figure class="relative m-0 flex min-h-60 flex-col justify-between gap-8 overflow-hidden rounded-[20px] bg-white p-[clamp(24px,3vw,40px)]">
           <PixelGrid
             cols={12}
@@ -44,20 +48,32 @@ const readingTime = post
             color="#4f55e8"
           />
           <span class="relative font-mono text-xs font-medium tracking-[0.12em] text-[#5a5e6b] uppercase">
-            {testimonial.title}
+            {dict.home.testimonial.title}
           </span>
           <blockquote class="text-violet relative m-0 text-[clamp(22px,2.4vw,30px)] leading-[1.3] font-semibold tracking-[-0.02em]">
-            “{testimonial.quote}”
+            “{data[lang].quote}”
           </blockquote>
-          <figcaption class="flexitems-center relative gap-3.5 font-mono text-xs text-[#5a5e6b]">
-            <span
-              class="size-11 shrink-0 rounded-[10px] bg-[repeating-linear-gradient(135deg,#dfe2ea_0_6px,#eef0f5_6px_12px)]"
-              aria-hidden="true"
-            />
-            {testimonial.who}
+          <figcaption class="relative flex items-center gap-3.5 font-mono text-xs text-[#5a5e6b]">
+            {data.avatar ? (
+              <img
+                src={data.avatar}
+                alt=""
+                width="44"
+                height="44"
+                loading="lazy"
+                decoding="async"
+                class="size-11 shrink-0 rounded-[10px] object-cover"
+              />
+            ) : (
+              <span
+                class="size-11 shrink-0 rounded-[10px] bg-[repeating-linear-gradient(135deg,#dfe2ea_0_6px,#eef0f5_6px_12px)]"
+                aria-hidden="true"
+              />
+            )}
+            {data.name} · {data[lang].role} · {data.company}
           </figcaption>
         </figure>
-      )}
+      ))}
 
       {post && (
         <a

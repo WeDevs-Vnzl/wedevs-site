@@ -64,9 +64,7 @@
     "blogTitle": "Del blog",
     "blogAll": "Todos los artículos",
     "testimonial": {
-      "title": "Lo que dicen los clientes",
-      "quote": "Aquí va el testimonio de un cliente. Agrega una cita real de Novanet Studio u otro cliente.",
-      "who": "Nombre · Cargo · Empresa"
+      "title": "Lo que dicen los clientes"
     }
   },
   "contact": {
@@ -92,6 +90,7 @@
     "linkBlog": "Blog"
   },
   "project": {
+    "relatedPostsHeading": "Artículos sobre este proyecto",
     "breadcrumbHome": "Inicio",
     "breadcrumbProjects": "Proyectos",
     "roleLabel": "Rol:",
@@ -255,6 +254,7 @@
     "formError": "Algo salió mal. Intenta escribirnos directo por correo.",
     "formRequiredError": "Este campo es obligatorio.",
     "formEmailError": "Ingresa un correo válido.",
+    "formCaptchaError": "Completa la verificación antes de enviar.",
     "channelsLabel": "Otras formas de contactarnos",
     "availabilityLabel": "Disponibilidad",
     "availabilityText": "UTC-4. Actualmente aceptando nuevos proyectos.",
@@ -274,6 +274,7 @@
     "updatedLabel": "Actualizado",
     "readingTime": "{n} min de lectura",
     "relatedHeading": "Artículos relacionados",
+    "relatedProjectHeading": "Caso de estudio",
     "backToBlog": "← Volver al blog",
     "authorBioText": "Equipo fundador de WedevsVnzla. Ingeniería de software full-stack con especialidad en fintech y sistemas ERP.",
     "all": "Todos",
@@ -334,7 +335,7 @@
     "sections": [
       {
         "title": "¿Qué recogemos con el formulario de contacto?",
-        "body": "Cuando envías el formulario recibimos tu nombre, email, tipo de proyecto, rango de presupuesto y mensaje. El formulario lo procesa Netlify Forms, nuestro proveedor de hosting. Usamos estos datos solo para responder tu solicitud."
+        "body": "Cuando envías el formulario recibimos tu nombre, email, tipo de proyecto, rango de presupuesto y mensaje. Cloudflare Turnstile comprueba que el envío lo hace una persona, y el mensaje nos llega por correo a través de Resend. Usamos estos datos solo para responder tu solicitud."
       },
       {
         "title": "¿Vendemos o compartimos tus datos?",

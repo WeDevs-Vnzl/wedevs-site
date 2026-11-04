@@ -16,6 +16,12 @@ interface NavProject {
   title: string;
 }
 
+interface RelatedPost {
+  href: string;
+  title: string;
+  date: Date;
+}
+
 interface Props {
   lang: Lang;
   path: string;
@@ -25,6 +31,8 @@ interface Props {
   gallery?: string[];
   coverImage?: string;
   next?: NavProject;
+  /** Blog posts whose `relatedProjects` cite this project. */
+  relatedPosts: RelatedPost[];
   jsonLd?: object;
 }
 
@@ -37,10 +45,15 @@ const {
   coverImage,
   preview_url,
   next,
+  relatedPosts,
   jsonLd,
 } = Astro.props;
 const { t } = useTranslations(lang);
 const home = getLocalizedPath("/", lang);
+const dateFormatter = new Intl.DateTimeFormat(
+  lang === "es" ? "es-ES" : "en-US",
+  { year: "numeric", month: "long", day: "numeric" },
+);
 const heroImage = coverImage ?? gallery?.[0];
 const projectSlug = path.replace(/^\/projects\//, "");
 const ogImage = `/og/projects/${projectSlug}-${lang}.png`;
@@ -439,6 +452,42 @@ const bodyText =
           </button>
         </div>
       ) : null
+    }
+
+    {
+      relatedPosts.length > 0 && (
+        <section
+          class="bg-paper border-t border-[rgba(17,18,22,0.12)] px-[clamp(20px,4vw,56px)] py-[clamp(48px,6vw,88px)]"
+          aria-labelledby="related-posts-heading"
+          data-reveal-group
+        >
+          <h2
+            id="related-posts-heading"
+            class="text-slate m-0 mb-6 font-mono text-xs font-medium tracking-[0.1em] uppercase"
+          >
+            {t("project.relatedPostsHeading")}
+          </h2>
+          <div class="grid grid-cols-[repeat(auto-fit,minmax(min(100%,320px),1fr))] gap-3">
+            {relatedPosts.map((post) => (
+              <a
+                href={post.href}
+                class="bg-night text-paper hover:text-paper relative flex min-h-[200px] flex-col justify-between gap-8 overflow-hidden rounded-[20px] p-[clamp(24px,3vw,40px)] no-underline"
+              >
+                <PixelGrid cols={12} rows={6} seed={53} hi={0.05} lo={0.015} />
+                <span class="relative text-[clamp(22px,2.4vw,28px)] leading-[1.15] font-bold tracking-[-0.03em] text-balance">
+                  {post.title}
+                </span>
+                <span class="relative flex items-center justify-between gap-3 text-[13px] text-[#a3a7b3]">
+                  <time datetime={post.date.toISOString()}>
+                    {dateFormatter.format(post.date)}
+                  </time>
+                  <span class="text-violet-soft font-semibold">→</span>
+                </span>
+              </a>
+            ))}
+          </div>
+        </section>
+      )
     }
 
     {

@@ -13,6 +13,12 @@ interface RelatedPost {
   date: Date;
 }
 
+interface RelatedProject {
+  href: string;
+  title: string;
+  client: string;
+}
+
 interface Props {
   lang: Lang;
   path: string;
@@ -27,6 +33,8 @@ interface Props {
   readingTime: number;
   coverImage?: string;
   related: RelatedPost[];
+  /** Case studies this post writes about (frontmatter `relatedProjects`). */
+  relatedProjects: RelatedProject[];
   jsonLd?: object;
 }
 
@@ -43,6 +51,7 @@ const {
   readingTime,
   coverImage,
   related,
+  relatedProjects,
   jsonLd,
 } = Astro.props;
 const { t } = useTranslations(lang);
@@ -216,6 +225,33 @@ const breadcrumbs = [
         <article class="prose" data-reveal>
           <slot />
         </article>
+
+        {
+          relatedProjects.length > 0 && (
+            <div class="mt-10 flex flex-col gap-3" data-reveal>
+              {relatedProjects.map((project) => (
+                <a
+                  href={project.href}
+                  class="bg-violet text-paper hover:text-paper relative flex min-h-[180px] flex-col justify-between gap-8 overflow-hidden rounded-[20px] p-[clamp(24px,3vw,40px)] no-underline"
+                >
+                  <PixelGrid cols={12} rows={6} seed={71} hi={0.08} lo={0.03} />
+                  <div class="relative flex items-center justify-between gap-3">
+                    <span class="font-mono text-xs font-medium tracking-[0.12em] text-white/70 uppercase">
+                      {t("blog.relatedProjectHeading")}
+                    </span>
+                    <span class="font-semibold">→</span>
+                  </div>
+                  <span class="relative text-[clamp(24px,2.8vw,32px)] leading-[1.1] font-bold tracking-[-0.03em] text-balance">
+                    {project.title}
+                  </span>
+                  <span class="relative text-[13px] text-white/70">
+                    {project.client}
+                  </span>
+                </a>
+              ))}
+            </div>
+          )
+        }
 
         {
           related.length > 0 && (
