@@ -1,0 +1,4 @@
+# Pins the functions directory so Netlify bundles netlify/functions/contact.mts
+# (served at /api/contact) regardless of the site's UI settings.
+[functions]
+  directory = "netlify/functions"
