@@ -1,7 +1,6 @@
 ---
 order: 2
 stack: [Node.js, NestJS, PostgreSQL, C2P, Nuxt]
-relatedProjectIds: [maximiza]
 
 en:
   title: "Fintech & ERP integrations"

@@ -1,7 +1,6 @@
 ---
 order: 3
 stack: [LangGraph, LangChain, Python, FastAPI, Meta API]
-relatedProjectIds: [maximiza]
 
 en:
   title: "AI agents & automation"

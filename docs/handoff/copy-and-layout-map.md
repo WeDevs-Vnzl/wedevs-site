@@ -1,6 +1,6 @@
 # Wedevs site — copy & layout map (handoff)
 
-Purpose: give a copy/IA agent everything needed to **rewrite copy and rebalance section distribution** on wedevs.page without re-exploring the repo. This document describes _what each copy is for_, not its current wording — read the source files for the actual text.
+Purpose: give a copy/IA agent everything needed to **rewrite copy and rebalance section distribution** on we-devs.com without re-exploring the repo. This document describes _what each copy is for_, not its current wording — read the source files for the actual text.
 
 Stack: Astro 7 + Tailwind 4, bilingual (`/en/`, `/es/`), dark-only theme. Root `/` redirects to `/en/`.
 
@@ -14,7 +14,7 @@ Stack: Astro 7 + Tailwind 4, bilingual (`/en/`, `/es/`), dark-only theme. Root `
 | What it is   | Software studio from Venezuela — no longer a personal portfolio                             |
 | Tagline (ES) | Software a la medida — apps, webs, CRMs y sistemas — con precisión técnica y trato cercano. |
 | Logo         | Monogram **w/** (proposal A): Papel "w" + Cobalto slash. "The slash joins design and code." |
-| Domain       | https://wedevs.page                                                                         |
+| Domain       | https://we-devs.com                                                                         |
 
 **Voice — three rules**
 

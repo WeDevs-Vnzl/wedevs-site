@@ -1,7 +1,7 @@
 import { locales, defaultLang, type Lang } from "./ui";
 
 /**
- * Prefixes a site-relative path (e.g. "/projects/kairos-cms") with the locale
+ * Prefixes a site-relative path (e.g. "/projects/my-project") with the locale
  * segment. Always ends in "/" so links, canonicals and the sitemap share one
  * URL form (the static build emits directory/index.html pages).
  */

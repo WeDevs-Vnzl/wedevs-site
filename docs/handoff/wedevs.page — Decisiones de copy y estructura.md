@@ -1,10 +1,10 @@
-# wedevs.page — Decisiones de copy y estructura
+# we-devs.com — Decisiones de copy y estructura
 
 Oct 20, 2026 · @Williams
 
 ## Resumen
 
-wedevs.page se construye como la web de un estudio de software, no como un portafolio personal. Este documento cierra las 10 decisiones abiertas del traspaso, fija el orden del home y propone su copy en español e inglés, listo para cuando exista el código.
+we-devs.com se construye como la web de un estudio de software, no como un portafolio personal. Este documento cierra las 10 decisiones abiertas del traspaso, fija el orden del home y propone su copy en español e inglés, listo para cuando exista el código.
 
 Criterios que guían todas las decisiones:
 
@@ -23,7 +23,7 @@ Ocho puntos quedan decididos; los puntos 5 y 7 dependen de datos del equipo (ver
 | 2   | «Agendar llamada» abre Gmail       | El botón dice «Hablemos» / «Let's talk» y lleva a `/contacto`. Si más adelante usan una agenda (por ejemplo Cal.com), se vuelve «Agendar llamada».                                                  |
 | 3   | El home se lee como portafolio     | Nuevo orden: Hero → Servicios → Proyectos → Cómo trabajamos → Contacto. El blog sale del home y queda solo en el menú.                                                                              |
 | 4   | Etiquetas «Empleado» y «Freelance» | Dos etiquetas de estudio: «Producto propio» / «Own product» y «Cliente» / «Client». Trabajos hechos como empleado no se muestran como del estudio.                                                  |
-| 5   | Contactos personales del fundador  | Usar canales de la marca: correo del dominio (propuesta: hola@wedevs.page), Instagram y TikTok de la empresa, WhatsApp de negocio. LinkedIn y GitHub personales solo en la ficha de autor del blog. |
+| 5   | Contactos personales del fundador  | Usar canales de la marca: correo del dominio (propuesta: hola@we-devs.com), Instagram y TikTok de la empresa, WhatsApp de negocio. LinkedIn y GitHub personales solo en la ficha de autor del blog. |
 | 6   | Hero y stack demasiado técnicos    | Hero orientado a resultados (copy abajo). El stack pasa a una fila de chips dentro de «Cómo trabajamos», con una sola frase.                                                                        |
 | 7   | Precios y modalidades sin validar  | Mantener 3 modalidades, pero sin cifras hasta validarlas: Proyecto cerrado, Por etapas, Acompañamiento mensual. Los rangos de presupuesto del formulario se definen con el equipo.                  |
 | 8   | SEO solo en inglés                 | Título, descripción, JSON-LD, imagen OG y `llms.txt` en ambos idiomas; cada página `/es/` usa su versión en español.                                                                                |
@@ -110,7 +110,7 @@ Cada fila es una clave de `es.json` / `en.json`; los textos entre corchetes los 
 Con estas respuestas se completa el copy del home y del resto de páginas.
 
 - [ ] Resultado en una línea de Kairos CMS y de Maximiza, y si cada uno es producto propio o de un cliente.
-- [ ] Correo de la marca (¿hola@wedevs.page?), número de WhatsApp de negocio y usuarios de Instagram y TikTok.
+- [ ] Correo de la marca (¿hola@we-devs.com?), número de WhatsApp de negocio y usuarios de Instagram y TikTok.
 - [ ] Tiempo de respuesta que pueden prometer en contacto (por ejemplo, 24 o 48 horas).
 - [ ] Modalidades de trabajo reales y rangos de presupuesto para el formulario.
 - [ ] Si usarán una agenda para llamadas o solo contacto por mensaje.

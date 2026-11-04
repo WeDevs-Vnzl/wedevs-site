@@ -1,7 +1,6 @@
 ---
 order: 4
 stack: [Architecture Review, Code Audit, Performance Profiling]
-relatedProjectIds: [kairos-cms]
 
 en:
   title: "Technical consulting"

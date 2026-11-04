@@ -1,7 +1,6 @@
 ---
 order: 1
 stack: [Next.js, Nuxt, Node.js, TypeScript, PostgreSQL, Tailwind CSS]
-relatedProjectIds: [kairos-cms, maximiza]
 
 en:
   title: "Full-stack development"
