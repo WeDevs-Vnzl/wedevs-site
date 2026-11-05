@@ -3,8 +3,24 @@
 [functions]
   directory = "netlify/functions"
 
-# HSTS for the apex and every subdomain (Netlify sends max-age only by default).
+# Security headers (SEO audit 2026-11-05). The CSP lists exactly what the
+# pages load: self-hosted assets, the inline scripts and style attributes the
+# templates emit, Google Analytics (gtag) and Cloudflare Turnstile on the
+# contact form. Add a host here before loading anything new from it.
+# HSTS with `preload` is a prerequisite for submitting the apex to
+# hstspreload.org; the submission itself is a manual, one-time step.
 [[headers]]
   for = "/*"
   [headers.values]
-    Strict-Transport-Security = "max-age=31536000; includeSubDomains"
+    Strict-Transport-Security = "max-age=63072000; includeSubDomains; preload"
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=(), payment=(), usb=(), browsing-topics=()"
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://*.googletagmanager.com https://*.google-analytics.com https://*.analytics.google.com https://*.g.doubleclick.net https://www.google.com; font-src 'self'; connect-src 'self' https://*.googletagmanager.com https://*.google-analytics.com https://*.analytics.google.com https://*.g.doubleclick.net https://www.google.com https://challenges.cloudflare.com; frame-src https://challenges.cloudflare.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'"
+
+# Hashed build output never changes under the same name.
+[[headers]]
+  for = "/_astro/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
