@@ -136,6 +136,10 @@
   --color-fog: #b4b7c2;
   --color-violet: #4f55e8;
   --color-violet-soft: #8f94ff;
+  /* Running prose on paper; support copy and fine print on night. */
+  --color-ink-prose: #2a2c33;
+  --color-night-copy: #c5c8d2;
+  --color-night-meta: #9a9da8;
 
   /* Typography */
   --font-sans: "Manrope", system-ui, sans-serif;
@@ -164,8 +168,21 @@
   --text-body: 0.9375rem;
   --text-body--line-height: 1.6;
 
+  /* Lead paragraph under a hero or section title. */
+  --text-lead: clamp(17px, 1.5vw, 19px);
+  --text-lead--line-height: 1.7;
+
   --text-small: 0.8125rem;
   --text-small--line-height: 1.5;
+
+  /* Captions, card metadata and fine print. */
+  --text-caption: 13px;
+  --text-caption--line-height: 1.5;
+
+  /* Mono tags and tiny labels. */
+  --text-micro: 11px;
+  --text-micro--line-height: 1.4;
+  --text-micro--letter-spacing: 0.02em;
 
   --text-eyebrow: 0.8125rem;
   --text-eyebrow--line-height: 1.4;
@@ -277,8 +294,39 @@
     margin-bottom: -0.15em;
   }
 
+  /* Links and focus rings follow the surface: violet on paper, soft violet
+     on night (DESIGN.md, The One Lamp Rule). The body is dark by default and
+     paper pages set bg-paper on <main>. */
+  body {
+    --link-color: var(--color-violet-soft);
+    --focus-ring: var(--color-violet-soft);
+  }
+
+  .bg-paper,
+  .bg-paper-2,
+  .bg-paper-3,
+  .bg-white {
+    --link-color: var(--color-violet);
+    --focus-ring: var(--color-violet);
+  }
+
+  .bg-night,
+  .bg-night-2 {
+    --link-color: var(--color-violet-soft);
+    --focus-ring: var(--color-violet-soft);
+  }
+
+  .bg-violet {
+    --link-color: #ffffff;
+    --focus-ring: #ffffff;
+  }
+
+  /* An outline (not a box-shadow ring) leaves the gap transparent, so the
+     surface shows through and no offset colour has to be chosen per page. */
   :focus-visible {
-    @apply ring-accent ring-offset-bg rounded-sm ring-2 ring-offset-2 outline-none;
+    @apply rounded-sm;
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 2px;
   }
 
   h1,
@@ -289,7 +337,8 @@
   }
 
   a {
-    @apply text-accent underline-offset-2;
+    @apply underline-offset-2;
+    color: var(--link-color);
   }
 
   p {
@@ -332,7 +381,7 @@
     @apply text-ink-2 leading-relaxed;
 
     &::marker {
-      @apply text-accent;
+      color: var(--link-color);
     }
   }
 }

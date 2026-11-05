@@ -100,7 +100,7 @@ const jsonLd = {
           {data.title}
         </h1>
         <p
-          class="m-0 max-w-[720px] text-[clamp(18px,1.8vw,22px)] leading-normal text-pretty text-[#c5c8d2]"
+          class="m-0 max-w-[720px] text-[clamp(18px,1.8vw,22px)] leading-normal text-pretty text-night-copy"
           data-hero-item
           data-hero-fade
         >
@@ -114,14 +114,14 @@ const jsonLd = {
         data-hero-fade
       >
         <span
-          class="text-fog font-mono text-[11px] font-medium tracking-[0.1em] uppercase"
+          class="text-fog font-mono text-micro font-medium tracking-[0.1em] uppercase"
         >
           {t("services.detail.stackLabel")}
         </span>
         <div class="flex flex-wrap gap-[5px]">
           {
             stack.map((tech) => (
-              <span class="bg-night-2 rounded px-2 py-1 font-mono text-[11px] text-[#d4d6de]">
+              <span class="bg-night-2 rounded px-2 py-1 font-mono text-micro text-[#d4d6de]">
                 {tech}
               </span>
             ))
@@ -136,7 +136,7 @@ const jsonLd = {
       headingId="deliverables-heading"
     >
       <p
-        class="m-0 max-w-[760px] text-[clamp(17px,1.5vw,19px)] leading-[1.7] text-pretty text-[#2a2c33]"
+        class="m-0 max-w-[760px] text-lead text-pretty text-ink-prose"
       >
         {data.desc}
       </p>

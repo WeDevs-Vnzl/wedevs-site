@@ -28,14 +28,14 @@ const socials = [{ href: mailHref, label: "Email" }];
         class="text-ink font-medium no-underline"
         title="Wedevs — Home"
       >
-        <Logo size={24} />
+        <Logo size={24} slash="var(--color-violet-soft)" />
       </a>
       <p class="text-muted mt-2 max-w-[32ch] text-sm">
         {t("footer.reach")}
       </p>
     </div>
 
-    <nav class="flex flex-col gap-2 text-[13px]" aria-label={t("nav.navLabel")}>
+    <nav class="flex flex-col gap-2 text-caption" aria-label={t("nav.navLabel")}>
       {
         navLinks.map((link) => (
           <a href={link.href} class="text-muted hover:text-ink no-underline">
@@ -45,7 +45,7 @@ const socials = [{ href: mailHref, label: "Email" }];
       }
     </nav>
 
-    <div class="flex flex-col gap-2 text-[13px] md:items-end">
+    <div class="flex flex-col gap-2 text-caption md:items-end">
       {
         socials.map((s) => (
           <a

@@ -76,7 +76,7 @@ const postHref = (post: (typeof posts)[number]) =>
                 type="button"
                 data-tag-filter={tag}
                 aria-pressed={tag === "" ? "true" : "false"}
-                class="tag-filter text-night cursor-pointer rounded-full border border-[rgba(17,18,22,0.2)] bg-transparent px-3.5 py-2 text-[13px] font-semibold"
+                class="tag-filter text-night cursor-pointer rounded-full border border-[rgba(17,18,22,0.2)] bg-transparent px-3.5 py-2 text-caption font-semibold"
               >
                 {tag || t("blog.all")}
               </button>
@@ -158,7 +158,7 @@ const postHref = (post: (typeof posts)[number]) =>
         )
       }
 
-      <p class="m-0 font-mono text-[13px] text-[#6a6c74]">{t("blog.soon")}</p>
+      <p class="m-0 font-mono text-caption text-[#6a6c74]">{t("blog.soon")}</p>
     </section>
   </main>
 

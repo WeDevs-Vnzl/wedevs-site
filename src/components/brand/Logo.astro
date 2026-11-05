@@ -4,14 +4,17 @@ interface Props {
   size?: number;
   wordmark?: boolean;
   class?: string;
-  /** Color of the "w" stroke and wordmark; the slash always uses the accent. */
+  /** Color of the "w" stroke and wordmark. */
   ink?: string;
+  /** Color of the slash: violet on paper, soft violet on night surfaces. */
+  slash?: string;
 }
 const {
   size = 28,
   wordmark = true,
   class: className = "",
   ink = "var(--color-ink)",
+  slash = "var(--color-violet)",
 } = Astro.props;
 ---
 
@@ -36,7 +39,7 @@ const {
       y1="10"
       x2="54"
       y2="54"
-      stroke="var(--color-accent)"
+      stroke={slash}
       stroke-width="6"
       stroke-linecap="round"
       data-logo-slash></line>
