@@ -1,5 +1,11 @@
 import { defineCollection, reference, z } from "astro:content";
 import { glob } from "astro/loaders";
+import { founders } from "./lib/brand";
+
+const founderIds = founders.map((f) => f.id) as [
+  (typeof founders)[number]["id"],
+  ...(typeof founders)[number]["id"][],
+];
 
 // Item with a title and a lower-hierarchy description (tools, features, results)
 export const namedItem = z.object({ name: z.string(), reason: z.string() });
@@ -79,6 +85,8 @@ const blog = defineCollection({
     updatedDate: z.coerce.date().optional(),
     tags: z.array(z.string()),
     coverImage: z.string().optional(),
+    // Founder id (src/lib/brand.ts) who wrote the post; defaults to blogAuthor.
+    author: z.enum(founderIds).optional(),
     // Project ids (filenames in src/content/projects) this post writes about.
     // The project page lists these posts back, so the link is declared only here.
     relatedProjects: z.array(reference("projects")).optional(),

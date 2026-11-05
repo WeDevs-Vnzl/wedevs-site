@@ -1,5 +1,5 @@
 ---
-import { blogAuthor } from "../../../lib/brand";
+import { blogAuthor, founders } from "../../../lib/brand";
 import { getCollection, getEntries, render } from "astro:content";
 import BlogLayout from "../../../layouts/BlogLayout.astro";
 import type { Lang } from "../../../lib/i18n/ui";
@@ -16,7 +16,12 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props;
 const { lang } = Astro.params as { lang: Lang; slug: string };
-const { Content } = await render(entry);
+const { Content, headings } = await render(entry);
+const author = founders.find((f) => f.id === entry.data.author) ?? blogAuthor;
+// The side index follows the post's h2 headings (ids come from rehype-slug).
+const sections = headings
+  .filter((h) => h.depth === 2)
+  .map((h) => ({ id: h.slug, label: h.text }));
 
 const readingTime = Math.max(
   1,
@@ -65,11 +70,11 @@ const jsonLd = {
   dateModified: (entry.data.updatedDate ?? entry.data.date).toISOString(),
   author: {
     "@type": "Person",
-    "@id": `${import.meta.env.SITE}/#${blogAuthor.id}`,
-    name: blogAuthor.name,
+    "@id": `${import.meta.env.SITE}/#${author.id}`,
+    name: author.name,
     url: getCanonicalUrl("/about", lang),
-    image: `${import.meta.env.SITE}${blogAuthor.photo}`,
-    sameAs: [blogAuthor.linkedin],
+    image: `${import.meta.env.SITE}${author.photo}`,
+    sameAs: [author.linkedin],
   },
   publisher: { "@id": `${import.meta.env.SITE}/#organization` },
   inLanguage: lang,
@@ -88,6 +93,8 @@ const jsonLd = {
   updatedDate={entry.data.updatedDate}
   tags={entry.data.tags}
   readingTime={readingTime}
+  author={author}
+  sections={sections}
   coverImage={entry.data.coverImage}
   related={related}
   relatedProjects={relatedProjects}

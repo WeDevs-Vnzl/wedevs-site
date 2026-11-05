@@ -267,7 +267,7 @@ const bodyText =
 
     {
       sections.length > 0 && (
-        <section class="grid grid-cols-[repeat(auto-fit,minmax(min(100%,240px),1fr))] items-start gap-x-14 gap-y-8 px-[clamp(20px,4vw,56px)] py-[clamp(40px,5vw,72px)]">
+        <section class="grid grid-cols-1 items-start gap-x-14 gap-y-8 px-[clamp(20px,4vw,56px)] py-[clamp(40px,5vw,72px)] md:grid-cols-[1fr_2fr_1fr]">
           <nav
             class="sticky top-5 hidden flex-col md:flex"
             aria-label="Section index"
@@ -300,7 +300,7 @@ const bodyText =
             ))}
           </nav>
 
-          <div class="col-span-2 flex min-w-0 flex-col gap-[clamp(56px,7vw,96px)] max-[519px]:col-span-1">
+          <div class="flex min-w-0 flex-col gap-[clamp(56px,7vw,96px)] md:col-start-2">
             {sections.map((s, i) => {
               const label = `${itemIndex("02", i)} · ${s.label}`;
               if (s.kind === "results") {
@@ -525,30 +525,10 @@ const bodyText =
 </style>
 
 <script>
-  function initProjectPage() {
-    const indexLinks = Array.from(
-      document.querySelectorAll<HTMLAnchorElement>("[data-index-link]"),
-    );
-    const ids = [...new Set(indexLinks.map((l) => l.dataset.indexLink!))];
-    const sections = ids
-      .map((id) => document.getElementById(id))
-      .filter((el): el is HTMLElement => !!el);
+  import { initSectionIndex } from "../lib/sectionIndex";
 
-    if (indexLinks.length && sections.length) {
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            indexLinks
-              .filter((l) => l.dataset.indexLink === entry.target.id)
-              .forEach((l) =>
-                l.classList.toggle("is-active", entry.isIntersecting),
-              );
-          });
-        },
-        { rootMargin: "-30% 0px -60% 0px" },
-      );
-      sections.forEach((section) => observer.observe(section));
-    }
+  function initProjectPage() {
+    initSectionIndex();
 
     const lightbox = document.getElementById("lightbox");
     const lightboxStage = document.getElementById("lightbox-stage");

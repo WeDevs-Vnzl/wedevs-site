@@ -4,8 +4,9 @@ import SiteHeader from "../components/layout/SiteHeader.astro";
 import SiteFooter from "../components/layout/SiteFooter.astro";
 import PixelGrid from "../components/ui/PixelGrid.astro";
 import { getLocalizedPath } from "../lib/i18n/routes";
-import { blogAuthor } from "../lib/brand";
+import type { Founder } from "../lib/brand";
 import { useTranslations, type Lang } from "../lib/i18n/ui";
+import { itemIndex } from "../lib/utils/itemIndex";
 
 interface RelatedPost {
   href: string;
@@ -31,6 +32,9 @@ interface Props {
   updatedDate?: Date;
   tags: string[];
   readingTime: number;
+  author: Founder;
+  /** h2 headings of the post, for the side index (id = heading slug). */
+  sections: { id: string; label: string }[];
   coverImage?: string;
   related: RelatedPost[];
   /** Case studies this post writes about (frontmatter `relatedProjects`). */
@@ -49,6 +53,8 @@ const {
   updatedDate,
   tags,
   readingTime,
+  author,
+  sections,
   coverImage,
   related,
   relatedProjects,
@@ -161,7 +167,7 @@ const breadcrumbs = [
           >
             <div class="flex items-center gap-3">
               <img
-                src={blogAuthor.avatar}
+                src={author.avatar}
                 alt=""
                 width="36"
                 height="36"
@@ -174,7 +180,7 @@ const breadcrumbs = [
                   rel="author"
                   class="text-paper hover:text-violet-soft text-sm font-semibold no-underline"
                 >
-                  {blogAuthor.name}
+                  {author.name}
                 </a>
                 <span class="text-fog font-mono text-xs">
                   <time datetime={date.toISOString()}>
@@ -229,9 +235,49 @@ const breadcrumbs = [
     }
 
     <section
-      class="flex justify-center px-[clamp(20px,4vw,56px)] py-[clamp(40px,5vw,72px)]"
+      class="grid grid-cols-1 items-start gap-x-14 gap-y-8 px-[clamp(20px,4vw,56px)] py-[clamp(40px,5vw,72px)] md:grid-cols-[1fr_2fr_1fr]"
     >
-      <div class="flex w-full max-w-[680px] flex-col">
+      {
+        sections.length > 0 && (
+          <nav
+            class="sticky top-5 hidden flex-col md:flex"
+            aria-label="Section index"
+          >
+            {sections.map((s, i) => (
+              <a
+                href={`#${s.id}`}
+                data-index-link={s.id}
+                class="index-link text-slate hover:text-night flex items-baseline gap-3 border-l-2 border-[rgba(17,18,22,0.12)] py-2.5 pl-3.5 text-sm font-medium no-underline"
+              >
+                <span class="text-violet text-micro font-mono">
+                  {itemIndex("01", i)}
+                </span>
+                {s.label}
+              </a>
+            ))}
+          </nav>
+        )
+      }
+      {
+        sections.length > 0 && (
+          <nav
+            class="flex flex-wrap gap-1.5 md:hidden"
+            aria-label="Section index"
+          >
+            {sections.map((s) => (
+              <a
+                href={`#${s.id}`}
+                data-index-link={s.id}
+                class="index-chip bg-paper-3 text-night text-caption rounded-full px-3 py-[7px] no-underline"
+              >
+                {s.label}
+              </a>
+            ))}
+          </nav>
+        )
+      }
+
+      <div class="flex max-w-[760px] min-w-0 flex-col md:col-start-2">
         <article class="prose" data-reveal>
           <slot />
         </article>
@@ -310,6 +356,16 @@ const breadcrumbs = [
 </BaseLayout>
 
 <style>
+  .index-link.is-active {
+    color: var(--color-night);
+    font-weight: 700;
+    border-color: var(--color-violet);
+  }
+  .index-chip.is-active {
+    background: var(--color-night);
+    color: var(--color-paper);
+  }
+
   .prose :global(p),
   .prose :global(li) {
     color: var(--color-ink-prose);
@@ -335,6 +391,7 @@ const breadcrumbs = [
   }
 
   .prose :global(h2) {
+    scroll-margin-top: 20px;
     margin-top: 56px;
     margin-bottom: 18px;
     padding-top: 24px;
@@ -411,6 +468,8 @@ const breadcrumbs = [
 </style>
 
 <script>
+  import { initSectionIndex } from "../lib/sectionIndex";
+
   function initReadingProgress() {
     const bar = document.getElementById("reading-progress");
     if (!bar) return;
@@ -452,10 +511,12 @@ const breadcrumbs = [
     });
   }
 
-  initReadingProgress();
-  initShare();
-  document.addEventListener("astro:after-swap", () => {
+  function initBlogPage() {
+    initSectionIndex();
     initReadingProgress();
     initShare();
-  });
+  }
+
+  initBlogPage();
+  document.addEventListener("astro:after-swap", initBlogPage);
 </script>
