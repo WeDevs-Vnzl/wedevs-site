@@ -6,6 +6,7 @@ import Analytics from "../components/seo/Analytics.astro";
 import { analyticsEnabled, gaId } from "../lib/analytics";
 import { useTranslations, type Lang } from "../lib/i18n/ui";
 import { getCanonicalUrl } from "../lib/i18n/routes";
+import { ogPageImage } from "../lib/og/pages";
 import { brandEmail, brandSameAs, founders } from "../lib/brand";
 
 import HeroBg from "../components/ui/HeroBg.astro";
@@ -25,7 +26,7 @@ interface Props {
   description: string;
   ogTitle?: string;
   ogDescription?: string;
-  /** Absolute or site-relative OG/Twitter image. Defaults to the shared /images/og.png. */
+  /** Absolute or site-relative OG/Twitter image. Defaults to the page's card from /og/pages (see src/lib/og/pages.ts). */
   ogImage?: string;
   /** "article" for blog posts and project case studies, "website" (default) otherwise. */
   ogType?: "website" | "article";
@@ -51,9 +52,7 @@ const {
 const site = import.meta.env.SITE;
 const { t } = useTranslations(lang);
 const resolvedCanonical = getCanonicalUrl(path, lang);
-const ogImageUrl = ogImage
-  ? new URL(ogImage, site).toString()
-  : `${site}/images/${lang === "es" ? "og-es.png" : "og.png"}`;
+const ogImageUrl = new URL(ogImage ?? ogPageImage(path, lang), site).toString();
 const ogLocale = lang === "es" ? "es_ES" : "en_US";
 
 const organizationJsonLd = {
@@ -82,6 +81,7 @@ const organizationJsonLd = {
     "@id": `${site}/#${f.id}`,
     name: f.name,
     url: getCanonicalUrl("/about", lang),
+    image: `${site}${f.photo}`,
     sameAs: [f.linkedin],
   })),
 };

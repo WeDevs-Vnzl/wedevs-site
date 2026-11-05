@@ -1,7 +1,13 @@
 import type { APIRoute } from "astro";
 import { getCollection } from "astro:content";
-import { renderOgImage } from "../../../lib/utils/ogImage";
-import { locales, type Lang } from "../../../lib/i18n/ui";
+import { findOgCover } from "../../../lib/og/cover";
+import {
+  pngResponse,
+  renderCoverOg,
+  renderPageOg,
+} from "../../../lib/og/render";
+import { getLocalizedPath } from "../../../lib/i18n/routes";
+import { locales } from "../../../lib/i18n/ui";
 
 export async function getStaticPaths() {
   const projects = await getCollection("projects");
@@ -9,24 +15,25 @@ export async function getStaticPaths() {
     projects.map((entry) => ({
       params: { slug: `${entry.id}-${lang}` },
       props: {
-        title: entry.data[lang].title,
+        cover: findOgCover("projects", entry.id),
+        title: `/${entry.data[lang].title}`,
         subtitle: entry.data[lang].resultHeadline,
+        path: getLocalizedPath(`/projects/${entry.id}`, lang),
       },
     })),
   );
 }
 
 interface Props {
+  cover?: string;
   title: string;
   subtitle: string;
+  path: string;
 }
 
 export const GET: APIRoute<Props> = async ({ props }) => {
-  const buffer = await renderOgImage(props.title, props.subtitle);
-  return new Response(buffer, {
-    headers: {
-      "Content-Type": "image/png",
-      "Cache-Control": "public, max-age=31536000, immutable",
-    },
-  });
+  const buffer = props.cover
+    ? await renderCoverOg(props.cover)
+    : await renderPageOg(props);
+  return pngResponse(buffer);
 };
