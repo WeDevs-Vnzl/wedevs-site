@@ -98,7 +98,15 @@ const breadcrumbs = [
       class="bg-night text-paper relative flex flex-col items-center overflow-hidden px-[clamp(20px,4vw,56px)] pt-7 pb-[clamp(40px,5vw,72px)]"
       data-page-hero
     >
-      <PixelGrid cols={24} rows={16} seed={53} hi={0.05} lo={0.015} cover />
+      <PixelGrid
+        cols={24}
+        rows={16}
+        seed={53}
+        hi={0.05}
+        lo={0.015}
+        cover
+        glow
+      />
       <div
         class="relative flex w-full max-w-[880px] flex-col gap-[clamp(40px,6vw,80px)]"
       >
@@ -152,12 +160,14 @@ const breadcrumbs = [
             data-hero-fade
           >
             <div class="flex items-center gap-3">
-              <span
-                class="bg-violet text-caption flex size-9 items-center justify-center rounded-full font-extrabold text-white"
-                aria-hidden="true"
-              >
-                {blogAuthor.initials}
-              </span>
+              <img
+                src={blogAuthor.avatar}
+                alt=""
+                width="36"
+                height="36"
+                decoding="async"
+                class="size-9 shrink-0 rounded-full object-cover"
+              />
               <div class="flex flex-col gap-0.5">
                 <a
                   href={getLocalizedPath("/about", lang)}

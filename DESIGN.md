@@ -248,7 +248,7 @@ Responsive behaviour relies on the default breakpoints (640px, 768px, 1024px). B
 
 ## Elevation & Depth
 
-The system is flat. Surfaces never lift; depth is conveyed by switching sheets (paper to night to violet) and by hairlines at 12 to 20 percent ink. Texture comes from the pixel-grid mosaic, an inline SVG of square cells with scattered low opacities (2 to 12 percent) anchored to the top of a band, and from the retiring glow orb (a blurred radial of 6 percent paper) on the legacy dark CTA.
+The system is flat. Surfaces never lift; depth is conveyed by switching sheets (paper to night to violet) and by hairlines at 12 to 20 percent ink. Texture comes from the pixel-grid atmosphere (`PixelGrid`): a hairline grid at 12 percent of the cell colour aligned to an inline SVG of square cells with scattered low opacities (2 to 12 percent), under a film-grain overlay at 28 percent. Heroes and large night bands add `glow`: one violet lamp on the bottom edge whose body sinks toward night and whose upper edge is displaced by fractal noise so it reads as cloud, never as a hard gradient; it is the one sanctioned gradient on a surface, breathes slowly, and stays still under reduced motion. Small cards get the grid and grain only. The retiring glow orb (a blurred radial of 6 percent paper) survives on the legacy dark CTA.
 
 ### Shadow Vocabulary
 - **Popover** (`box-shadow: 0 12px 32px -12px rgba(17, 18, 22, 0.25)`): the custom select's open list only. It is the single shadow in the system.

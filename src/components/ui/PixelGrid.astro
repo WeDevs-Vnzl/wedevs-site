@@ -1,8 +1,15 @@
 ---
 /**
- * Decorative mosaic of square cells with scattered opacities, anchored to the
- * top of its (relatively positioned) parent. Rendered as one inline SVG so a
- * few hundred cells cost a single DOM node per rect that is actually visible.
+ * Decorative atmosphere that fills its (relatively positioned) parent: a
+ * hairline grid aligned to a mosaic of square cells with scattered opacities,
+ * film grain over everything and, with `glow`, a soft light at the bottom
+ * whose edge is displaced by noise so it reads as cloud rather than as a
+ * gradient. The cells are one inline SVG so a few hundred of them cost a
+ * single DOM node per rect that is actually visible.
+ *
+ * Motion hooks (src/lib/motion/pixelGrid.ts and hero.ts) target the
+ * `data-pixel-grid` root, the cell rects and `.pixel-grid-glow` only; the
+ * other layers are CSS or non-rect SVG.
  */
 interface Props {
   cols: number;
@@ -13,9 +20,12 @@ interface Props {
   hi?: number;
   /** Opacity for "dim" cells. */
   lo?: number;
+  /** Cell and hairline colour; also the core of the glow. */
   color?: string;
-  /** Stretch to the parent's full height, cropping cells instead of leaving the bottom empty. */
+  /** Stretch the cells to the parent's full height, cropping instead of leaving the bottom empty. */
   cover?: boolean;
+  /** Light the band from below with the noisy violet glow. For heroes and large bands. */
+  glow?: boolean;
 }
 
 const {
@@ -26,6 +36,7 @@ const {
   lo = 0.03,
   color = "#8f94ff",
   cover = false,
+  glow = false,
 } = Astro.props;
 
 let s = seed;
@@ -37,21 +48,160 @@ for (let i = 0; i < cols * rows; i++) {
   const o = v > 0.82 ? +(0.02 + rand() * hi).toFixed(3) : v > 0.6 ? lo : 0;
   if (o > 0) cells.push({ x: i % cols, y: Math.floor(i / cols), o });
 }
+
+// SVG ids must be unique per document; two grids with the same config share
+// identical definitions, so a collision between them is harmless.
+const id = `pixel-grid-${seed}-${cols}x${rows}`;
 ---
 
-<svg
-  class:list={[
-    "pointer-events-none absolute inset-x-0 top-0 w-full",
-    cover ? "h-full" : "h-auto",
-  ]}
-  viewBox={`0 0 ${cols} ${rows}`}
-  preserveAspectRatio={cover ? "xMidYMin slice" : undefined}
+<div
+  class="pointer-events-none absolute inset-0 overflow-hidden"
+  style={`--pg-color: ${color}; --pg-cols: ${cols};`}
+  data-pixel-grid
   aria-hidden="true"
-  focusable="false"
 >
+  <div class="pixel-grid-lines absolute inset-0"></div>
+
+  <svg
+    class:list={[
+      "pixel-grid-cells absolute inset-x-0 top-0 w-full",
+      cover ? "h-full" : "h-auto",
+    ]}
+    viewBox={`0 0 ${cols} ${rows}`}
+    preserveAspectRatio={cover ? "xMidYMin slice" : undefined}
+    focusable="false"
+  >
+    {
+      cells.map((c) => (
+        <rect x={c.x} y={c.y} width="1" height="1" fill={color} opacity={c.o} />
+      ))
+    }
+  </svg>
+
   {
-    cells.map((c) => (
-      <rect x={c.x} y={c.y} width="1" height="1" fill={color} opacity={c.o} />
-    ))
+    glow && (
+      <svg
+        class="pixel-grid-glow absolute bottom-0 left-0 h-full"
+        viewBox="0 0 150 100"
+        preserveAspectRatio="none"
+        focusable="false"
+      >
+        <defs>
+          <filter
+            id={`${id}-cloud`}
+            x="-25%"
+            y="-25%"
+            width="150%"
+            height="150%"
+            color-interpolation-filters="sRGB"
+          >
+            <feGaussianBlur in="SourceGraphic" stdDeviation="5" result="soft" />
+            <feTurbulence
+              type="fractalNoise"
+              baseFrequency="0.012 0.03"
+              numOctaves="3"
+              seed={seed}
+              result="noise"
+            />
+            <feDisplacementMap
+              in="soft"
+              in2="noise"
+              scale="28"
+              xChannelSelector="R"
+              yChannelSelector="G"
+            />
+          </filter>
+          {/* The lamp sits on the bottom edge (36% of the ellipse's box); the
+              body is violet sunk toward night so fine print stays legible. */}
+          <radialGradient
+            id={`${id}-light`}
+            cx="50%"
+            cy="36%"
+            r="62%"
+            fx="50%"
+            fy="36%"
+          >
+            <stop offset="0" style="stop-color: var(--pg-color)" />
+            <stop offset="0.16" style="stop-color: var(--color-violet)" />
+            <stop
+              offset="0.45"
+              style="stop-color: color-mix(in srgb, var(--color-violet) 70%, var(--color-night))"
+            />
+            <stop
+              offset="1"
+              style="stop-color: color-mix(in srgb, var(--color-violet) 70%, var(--color-night))"
+              stop-opacity="0"
+            />
+          </radialGradient>
+        </defs>
+        <ellipse
+          cx="46"
+          cy="116"
+          rx="66"
+          ry="58"
+          fill={`url(#${id}-light)`}
+          filter={`url(#${id}-cloud)`}
+        />
+      </svg>
+    )
   }
-</svg>
+
+  <div class="pixel-grid-grain absolute inset-0"></div>
+</div>
+
+<style>
+  [data-pixel-grid] {
+    container-type: size;
+  }
+
+  /* One hairline per cell column and row, fading out where the glow takes over. */
+  .pixel-grid-lines {
+    --pg-cell: calc(100cqw / var(--pg-cols));
+    --pg-line: color-mix(in srgb, var(--pg-color) 12%, transparent);
+    background-image:
+      linear-gradient(to right, var(--pg-line) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--pg-line) 1px, transparent 1px);
+    background-size: var(--pg-cell) var(--pg-cell);
+    mask-image: linear-gradient(
+      to bottom,
+      var(--color-night) 35%,
+      transparent 100%
+    );
+  }
+
+  /* The lamp's box is sized by the band's height (3:2) and anchored bottom
+     left, so blur and noise keep the same scale in a tall column and in a
+     wide, short band; wider bands simply keep the lamp under the title. */
+  .pixel-grid-glow {
+    width: 150cqh;
+    opacity: 0.2;
+    transform-origin: 100% 100%;
+  }
+
+  /* Monochrome fractal noise, rasterised once as a tile. The overlay blend
+     needs the band's background in its group: never put a transform, opacity
+     or filter on [data-pixel-grid] itself (motion animates its children). */
+  .pixel-grid-grain {
+    opacity: 0.28;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 180px 180px;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .pixel-grid-glow {
+      will-change: transform;
+      animation: pixel-grid-breathe 16s ease-in-out infinite;
+    }
+  }
+
+  @keyframes pixel-grid-breathe {
+    0%,
+    100% {
+      transform: translate3d(0, 2%, 0) scale(1);
+    }
+    50% {
+      transform: translate3d(-3%, 0, 0) scale(1.06);
+    }
+  }
+</style>

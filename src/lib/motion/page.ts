@@ -2,6 +2,7 @@ import { coverCurtain, liftCurtain } from "./curtain";
 import { initMagnetic } from "./emphasis";
 import { FINE_POINTER, FULL_MOTION, gsap, prefersReducedMotion } from "./gsap";
 import { initHomeHero, initPageHero } from "./hero";
+import { initPixelGrids } from "./pixelGrid";
 import { initReveal } from "./reveal";
 import { initScrollProgress } from "./scroll";
 
@@ -48,6 +49,8 @@ function setupPage(): void {
       if (mm !== current) return;
       ctx.add(() => {
         // Top-to-bottom order, so ScrollTriggers refresh in page order.
+        // Grids first: they trigger on the band itself, above its content.
+        initPixelGrids();
         initReveal();
         initScrollProgress();
         // Hover effects only where a real pointer can hover.

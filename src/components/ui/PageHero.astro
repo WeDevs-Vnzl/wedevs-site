@@ -16,7 +16,7 @@ const { eyebrow, titleBold, titleLight, support, seed } = Astro.props;
   class="bg-night text-paper relative grid grid-cols-1 items-end gap-x-16 gap-y-8 overflow-hidden px-[clamp(20px,4vw,56px)] pt-[clamp(56px,8vw,120px)] pb-[clamp(40px,5vw,72px)] lg:grid-cols-[7fr_5fr]"
   data-page-hero
 >
-  <PixelGrid cols={24} rows={24} seed={seed} hi={0.05} lo={0.015} cover />
+  <PixelGrid cols={24} rows={24} seed={seed} hi={0.05} lo={0.015} cover glow />
   <div class="relative flex flex-col gap-5">
     <span
       class="text-violet-soft font-mono text-xs font-medium tracking-[0.12em] uppercase"

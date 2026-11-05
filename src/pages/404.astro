@@ -1,8 +1,8 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import Header from "../components/layout/Header.astro";
-import Footer from "../components/layout/Footer.astro";
-import Glow from "../components/ui/Glow.astro";
+import SiteHeader from "../components/layout/SiteHeader.astro";
+import SiteFooter from "../components/layout/SiteFooter.astro";
+import PixelGrid from "../components/ui/PixelGrid.astro";
 import { useTranslations, defaultLang } from "../lib/i18n/ui";
 import { getLocalizedPath } from "../lib/i18n/routes";
 
@@ -11,6 +11,18 @@ import { getLocalizedPath } from "../lib/i18n/routes";
 const lang = defaultLang;
 const { t } = useTranslations(lang);
 const home = getLocalizedPath("/", lang);
+
+const links = [
+  {
+    href: getLocalizedPath("/projects", lang),
+    label: t("notFound.linkProjects"),
+  },
+  {
+    href: getLocalizedPath("/services", lang),
+    label: t("notFound.linkServices"),
+  },
+  { href: getLocalizedPath("/blog", lang), label: t("notFound.linkBlog") },
+];
 ---
 
 <BaseLayout
@@ -20,50 +32,87 @@ const home = getLocalizedPath("/", lang);
   description="Page not found."
   noindex={true}
 >
-  <Header lang={lang} path="/404" />
+  <SiteHeader lang={lang} path="/404" />
 
-  <main
-    id="main-content"
-    class="relative flex flex-1 items-center justify-center overflow-hidden px-6 py-20 text-center"
-  >
-    <Glow size="page" />
-    <div class="relative mx-auto max-w-lg">
-      <p class="text-display-1 text-muted/30 leading-none font-light">404</p>
-      <h1 class="text-h1 -mt-6">{t("notFound.title")}</h1>
-      <p class="text-muted mt-4">{t("notFound.support")}</p>
+  <main id="main-content" class="bg-paper text-night">
+    {
+      /* Same dark band and entrance as PageHero, stretched to fill the viewport
+        so the dead end still looks like a designed page. */
+    }
+    <section
+      class="bg-night text-paper relative grid min-h-[calc(100dvh-62px)] grid-cols-1 content-end gap-x-16 gap-y-10 overflow-hidden px-[clamp(20px,4vw,56px)] pt-[clamp(56px,8vw,120px)] pb-[clamp(32px,4vw,56px)] lg:grid-cols-[7fr_5fr] lg:items-end"
+      data-page-hero
+    >
+      <PixelGrid
+        cols={24}
+        rows={24}
+        seed={41}
+        hi={0.05}
+        lo={0.015}
+        cover
+        glow
+      />
 
-      <div class="mt-8 flex flex-wrap justify-center gap-3">
-        <a href={home} class="pill-btn-primary">{t("notFound.ctaHome")}</a>
-        <a
-          href={getLocalizedPath("/projects", lang)}
-          class="pill-btn-secondary"
+      <div class="relative flex flex-col gap-5">
+        <span
+          class="text-violet-soft font-mono text-xs font-medium tracking-[0.12em] uppercase"
+          data-hero-item
+          data-hero-eyebrow
         >
-          {t("notFound.ctaProjects")}
-        </a>
+          {t("notFound.eyebrow")}
+        </span>
+        <h1
+          class="text-paper m-0 text-[clamp(44px,8vw,120px)] leading-[0.92] font-extrabold tracking-[-0.055em] text-balance"
+          data-hero-item
+          data-hero-title
+        >
+          {t("notFound.title")}
+        </h1>
       </div>
 
-      <div class="mt-12 flex flex-wrap justify-center gap-6 pt-6 text-sm">
-        <a
-          href={getLocalizedPath("/projects", lang)}
-          class="text-muted hover:text-ink no-underline"
-        >
-          {t("notFound.linkProjects")}
-        </a>
-        <a
-          href={getLocalizedPath("/services", lang)}
-          class="text-muted hover:text-ink no-underline"
-        >
-          {t("notFound.linkServices")}
-        </a>
-        <a
-          href={getLocalizedPath("/blog", lang)}
-          class="text-muted hover:text-ink no-underline"
-        >
-          {t("notFound.linkBlog")}
-        </a>
+      <div
+        class="relative flex flex-col gap-6"
+        data-hero-item
+        data-hero-support
+      >
+        <p class="text-night-copy m-0 max-w-[460px] text-lg leading-[1.55]">
+          {t("notFound.support")}
+        </p>
+        <div class="flex flex-wrap gap-3">
+          <a
+            href={home}
+            class="bg-paper text-night hover:bg-violet-soft rounded-full px-5 py-3 text-sm font-semibold no-underline"
+          >
+            {t("notFound.ctaHome")}
+          </a>
+          <a
+            href={getLocalizedPath("/projects", lang)}
+            class="text-paper border-paper/30 hover:border-paper rounded-full border px-5 py-3 text-sm font-semibold no-underline"
+          >
+            {t("notFound.ctaProjects")}
+          </a>
+        </div>
       </div>
-    </div>
+
+      <nav
+        class="border-paper/12 relative flex flex-wrap gap-x-8 gap-y-3 border-t pt-6 lg:col-span-2"
+        aria-label={t("nav.navLabel")}
+        data-hero-item
+        data-hero-fade
+      >
+        {
+          links.map((link) => (
+            <a
+              href={link.href}
+              class="text-night-copy hover:text-paper font-mono text-xs font-medium tracking-[0.08em] uppercase no-underline"
+            >
+              {link.label}
+            </a>
+          ))
+        }
+      </nav>
+    </section>
   </main>
 
-  <Footer lang={lang} />
+  <SiteFooter lang={lang} showCta={false} />
 </BaseLayout>

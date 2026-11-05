@@ -1,4 +1,5 @@
 import { gsap, SplitText } from "./gsap";
+import { gridEntrance } from "./pixelGrid";
 
 /**
  * Shows a hero without its entrance: everything global.css hides for the
@@ -11,7 +12,7 @@ function revealHeroNow(hero: HTMLElement): void {
   if (column) {
     // An inline "none" beats the hidden clip in global.css.
     gsap.set(column, { clipPath: "none" });
-    const grid = column.querySelector(":scope > svg");
+    const grid = column.querySelector(":scope > [data-pixel-grid]");
     if (grid) gsap.set(grid, { autoAlpha: 1 });
   }
 }
@@ -65,7 +66,7 @@ export function initHomeHero(skipIntro = false): void {
  * slash strikes through, then the small brand bar and eyebrow fade in.
  */
 function heroColumn(column: HTMLElement): gsap.core.Timeline {
-  const grid = column.querySelector(":scope > svg");
+  const grid = column.querySelector(":scope > [data-pixel-grid]");
   const w = column.querySelector("[data-hero-logo] [data-logo-w]");
   const slash = column.querySelector("[data-hero-logo] [data-logo-slash]");
   const chrome = column.querySelectorAll("[data-hero-chrome]");
@@ -85,11 +86,7 @@ function heroColumn(column: HTMLElement): gsap.core.Timeline {
     .set(column, { clipPath: "none" });
 
   if (grid) {
-    tl.set(grid, { autoAlpha: 1 }, 0.3).from(
-      grid.querySelectorAll("rect"),
-      { opacity: 0, duration: 0.3, stagger: { amount: 0.9, from: "random" } },
-      0.3,
-    );
+    tl.set(grid, { autoAlpha: 1 }, 0.3).add(gridEntrance(grid), 0.3);
   }
 
   tl.from(w, { drawSVG: "0%", duration: 0.9, ease: "power2.inOut" }, 0.45)
@@ -120,6 +117,7 @@ export function initPageHero(skipIntro = false): void {
   const eyebrow = hero.querySelector("[data-hero-eyebrow]");
   const title = hero.querySelector<HTMLElement>("[data-hero-title]");
   const support = hero.querySelector<HTMLElement>("[data-hero-support]");
+  const grid = hero.querySelector(":scope > [data-pixel-grid]");
   if (!title) return;
 
   if (skipIntro) {
@@ -154,11 +152,15 @@ export function initPageHero(skipIntro = false): void {
     if (copy.length > 0) {
       tl.from(copy, { autoAlpha: 0, y: 16, stagger: 0.08 }, "copy");
     }
+    // Unlike the home column, this grid is never hidden by CSS: the entrance
+    // hides the cells itself the moment the timeline is built.
+    if (grid) tl.add(gridEntrance(grid), "intro+=0.2");
   }
 
-  const grid = hero.querySelector(":scope > svg");
   if (grid) {
-    gsap.to(grid, {
+    // Drift the cells and hairlines, never the grid root: a transform there
+    // isolates the grain's blend mode and paints it as a grey veil.
+    gsap.to(grid.querySelectorAll(".pixel-grid-cells, .pixel-grid-lines"), {
       yPercent: 12,
       ease: "none",
       scrollTrigger: {
