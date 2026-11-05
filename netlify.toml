@@ -2,3 +2,9 @@
 # (served at /api/contact) regardless of the site's UI settings.
 [functions]
   directory = "netlify/functions"
+
+# HSTS for the apex and every subdomain (Netlify sends max-age only by default).
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Strict-Transport-Security = "max-age=31536000; includeSubDomains"

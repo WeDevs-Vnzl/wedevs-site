@@ -4,3 +4,6 @@
 
 # Root picks the default locale. "!" forces it over the static index.html stub.
 /  /en/  301!
+
+# The static stub Astro writes for the "/" redirect must never be served as a 200.
+/index.html  /en/  301!
