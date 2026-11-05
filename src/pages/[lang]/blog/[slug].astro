@@ -68,6 +68,7 @@ const jsonLd = {
     "@id": `${import.meta.env.SITE}/#${blogAuthor.id}`,
     name: blogAuthor.name,
     url: getCanonicalUrl("/about", lang),
+    image: `${import.meta.env.SITE}${blogAuthor.photo}`,
     sameAs: [blogAuthor.linkedin],
   },
   publisher: { "@id": `${import.meta.env.SITE}/#organization` },

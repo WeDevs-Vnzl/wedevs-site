@@ -236,10 +236,10 @@
     ],
     "formBudgetLabel": "Presupuesto (opcional)",
     "formBudgetOptions": [
-      "< $2.000",
-      "$2.000 – $5.000",
-      "$5.000 – $15.000",
-      "$15.000+",
+      "< 500$",
+      "501$ – 1.000$",
+      "1.001$ – 2.500$",
+      "+2.500$",
       "Aún no lo sé"
     ],
     "formMessageLabel": "Mensaje",

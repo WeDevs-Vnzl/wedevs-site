@@ -17,17 +17,21 @@ export const brandWhatsappHref = `https://wa.me/${brandWhatsapp.replace(/\D/g, "
 
 // Founders' public profiles (LinkedIn only). `id` keys the i18n role/bio
 // under aboutPage.founders and the schema.org Person @id.
+// `photo` is the full portrait (schema.org Person.image); `avatar` is a
+// 192px copy for the small round badges.
 export const founders = [
   {
     id: "williams-velazquez",
     name: "Williams Velazquez",
-    initials: "WV",
+    photo: "/images/founders/photo_founders_williams-velazquez.webp",
+    avatar: "/images/founders/photo_founders_williams-velazquez_192.webp",
     linkedin: "https://www.linkedin.com/in/williams-velasquez-19258a261",
   },
   {
     id: "eliezer-meza",
     name: "Eliezer Meza",
-    initials: "EM",
+    photo: "/images/founders/photo_founders_eliezer-meza.webp",
+    avatar: "/images/founders/photo_founders_eliezer-meza_192.webp",
     linkedin: "https://www.linkedin.com/in/eliezer-a-meza/",
   },
 ] as const;
