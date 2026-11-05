@@ -1,12 +1,28 @@
 ---
 // Boots the GSAP motion lifecycle (src/lib/motion/page.ts). Rendered in
-// <head> so the browser starts fetching the motion bundle while it is still
-// parsing the document; as a module script it never blocks rendering. The
-// curtain markup it animates lives in Motion.astro at the end of <body>.
+// <head>, but the motion bundle itself is imported only after the first two
+// animation frames, so the browser paints the page (and the hero deadline in
+// BaseLayout.astro can show the hero) before it spends main-thread time
+// evaluating GSAP. The curtain markup lives in Motion.astro at the end of
+// <body>.
 ---
 
 <script>
-  import { initPageMotion } from "../../lib/motion/page";
+  // A page-load that fires before the bundle arrives must not be missed.
+  let pageLoaded = false;
+  document.addEventListener(
+    "astro:page-load",
+    () => {
+      pageLoaded = true;
+    },
+    { once: true },
+  );
 
-  initPageMotion();
+  function start(): void {
+    import("../../lib/motion/page").then((motion) => {
+      motion.initPageMotion(pageLoaded);
+    });
+  }
+
+  requestAnimationFrame(() => requestAnimationFrame(start));
 </script>

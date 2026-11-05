@@ -119,6 +119,17 @@ const breadcrumbJsonLd = breadcrumbs?.length
 
     <ClientRouter />
     <MotionScript />
+    <!-- Hero deadline: if the motion bundle has not taken over by then, CSS
+         shows the hero (global.css [data-hero-late]) so the largest text
+         never waits for JavaScript. Keep in sync with INTRO_BUDGET_MS. -->
+    <script is:inline>
+      setTimeout(function () {
+        var html = document.documentElement;
+        if (!html.hasAttribute("data-motion-ready")) {
+          html.setAttribute("data-hero-late", "");
+        }
+      }, 1200);
+    </script>
 
     <title>{title}</title>
     <meta name="description" content={description} />

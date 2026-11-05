@@ -285,6 +285,17 @@
     [data-hero-column] {
       clip-path: inset(0 0 100% 0);
     }
+
+    /* Deadline reached before the motion bundle took over (see the inline
+       script in BaseLayout.astro): show the hero without its entrance. */
+    [data-hero-late] [data-hero-item],
+    [data-hero-late] [data-hero-column] > svg {
+      visibility: visible;
+    }
+
+    [data-hero-late] [data-hero-column] {
+      clip-path: none;
+    }
   }
 
   /* SplitText masks clip to the line box, which cuts off descenders at
