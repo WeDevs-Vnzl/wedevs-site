@@ -30,7 +30,7 @@ const path = `/services/${entry.id}`;
 const canonicalUrl = getCanonicalUrl(path, lang);
 const servicesHome = getLocalizedPath("/services", lang);
 
-const ogImage = `/og/services/${entry.id}-${lang}.png`;
+const ogImage = `/og/services/${entry.id}-${lang}.jpg`;
 const breadcrumbs = [
   { name: t("project.breadcrumbHome"), url: getLocalizedPath("/", lang) },
   { name: t("services.detail.breadcrumbServices"), url: servicesHome },

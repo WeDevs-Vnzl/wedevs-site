@@ -3,7 +3,7 @@ import { getLocalizedPath } from "../i18n/routes";
 import type { PageOgOptions } from "./render";
 
 /**
- * Static pages that get their own OG card at /og/pages/<key>-<lang>.png.
+ * Static pages that get their own OG card at /og/pages/<key>-<lang>.jpg.
  * The card shows the page as a route ("/Projects", "/Proyectos"); the home
  * shows the brand itself. Any other path falls back to the home card.
  */
@@ -50,5 +50,5 @@ export function ogPageOptions(key: OgPageKey, lang: Lang): PageOgOptions {
 export function ogPageImage(path: string, lang: Lang): string {
   const clean = path.replace(/\/+$/, "") || "/";
   const key = ogPageKeys.find((k) => pages[k].path === clean) ?? "home";
-  return `/og/pages/${key}-${lang}.png`;
+  return `/og/pages/${key}-${lang}.jpg`;
 }

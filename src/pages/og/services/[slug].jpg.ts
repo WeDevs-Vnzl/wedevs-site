@@ -1,7 +1,7 @@
 import type { APIRoute } from "astro";
 import { getCollection } from "astro:content";
 import {
-  pngResponse,
+  ogResponse,
   renderPageOg,
   type PageOgOptions,
 } from "../../../lib/og/render";
@@ -24,5 +24,5 @@ export async function getStaticPaths() {
 
 export const GET: APIRoute<PageOgOptions> = async ({ props }) => {
   const buffer = await renderPageOg(props);
-  return pngResponse(buffer);
+  return ogResponse(buffer);
 };

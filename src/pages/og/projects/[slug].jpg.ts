@@ -2,27 +2,26 @@ import type { APIRoute } from "astro";
 import { getCollection } from "astro:content";
 import { findOgCover } from "../../../lib/og/cover";
 import {
-  pngResponse,
+  ogResponse,
   renderCoverOg,
   renderPageOg,
 } from "../../../lib/og/render";
 import { getLocalizedPath } from "../../../lib/i18n/routes";
-import { getPostSlug } from "../../../lib/utils/blog";
+import { locales } from "../../../lib/i18n/ui";
 
 export async function getStaticPaths() {
-  const posts = await getCollection("blog");
-  return posts.map((entry) => {
-    const slug = getPostSlug(entry.id);
-    return {
-      params: { slug },
+  const projects = await getCollection("projects");
+  return locales.flatMap((lang) =>
+    projects.map((entry) => ({
+      params: { slug: `${entry.id}-${lang}` },
       props: {
-        cover: findOgCover("blog", slug),
-        title: `/${entry.data.title}`,
-        subtitle: entry.data.excerpt,
-        path: getLocalizedPath(`/blog/${slug}`, entry.data.lang),
+        cover: findOgCover("projects", entry.id),
+        title: `/${entry.data[lang].title}`,
+        subtitle: entry.data[lang].resultHeadline,
+        path: getLocalizedPath(`/projects/${entry.id}`, lang),
       },
-    };
-  });
+    })),
+  );
 }
 
 interface Props {
@@ -36,5 +35,5 @@ export const GET: APIRoute<Props> = async ({ props }) => {
   const buffer = props.cover
     ? await renderCoverOg(props.cover)
     : await renderPageOg(props);
-  return pngResponse(buffer);
+  return ogResponse(buffer);
 };

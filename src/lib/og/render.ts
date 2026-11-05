@@ -8,17 +8,24 @@ import { loadOgFonts } from "./fonts";
 export const OG_WIDTH = 1200;
 export const OG_HEIGHT = 630;
 
-/** Immutable PNG response shared by every /og route. */
-export function pngResponse(png: Buffer): Response {
+/**
+ * Immutable JPEG response shared by every /og route. JPEG, not PNG: the
+ * mosaic and cover cards weigh 800KB+ as PNG and WhatsApp drops previews
+ * above roughly 300KB; as JPEG they stay well under that.
+ */
+export function ogResponse(jpeg: Buffer): Response {
   // A Buffer is an ArrayBuffer-backed Uint8Array at runtime; lib.dom's
   // BodyInit only spells out the latter.
-  return new Response(png as unknown as Uint8Array<ArrayBuffer>, {
+  return new Response(jpeg as unknown as Uint8Array<ArrayBuffer>, {
     headers: {
-      "Content-Type": "image/png",
+      "Content-Type": "image/jpeg",
       "Cache-Control": "public, max-age=31536000, immutable",
     },
   });
 }
+
+/** Output encoding: full chroma keeps the small mono text crisp. */
+const OG_JPEG = { quality: 82, chromaSubsampling: "4:4:4", mozjpeg: true };
 
 const NIGHT = "#111216";
 const PAPER = "#fafaf7";
@@ -260,7 +267,7 @@ export async function renderPageOg(options: PageOgOptions): Promise<Buffer> {
   ]);
   return sharp(background)
     .composite([{ input: foreground }])
-    .png()
+    .jpeg(OG_JPEG)
     .toBuffer();
 }
 
@@ -303,6 +310,6 @@ export async function renderCoverOg(coverFile: string): Promise<Buffer> {
   ]);
   return sharp(cover)
     .composite([{ input: overlay }])
-    .png()
+    .jpeg(OG_JPEG)
     .toBuffer();
 }
