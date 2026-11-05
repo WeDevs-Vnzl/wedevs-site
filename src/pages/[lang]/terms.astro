@@ -1,0 +1,112 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import SiteHeader from "../../components/layout/SiteHeader.astro";
+import SiteFooter from "../../components/layout/SiteFooter.astro";
+import PageHero from "../../components/ui/PageHero.astro";
+import { brandEmail, brandMailHref } from "../../lib/brand";
+import { locales, useTranslations, type Lang } from "../../lib/i18n/ui";
+import { getCanonicalUrl, getLocalizedPath } from "../../lib/i18n/routes";
+
+export function getStaticPaths() {
+  return locales.map((lang) => ({ params: { lang } }));
+}
+
+const { lang } = Astro.params as { lang: Lang };
+const { t, dict } = useTranslations(lang);
+
+// Bump when the terms or the editorial policy text changes.
+const updated = new Date("2026-11-05");
+// UTC on both sides: the ISO date and the printed one name the same day.
+const dateFormatter = new Intl.DateTimeFormat(lang, {
+  dateStyle: "long",
+  timeZone: "UTC",
+});
+
+const sections = dict.termsPage.sections;
+const editorial = dict.termsPage.editorial;
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  name: t("termsPage.seoTitle"),
+  description: t("termsPage.seoDescription"),
+  url: getCanonicalUrl("/terms", lang),
+  inLanguage: lang,
+  dateModified: updated.toISOString(),
+  publisher: { "@id": `${import.meta.env.SITE}/#organization` },
+};
+---
+
+<BaseLayout
+  lang={lang}
+  path="/terms"
+  title={t("termsPage.seoTitle")}
+  description={t("termsPage.seoDescription")}
+  jsonLd={jsonLd}
+  breadcrumbs={[
+    { name: t("project.breadcrumbHome"), url: getLocalizedPath("/", lang) },
+    { name: t("footer.terms"), url: getLocalizedPath("/terms", lang) },
+  ]}
+>
+  <SiteHeader lang={lang} path="/terms" />
+
+  <main id="main-content" class="bg-paper text-night">
+    <PageHero
+      eyebrow={t("termsPage.eyebrow")}
+      titleBold={t("termsPage.titleBold")}
+      titleLight={t("termsPage.titleLight")}
+      support={t("termsPage.support")}
+      seed={47}
+    />
+
+    <section
+      class="flex max-w-[860px] flex-col gap-10 px-[clamp(20px,4vw,56px)] py-[clamp(48px,6vw,96px)]"
+    >
+      <p class="text-slate m-0 font-mono text-xs">
+        {t("termsPage.updatedLabel")}{" "}
+        <time datetime={updated.toISOString()}>
+          {dateFormatter.format(updated)}
+        </time>
+      </p>
+      {
+        sections.map((s) => (
+          <div
+            class="border-night flex flex-col gap-3 border-t-2 pt-4"
+            data-reveal
+          >
+            <h2 class="text-night m-0 text-[clamp(22px,2.4vw,28px)] font-bold tracking-[-0.03em]">
+              {s.title}
+            </h2>
+            <p class="text-lead text-ink-prose m-0">{s.body}</p>
+          </div>
+        ))
+      }
+
+      <div
+        id="editorial-policy"
+        class="border-violet flex scroll-mt-24 flex-col gap-3 border-t-2 pt-4"
+        data-reveal
+      >
+        <h2
+          class="text-night m-0 text-[clamp(22px,2.4vw,28px)] font-bold tracking-[-0.03em]"
+        >
+          {editorial.title}
+        </h2>
+        {
+          editorial.paragraphs.map((p) => (
+            <p class="text-lead text-ink-prose m-0">{p}</p>
+          ))
+        }
+      </div>
+
+      <a
+        href={brandMailHref}
+        class="text-violet w-fit text-lg font-bold no-underline hover:underline"
+      >
+        {brandEmail}
+      </a>
+    </section>
+  </main>
+
+  <SiteFooter lang={lang} />
+</BaseLayout>

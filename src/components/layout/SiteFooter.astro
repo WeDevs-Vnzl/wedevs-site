@@ -1,6 +1,11 @@
 ---
 import PixelGrid from "../ui/PixelGrid.astro";
-import { brandEmail, brandMailHref } from "../../lib/brand";
+import {
+  brandEmail,
+  brandMailHref,
+  brandWhatsappHref,
+  founders,
+} from "../../lib/brand";
 import { useTranslations, type Lang } from "../../lib/i18n/ui";
 import { getLocalizedPath } from "../../lib/i18n/routes";
 
@@ -12,6 +17,21 @@ interface Props {
 }
 const { lang, showCta = true } = Astro.props;
 const { t } = useTranslations(lang);
+
+// Build date: each deploy is a new revision of the whole site.
+const buildDate = new Date();
+const dateFormatter = new Intl.DateTimeFormat(lang, {
+  dateStyle: "long",
+  timeZone: "UTC",
+});
+const legalLinks = [
+  { href: getLocalizedPath("/privacy", lang), label: t("footer.privacy") },
+  { href: getLocalizedPath("/terms", lang), label: t("footer.terms") },
+  {
+    href: `${getLocalizedPath("/terms", lang)}#editorial-policy`,
+    label: t("footer.editorial"),
+  },
+];
 
 const navLinks = [
   { href: getLocalizedPath("/projects", lang), label: t("nav.projects") },
@@ -77,12 +97,45 @@ const navLinks = [
         W<span class="text-violet-soft">/</span>edevs
       </span>
       <p class="text-night-copy m-0 text-[15px]">{t("footer.reach")}</p>
-      <a
-        href={brandMailHref}
-        class="text-paper hover:border-paper rounded-full border border-white/30 px-4 py-2.5 text-sm font-semibold no-underline"
-      >
-        {brandEmail}
-      </a>
+      <div class="flex flex-wrap gap-2.5">
+        <a
+          href={brandMailHref}
+          class="text-paper hover:border-paper rounded-full border border-white/30 px-4 py-2.5 text-sm font-semibold no-underline"
+        >
+          {brandEmail}
+        </a>
+        <a
+          href={brandWhatsappHref}
+          target="_blank"
+          rel="noopener"
+          class="text-paper hover:border-paper rounded-full border border-white/30 px-4 py-2.5 text-sm font-semibold no-underline"
+        >
+          WhatsApp ↗
+        </a>
+      </div>
+      <div class="flex flex-col gap-2">
+        <span class="text-night-meta font-mono text-xs">
+          {t("footer.foundersLabel")}
+        </span>
+        <ul
+          class="m-0 flex list-none flex-wrap gap-x-5 gap-y-1 p-0 text-[15px]"
+        >
+          {
+            founders.map((f) => (
+              <li>
+                <a
+                  href={f.linkedin}
+                  target="_blank"
+                  rel="me noopener"
+                  class="text-paper hover:text-violet-soft no-underline"
+                >
+                  {f.name} ↗
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
     </div>
 
     <nav
@@ -108,16 +161,31 @@ const navLinks = [
   </div>
 
   <div
-    class="text-night-meta flex flex-wrap justify-between gap-3 border-t border-white/15 pt-5 font-mono text-xs"
+    class="text-night-meta flex flex-col gap-3 border-t border-white/15 pt-5 font-mono text-xs"
   >
-    <span>{t("footer.copyright")}</span>
-    <span>
-      <a
-        href={getLocalizedPath("/privacy", lang)}
-        class="hover:text-paper text-night-meta no-underline"
+    <p class="m-0 max-w-[720px]">{t("footer.disclaimer")}</p>
+    <div class="flex flex-wrap justify-between gap-x-6 gap-y-2">
+      <span>
+        {t("footer.copyright")} · {t("footer.updated")}{" "}
+        <time datetime={buildDate.toISOString().slice(0, 10)}>
+          {dateFormatter.format(buildDate)}
+        </time>
+      </span>
+      <nav
+        class="flex flex-wrap gap-x-4 gap-y-1"
+        aria-label={t("footer.legalLabel")}
       >
-        {t("footer.privacy")}
-      </a>
-    </span>
+        {
+          legalLinks.map((link) => (
+            <a
+              href={link.href}
+              class="hover:text-paper text-night-meta no-underline"
+            >
+              {link.label}
+            </a>
+          ))
+        }
+      </nav>
+    </div>
   </div>
 </footer>

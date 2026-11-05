@@ -103,7 +103,10 @@ const navLinks = [
         data-hero-item
         data-hero-title
       >
-        {t("home.heroTitle")}
+        {
+          /* The explicit space keeps the two halves apart in the text content. */
+        }
+        {t("home.heroTitle")}{" "}
         <span
           class="text-violet rounded-[2rem] [box-decoration-break:clone] px-[0.12em] font-extrabold"
           data-hero-emphasis>{t("home.heroTitleEmphasis")}</span

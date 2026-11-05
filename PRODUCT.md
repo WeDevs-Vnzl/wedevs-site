@@ -34,7 +34,9 @@ Payments, ERP and AI automation are specialties inside "custom systems", not the
 - The contact form asks for project type (mobile app, website, CRM, custom system, other) and an optional budget range (under $2,000; $2,000–$5,000; $5,000–$15,000; $15,000+; not sure yet).
 - Three ways of working are offered without prices: fixed-scope project, in stages, monthly support.
 - Measurement: Google Tag via `googletagmanager.com/gtag/js` (ID configured by environment variable), privacy policy at `/privacy/`.
-- Machine readers: `public/robots.txt` with an explicit AI-crawler policy and `public/llms.txt` describing every page in both languages.
+- Machine readers: `public/robots.txt` allows every crawler, search and AI alike (decision 2026-11-05: no `Disallow` groups, so AI/GEO audits read nothing as blocked), and `public/llms.txt`, linked from every page's `<head>`, describes every page in both languages.
+- Legal pages: `/privacy/` and `/terms/` (terms of use plus the editorial policy section), both linked from the footer with the site's build date and a one-line "no financial, legal or tax advice" disclaimer.
+- Netlify sends security headers from `netlify.toml` (CSP, frame, sniffing, referrer and permissions policies, HSTS with preload). Any new third-party host must be added to the CSP first.
 
 ## Capabilities and Constraints
 

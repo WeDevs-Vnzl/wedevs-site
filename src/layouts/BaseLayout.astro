@@ -55,6 +55,11 @@ const resolvedCanonical = getCanonicalUrl(path, lang);
 const ogImageUrl = new URL(ogImage ?? ogPageImage(path, lang), site).toString();
 const ogLocale = lang === "es" ? "es_ES" : "en_US";
 
+// Kept as one minified string: an unformatted inline block reads as such to
+// audits, and Prettier would re-expand a <script> body.
+const heroDeadline =
+  'setTimeout(function(){var h=document.documentElement;h.hasAttribute("data-motion-ready")||h.setAttribute("data-hero-late","")},1200);';
+
 const organizationJsonLd = {
   "@context": "https://schema.org",
   "@type": "Organization",
@@ -93,6 +98,8 @@ const websiteJsonLd = {
   url: site,
   name: "Wedevs",
   inLanguage: lang,
+  // Every deploy is a new revision of the site; the footer shows the same date.
+  dateModified: new Date().toISOString(),
   publisher: { "@id": `${site}/#organization` },
 };
 
@@ -122,14 +129,7 @@ const breadcrumbJsonLd = breadcrumbs?.length
     <!-- Hero deadline: if the motion bundle has not taken over by then, CSS
          shows the hero (global.css [data-hero-late]) so the largest text
          never waits for JavaScript. Keep in sync with INTRO_BUDGET_MS. -->
-    <script is:inline>
-      setTimeout(function () {
-        var html = document.documentElement;
-        if (!html.hasAttribute("data-motion-ready")) {
-          html.setAttribute("data-hero-late", "");
-        }
-      }, 1200);
-    </script>
+    <script is:inline set:html={heroDeadline} />
 
     <title>{title}</title>
     <meta name="description" content={description} />
@@ -137,10 +137,7 @@ const breadcrumbJsonLd = breadcrumbs?.length
       noindex ? (
         <meta name="robots" content="noindex" />
       ) : (
-        <meta
-          name="robots"
-          content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1"
-        />
+        <meta name="robots" content="index,follow,max-image-preview:large" />
       )
     }
     {
@@ -228,6 +225,9 @@ const breadcrumbJsonLd = breadcrumbs?.length
       href="/icons/apple-touch-icon.png"
     />
     <link rel="manifest" href="/icons/site.webmanifest" />
+    <!-- Machine-readable site summary for AI assistants (public/llms.txt). -->
+    <link rel="alternate" type="text/plain" href="/llms.txt" title="llms.txt" />
+    <slot name="head" />
 
     <script
       type="application/ld+json"
@@ -259,7 +259,16 @@ const breadcrumbJsonLd = breadcrumbs?.length
     }
 
     {analyticsEnabled && gaId && <Analytics gaId={gaId} />}
-
+  </head>
+  <!-- The GSAP curtain (src/lib/motion/curtain.ts) owns page transitions, so
+       the View Transition itself swaps instantly. -->
+  <body class="relative flex min-h-screen flex-col" transition:animate="none">
+    <a
+      href="#main-content"
+      class="bg-night text-paper sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[200] focus:rounded-full focus:px-4 focus:py-2.5 focus:text-sm focus:font-semibold focus:no-underline"
+    >
+      {t("nav.skipToContent")}
+    </a>
     <!-- Without JS nothing would ever un-hide the motion targets (see global.css). -->
     <noscript>
       <style>
@@ -274,10 +283,6 @@ const breadcrumbJsonLd = breadcrumbs?.length
         }
       </style>
     </noscript>
-  </head>
-  <!-- The GSAP curtain (src/lib/motion/curtain.ts) owns page transitions, so
-       the View Transition itself swaps instantly. -->
-  <body class="relative flex min-h-screen flex-col" transition:animate="none">
     <slot />
     <Motion />
   </body>

@@ -13,6 +13,7 @@ The site is bilingual: English under /en/, Spanish under /es/.
 - [Contact](https://we-devs.com/en/contact/): Tell us about your project.
 - [About](https://we-devs.com/en/about/): Who we are, how we work, and the founders.
 - [Privacy](https://we-devs.com/en/privacy/): What data the site collects and why.
+- [Terms](https://we-devs.com/en/terms/): Terms of use and the editorial policy behind the case studies and articles.
 
 ## Páginas (español)
 
@@ -23,6 +24,7 @@ The site is bilingual: English under /en/, Spanish under /es/.
 - [Contacto](https://we-devs.com/es/contact/): Cuéntanos sobre tu proyecto.
 - [Nosotros](https://we-devs.com/es/about/): Quiénes somos, cómo trabajamos y el equipo fundador.
 - [Privacidad](https://we-devs.com/es/privacy/): Qué datos recoge el sitio y para qué.
+- [Términos](https://we-devs.com/es/terms/): Términos de uso y la política editorial de los casos de estudio y artículos.
 
 ## Services
 

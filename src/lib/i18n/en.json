@@ -11,7 +11,8 @@
     "langSwitch": "ES",
     "langSwitchLabel": "Cambiar a Español",
     "navLabel": "Primary navigation",
-    "about": "About"
+    "about": "About",
+    "skipToContent": "Skip to content"
   },
   "home": {
     "heroEyebrow": "// Software studio · Venezuela",
@@ -65,6 +66,11 @@
     "blogAll": "All articles",
     "testimonial": {
       "title": "What clients say"
+    },
+    "builtBy": {
+      "label": "Who builds it",
+      "desc": "Wedevs is the studio of its two co-founders. You talk directly to the people who design and build your product, see real progress every week and keep the same team after launch.",
+      "cta": "Meet the team"
     }
   },
   "contact": {
@@ -77,7 +83,13 @@
     "copyright": "© 2026 Wedevs",
     "menuLabel": "Menu",
     "tagline": "Software studio · Venezuela",
-    "privacy": "Privacy policy"
+    "privacy": "Privacy policy",
+    "foundersLabel": "The founders on LinkedIn",
+    "legalLabel": "Legal",
+    "terms": "Terms of use",
+    "editorial": "Editorial policy",
+    "updated": "Updated",
+    "disclaimer": "Wedevs builds software. Nothing on this site is financial, legal or tax advice; decisions about your business remain yours."
   },
   "notFound": {
     "eyebrow": "404",
@@ -353,6 +365,48 @@
     "analytics": {
       "title": "Do we use analytics?",
       "body": "Yes. We use Google Analytics 4 to measure visits in aggregate (pages viewed, country, device). Google Analytics sets cookies for this. We do not use the data to identify you."
+    }
+  },
+  "termsPage": {
+    "seoTitle": "Terms of use and editorial policy | Wedevs",
+    "seoDescription": "The terms for using we-devs.com and how we write and maintain the case studies and articles published here.",
+    "eyebrow": "Terms",
+    "titleBold": "Terms",
+    "titleLight": "of use.",
+    "support": "The rules for using this site, and how we write what you read here.",
+    "updatedLabel": "Last updated",
+    "sections": [
+      {
+        "title": "Who we are",
+        "body": "Wedevs is a software studio founded by Williams Velazquez and Eliezer Meza, based in Venezuela and working remotely. This site presents the studio's services and work and lets you contact us. By using it you accept these terms."
+      },
+      {
+        "title": "Use of the site",
+        "body": "You may browse and share the pages of this site for personal or business purposes. Do not use the contact form to send unsolicited messages, interfere with the site's operation or collect data about other people."
+      },
+      {
+        "title": "Content and intellectual property",
+        "body": "The texts, code samples, images and logos on this site belong to Wedevs or to the clients named in each case study, who authorised their publication. You may quote short excerpts with a link to the source; any other reuse needs our written permission."
+      },
+      {
+        "title": "No professional advice",
+        "body": "The case studies and articles describe our own work and opinions. They are general information, not financial, legal, tax or security advice for your situation. Decisions about your business remain yours."
+      },
+      {
+        "title": "Liability",
+        "body": "We keep this site accurate and available as far as we reasonably can, but we offer it as is. We are not liable for damages arising from its use or from the content of the external sites we link to. The work we do for clients is governed by each project's own agreement."
+      },
+      {
+        "title": "Changes and contact",
+        "body": "We may update these terms when the site changes; the date above marks the current version. Questions go to the email below."
+      }
+    ],
+    "editorial": {
+      "title": "Editorial policy",
+      "paragraphs": [
+        "Every case study and article on this site is written by the founders, from projects we worked on ourselves, and reviewed by the other founder before publication. Each piece shows its author and its publication date; when we revise one, we update the date.",
+        "We name a client, and publish a result, only with their permission and when we can back it with data from the project. We do not publish sponsored content, and we correct errors as soon as we learn of them: write to the email below."
+      ]
     }
   }
 }

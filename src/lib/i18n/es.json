@@ -11,7 +11,8 @@
     "langSwitch": "EN",
     "langSwitchLabel": "Switch to English",
     "navLabel": "Navegación principal",
-    "about": "Nosotros"
+    "about": "Nosotros",
+    "skipToContent": "Ir al contenido"
   },
   "home": {
     "heroEyebrow": "// Estudio de software · Venezuela",
@@ -65,6 +66,11 @@
     "blogAll": "Todos los artículos",
     "testimonial": {
       "title": "Lo que dicen los clientes"
+    },
+    "builtBy": {
+      "label": "Quiénes lo construyen",
+      "desc": "Wedevs es el estudio de sus dos cofundadores. Hablas directamente con las personas que diseñan y construyen tu producto, ves avances reales cada semana y conservas el mismo equipo después del lanzamiento.",
+      "cta": "Conoce al equipo"
     }
   },
   "contact": {
@@ -77,7 +83,13 @@
     "copyright": "© 2026 Wedevs",
     "menuLabel": "Menú",
     "tagline": "Estudio de software · Venezuela",
-    "privacy": "Política de privacidad"
+    "privacy": "Política de privacidad",
+    "foundersLabel": "El equipo fundador en LinkedIn",
+    "legalLabel": "Legal",
+    "terms": "Términos de uso",
+    "editorial": "Política editorial",
+    "updated": "Actualizado",
+    "disclaimer": "Wedevs construye software. Nada en este sitio es asesoría financiera, legal ni fiscal; las decisiones sobre tu negocio siguen siendo tuyas."
   },
   "notFound": {
     "eyebrow": "404",
@@ -353,6 +365,48 @@
     "analytics": {
       "title": "¿Usamos analítica?",
       "body": "Sí. Usamos Google Analytics 4 para medir las visitas de forma agregada (páginas vistas, país, dispositivo). Google Analytics usa cookies para esto. No usamos esos datos para identificarte."
+    }
+  },
+  "termsPage": {
+    "seoTitle": "Términos de uso y política editorial | Wedevs",
+    "seoDescription": "Las condiciones para usar we-devs.com y cómo escribimos y mantenemos los casos de estudio y artículos publicados aquí.",
+    "eyebrow": "Términos",
+    "titleBold": "Términos",
+    "titleLight": "de uso.",
+    "support": "Las reglas para usar este sitio y cómo escribimos lo que lees aquí.",
+    "updatedLabel": "Última actualización",
+    "sections": [
+      {
+        "title": "Quiénes somos",
+        "body": "Wedevs es un estudio de software fundado por Williams Velazquez y Eliezer Meza, con base en Venezuela y trabajo remoto. Este sitio presenta los servicios y el trabajo del estudio y te permite contactarnos. Al usarlo aceptas estos términos."
+      },
+      {
+        "title": "Uso del sitio",
+        "body": "Puedes navegar y compartir las páginas de este sitio con fines personales o de negocio. No uses el formulario de contacto para enviar mensajes no solicitados, interferir con el funcionamiento del sitio ni recopilar datos de otras personas."
+      },
+      {
+        "title": "Contenido y propiedad intelectual",
+        "body": "Los textos, ejemplos de código, imágenes y logotipos de este sitio pertenecen a Wedevs o a los clientes nombrados en cada caso de estudio, que autorizaron su publicación. Puedes citar fragmentos breves con un enlace a la fuente; cualquier otro uso requiere nuestro permiso por escrito."
+      },
+      {
+        "title": "Sin asesoría profesional",
+        "body": "Los casos de estudio y artículos describen nuestro propio trabajo y nuestras opiniones. Son información general, no asesoría financiera, legal, fiscal ni de seguridad para tu situación. Las decisiones sobre tu negocio siguen siendo tuyas."
+      },
+      {
+        "title": "Responsabilidad",
+        "body": "Mantenemos este sitio exacto y disponible en la medida de lo razonable, pero lo ofrecemos tal cual. No respondemos por daños derivados de su uso ni del contenido de los sitios externos que enlazamos. El trabajo que hacemos para clientes se rige por el acuerdo de cada proyecto."
+      },
+      {
+        "title": "Cambios y contacto",
+        "body": "Podemos actualizar estos términos cuando el sitio cambie; la fecha de arriba marca la versión vigente. Las dudas van al correo de abajo."
+      }
+    ],
+    "editorial": {
+      "title": "Política editorial",
+      "paragraphs": [
+        "Cada caso de estudio y artículo de este sitio lo escribe el equipo fundador, a partir de proyectos en los que trabajamos nosotros mismos, y lo revisa el otro cofundador antes de publicarlo. Cada pieza muestra su autoría y su fecha de publicación; cuando la revisamos, actualizamos la fecha.",
+        "Nombramos a un cliente, y publicamos un resultado, solo con su permiso y cuando podemos respaldarlo con datos del proyecto. No publicamos contenido patrocinado y corregimos los errores en cuanto los conocemos: escríbenos al correo de abajo."
+      ]
     }
   }
 }

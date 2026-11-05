@@ -1,6 +1,8 @@
 ---
 import { useTranslations, type Lang } from "../../lib/i18n/ui";
+import { getLocalizedPath } from "../../lib/i18n/routes";
 import { itemIndex } from "../../lib/utils/itemIndex";
+import { founders } from "../../lib/brand";
 
 interface Props {
   lang: Lang;
@@ -79,6 +81,58 @@ const stack = [
           ))
         }
       </div>
+    </div>
+
+    {/* Byline: the people behind the work, with their public profiles. */}
+    <div
+      class="mt-12 flex flex-col gap-5 border-t border-[rgba(17,18,22,0.1)] pt-8"
+      data-reveal
+    >
+      <span
+        class="text-violet font-mono text-xs font-medium tracking-[0.12em] uppercase"
+      >
+        {t("home.builtBy.label")}
+      </span>
+      <ul class="m-0 flex list-none flex-wrap gap-x-10 gap-y-5 p-0">
+        {
+          founders.map((f) => (
+            <li class="flex items-center gap-3.5">
+              <img
+                src={f.avatar}
+                alt=""
+                width="48"
+                height="48"
+                loading="lazy"
+                decoding="async"
+                class="size-12 shrink-0 rounded-full object-cover"
+              />
+              <div class="flex flex-col gap-0.5">
+                <span class="text-night font-bold">{f.name}</span>
+                <span class="text-slate text-caption">
+                  {t(`aboutPage.founders.${f.id}.role`)}
+                </span>
+                <a
+                  href={f.linkedin}
+                  target="_blank"
+                  rel="me noopener"
+                  class="text-violet text-caption w-fit font-semibold no-underline hover:underline"
+                >
+                  LinkedIn ↗
+                </a>
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+      <p class="text-slate m-0 max-w-[640px] text-base leading-[1.55]">
+        {t("home.builtBy.desc")}{" "}
+        <a
+          href={getLocalizedPath("/about", lang)}
+          class="text-violet font-semibold no-underline hover:underline"
+        >
+          {t("home.builtBy.cta")} →
+        </a>
+      </p>
     </div>
   </div>
 </section>
