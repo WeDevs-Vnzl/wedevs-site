@@ -41,8 +41,9 @@ Payments, ERP and AI automation are specialties inside "custom systems", not the
 ## Capabilities and Constraints
 
 - Stack: Astro 7 (static output), Tailwind CSS 4, GSAP for motion, TypeScript, Prettier. Package manager lockfile is `bun.lock`.
-- Content lives in Astro content collections under `src/content/`: `services` (four entries, both languages in one file), `projects` (schema ready, no entries), `blog` (one file per language, no entries), `testimonials` (no entries). Copy for layouts and fixed pages lives in `src/lib/i18n/en.json` and `es.json`; routes and canonical helpers in `src/lib/i18n/routes.ts`.
+- Content lives in Astro content collections under `src/content/`: `services` (four entries, both languages in one file), `projects` (one entry, the fictional Torque Andino demo), `blog` (one file per language, one article), `testimonials` (no entries). Copy for layouts and fixed pages lives in `src/lib/i18n/en.json` and `es.json`; routes and canonical helpers in `src/lib/i18n/routes.ts`.
 - Open Graph images are generated at build time by the `src/pages/og/` routes (`src/lib/og/`): a text card over the PixelGrid mosaic for static pages, services and anything without artwork; case studies and articles use `public/images/<collection>/<slug>/og.<ext>` when present (cropped to 1200x630 by the author, tinted toward the right edge, logo bottom right). `scripts/generate-og.mjs` only produces the icons.
+- Blog: `src/content/blog/<lang>/<slug>.md`, same slug in both languages because hreflang and the header language switch pair pages by path. Frontmatter `author` names the founder id from `src/lib/brand.ts` (defaults to `blogAuthor`); the post page shows the author card and the schema.org author from it. The side index beside a post is built from its `h2` headings, so every section needs one. Articles describe client work without naming the client unless there is permission, and every number must be defensible (see the editorial policy on `/terms/`).
 - The four services: Full-stack development, Fintech & ERP integrations, AI agents & automation, Technical consulting. The home page presents them in customer language as mobile apps, websites, CRMs and custom systems.
 - Terminology: projects are labelled "Own product" / "Producto propio" or "Client" / "Cliente". Work done as an employee is never shown as studio work. The founder CV route was removed and redirects to the home page.
 - Explicitly undecided product facts: the brand email (the schema markup uses `info@we-devs.com`, `llms.txt` and `package.json` still carry a personal Gmail address); Instagram and TikTok handles; whether a scheduling tool (for example Cal.com) will replace message-only contact; final budget ranges; prices for the three ways of working.
@@ -58,9 +59,9 @@ Payments, ERP and AI automation are specialties inside "custom systems", not the
 
 ## Evidence on Hand
 
-- Case studies with publishable results exist (the handoff names Kairos CMS and Maximiza), with client permission and a concrete outcome each. They are not yet in the repository: `src/content/projects/` is empty and the live Projects page shows "0 case studies". Authoring guide: `docs/content/adding-projects.md`.
-- Real photographs of both founders exist and may be used on About and as blog author images. They are not yet in the repository; the site currently ships no photographs at all.
-- Absent, do not fabricate: client testimonials (collection exists but is empty), client logos, press mentions, aggregate metrics beyond the case studies, blog articles (the live Blog page says "More articles coming soon"), confirmed Instagram or TikTok accounts.
+- Case studies with publishable results exist (the handoff names Kairos CMS and Maximiza), with client permission and a concrete outcome each. They are not yet in the repository: `src/content/projects/` holds only Torque Andino, a fictitious store (type `own`) that demonstrates the catalog platform and says so in its copy. Authoring guide: `docs/content/adding-projects.md`.
+- Real photographs of both founders ship in `public/images/founders/` (full portrait plus a 192px avatar each) and are used on About, the home byline and the blog author card.
+- Absent, do not fabricate: client testimonials (collection exists but is empty), client logos, press mentions, aggregate metrics beyond the case studies, confirmed Instagram or TikTok accounts.
 - Business WhatsApp number is live on the contact page.
 
 ## Product Principles
