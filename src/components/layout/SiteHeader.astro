@@ -70,7 +70,7 @@ const navLinks = [
     <a
       href={getLocalizedPath(path, otherLang)}
       class="text-night rounded-full border border-[rgba(17,18,22,0.2)] px-[11px] py-2 font-mono text-xs font-medium no-underline hover:border-[rgba(17,18,22,0.5)]"
-      aria-label={t("nav.langSwitchLabel")}
+      aria-label={`${t("nav.langSwitch")} · ${t("nav.langSwitchLabel")}`}
       title={t("nav.langSwitchLabel")}>{t("nav.langSwitch")}</a
     >
     <a

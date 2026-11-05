@@ -15,6 +15,6 @@ const otherLang: Lang = lang === "en" ? "es" : "en";
 <a
   href={getLocalizedPath(path, otherLang)}
   class="text-muted hover:text-ink border-line hover:border-line-strong rounded-full border px-3 py-1 font-mono text-xs no-underline"
-  aria-label={t("nav.langSwitchLabel")}
+  aria-label={`${t("nav.langSwitch")} · ${t("nav.langSwitchLabel")}`}
   title={t("nav.langSwitchLabel")}>{t("nav.langSwitch")}</a
 >
