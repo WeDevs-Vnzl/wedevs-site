@@ -12,6 +12,7 @@ import ProofSection from "../../components/sections/ProofSection.astro";
 import { brandEmail, brandWhatsapp } from "../../lib/brand";
 import { locales, useTranslations, type Lang } from "../../lib/i18n/ui";
 import { getLocalizedPath } from "../../lib/i18n/routes";
+import { COVER_SIZES, coverSource, coverSrcset } from "../../lib/images/covers";
 
 export function getStaticPaths() {
   return locales.map((lang) => ({ params: { lang } }));
@@ -23,6 +24,11 @@ const { t } = useTranslations(lang);
 const projects = (await getCollection("projects")).sort(
   (a, b) => a.data.order - b.data.order,
 );
+
+// The showcase cover is the page's first image; preloaded so it never
+// reads as a late, lazy LCP candidate (ProjectsSection renders the same srcset).
+const showcase = projects[0];
+const showcaseCover = showcase && coverSource(showcase) ? showcase.id : null;
 
 const services = (await getCollection("services")).sort(
   (a, b) => a.data.order - b.data.order,
@@ -67,6 +73,18 @@ const jsonLd = {
     { name: t("project.breadcrumbHome"), url: getLocalizedPath("/", lang) },
   ]}
 >
+  {
+    showcaseCover && (
+      <link
+        slot="head"
+        rel="preload"
+        as="image"
+        imagesrcset={coverSrcset(showcaseCover)}
+        imagesizes={COVER_SIZES}
+        fetchpriority="high"
+      />
+    )
+  }
   <SiteHeader lang={lang} path="/" overlay />
 
   <main id="main-content" class="bg-paper text-night">

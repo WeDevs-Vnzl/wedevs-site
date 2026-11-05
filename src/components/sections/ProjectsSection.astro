@@ -3,6 +3,12 @@ import type { CollectionEntry } from "astro:content";
 import PixelGrid from "../ui/PixelGrid.astro";
 import { useTranslations, type Lang } from "../../lib/i18n/ui";
 import { getLocalizedPath } from "../../lib/i18n/routes";
+import {
+  COVER_DEFAULT_WIDTH,
+  COVER_SIZES,
+  coverSrcset,
+  coverVariant,
+} from "../../lib/images/covers";
 
 type Project = CollectionEntry<"projects">;
 
@@ -118,15 +124,24 @@ const highlights = featured?.data[lang].highlights?.slice(0, 3) ?? [];
                   {featured.data[lang].title}
                 </span>
               </div>
+              {/* The first image of the page: audits treat it as the LCP
+                  candidate, so it loads eagerly at high priority (the home
+                  preloads the same srcset) from the resized variants. */}
               <img
-                src={coverOf(featured)}
+                src={coverVariant(featured.id, COVER_DEFAULT_WIDTH)}
+                srcset={coverSrcset(featured.id)}
+                sizes={COVER_SIZES}
                 width="1844"
                 height="931"
                 alt=""
-                loading="lazy"
+                loading="eager"
+                fetchpriority="high"
                 decoding="async"
                 class="block w-full transition-transform duration-700 ease-out group-hover:scale-[1.02]"
               />
+              <figcaption class="sr-only">
+                {featured.data[lang].title} · {featured.data[lang].client}
+              </figcaption>
             </figure>
           </a>
         )}

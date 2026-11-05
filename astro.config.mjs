@@ -10,7 +10,9 @@ export default defineConfig({
   site,
   output: "static",
   build: {
-    inlineStylesheets: "always",
+    // One cached stylesheet for the whole site instead of ~57KB inlined on
+    // every page (SEO audit 2026-11-05: page weight and text-to-HTML ratio).
+    inlineStylesheets: "never",
   },
   vite: {
     plugins: [tailwindcss()],
