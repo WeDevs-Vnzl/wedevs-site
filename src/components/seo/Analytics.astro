@@ -5,18 +5,47 @@ interface Props {
 const { gaId } = Astro.props;
 ---
 
-<script
-  is:inline
-  async
-  src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}></script>
+<!--
+  The gtag stub is defined synchronously so other scripts (the contact form's
+  generate_lead event) can call window.gtag at any time; calls queue in the
+  dataLayer until the library arrives. The library itself is fetched off the
+  critical path: after the page has loaded and the main thread is idle, or on
+  the first user interaction, whichever happens first.
+-->
 <script is:inline define:vars={{ gaId }}>
   window.dataLayer = window.dataLayer || [];
   function gtag() {
     dataLayer.push(arguments);
   }
   // define:vars wraps this script in a function scope, so expose gtag
-  // explicitly for other scripts (e.g. the contact form's generate_lead event).
+  // explicitly for other scripts.
   window.gtag = gtag;
   gtag("js", new Date());
   gtag("config", gaId);
+
+  var loaded = false;
+  var events = ["pointerdown", "keydown", "touchstart", "scroll"];
+  function loadGtag() {
+    if (loaded) return;
+    loaded = true;
+    events.forEach(function (name) {
+      window.removeEventListener(name, loadGtag);
+    });
+    var s = document.createElement("script");
+    s.async = true;
+    s.src = "https://www.googletagmanager.com/gtag/js?id=" + gaId;
+    document.head.appendChild(s);
+  }
+  events.forEach(function (name) {
+    window.addEventListener(name, loadGtag, { once: true, passive: true });
+  });
+  function whenIdle() {
+    if ("requestIdleCallback" in window) {
+      requestIdleCallback(loadGtag, { timeout: 4000 });
+    } else {
+      setTimeout(loadGtag, 1500);
+    }
+  }
+  if (document.readyState === "complete") whenIdle();
+  else window.addEventListener("load", whenIdle, { once: true });
 </script>
