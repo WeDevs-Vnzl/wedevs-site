@@ -35,7 +35,10 @@ const socials = [{ href: mailHref, label: "Email" }];
       </p>
     </div>
 
-    <nav class="flex flex-col gap-2 text-caption" aria-label={t("nav.navLabel")}>
+    <nav
+      class="text-caption flex flex-col gap-2"
+      aria-label={t("nav.navLabel")}
+    >
       {
         navLinks.map((link) => (
           <a href={link.href} class="text-muted hover:text-ink no-underline">
@@ -45,7 +48,7 @@ const socials = [{ href: mailHref, label: "Email" }];
       }
     </nav>
 
-    <div class="flex flex-col gap-2 text-caption md:items-end">
+    <div class="text-caption flex flex-col gap-2 md:items-end">
       {
         socials.map((s) => (
           <a

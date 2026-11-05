@@ -77,7 +77,7 @@ const projects = (await getCollection("projects")).sort(
                   />
                 ) : (
                   <div class="flex aspect-[16/10] items-end rounded-md bg-[repeating-linear-gradient(135deg,#ecebe5_0_10px,#e4e2db_10px_20px)] p-3">
-                    <span class="bg-paper text-slate rounded px-2 py-1 font-mono text-micro">
+                    <span class="bg-paper text-slate text-micro rounded px-2 py-1 font-mono">
                       {data.title}
                     </span>
                   </div>
@@ -91,7 +91,7 @@ const projects = (await getCollection("projects")).sort(
                   </p>
                   <div class="flex flex-wrap gap-1.5">
                     {entry.data.stack.map((item) => (
-                      <span class="bg-paper-3 rounded px-[9px] py-[5px] font-mono text-micro">
+                      <span class="bg-paper-3 text-micro rounded px-[9px] py-[5px] font-mono">
                         {item}
                       </span>
                     ))}

@@ -61,7 +61,7 @@ const jsonLd = {
     <section
       class="bg-mist grid grid-cols-1 items-start gap-6 px-[clamp(20px,4vw,56px)] py-[clamp(40px,6vw,96px)] lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)]"
     >
-      <div class="rounded-[20px] " data-reveal>
+      <div class="rounded-[20px]" data-reveal>
         <ContactForm lang={lang} />
       </div>
 
@@ -85,7 +85,8 @@ const jsonLd = {
                   rel={c.external ? "noopener noreferrer" : undefined}
                   class="text-violet-soft hover:text-paper text-2xl font-bold tracking-[-0.02em] break-all no-underline"
                 >
-                  {c.label}{c.external && " ↗"}
+                  {c.label}
+                  {c.external && " ↗"}
                 </a>
               ))
             }
@@ -101,7 +102,7 @@ const jsonLd = {
             {t("contactPage.availabilityLabel")}
           </h2>
           <p
-            class="m-0 flex items-start gap-2.5 text-[15px] leading-[1.6] text-night-copy"
+            class="text-night-copy m-0 flex items-start gap-2.5 text-[15px] leading-[1.6]"
           >
             <span
               class="mt-[0.55em] size-2 shrink-0 rounded-full bg-emerald-400"

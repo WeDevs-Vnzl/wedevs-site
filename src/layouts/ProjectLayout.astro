@@ -190,7 +190,7 @@ const bodyText =
           {data.title}
         </h1>
         <p
-          class="m-0 max-w-[720px] text-[clamp(18px,1.8vw,22px)] leading-normal text-pretty text-night-copy"
+          class="text-night-copy m-0 max-w-[720px] text-[clamp(18px,1.8vw,22px)] leading-normal text-pretty"
           data-hero-item
           data-hero-fade
         >
@@ -220,7 +220,7 @@ const bodyText =
         {
           meta.map((item) => (
             <div class="flex flex-col gap-1.5">
-              <dt class="text-fog font-mono text-micro font-medium tracking-[0.1em] uppercase">
+              <dt class="text-fog text-micro font-mono font-medium tracking-[0.1em] uppercase">
                 {item.label}
               </dt>
               <dd class="m-0 font-semibold">{item.value}</dd>
@@ -229,14 +229,14 @@ const bodyText =
         }
         <div class="flex flex-col gap-1.5">
           <dt
-            class="text-fog font-mono text-micro font-medium tracking-[0.1em] uppercase"
+            class="text-fog text-micro font-mono font-medium tracking-[0.1em] uppercase"
           >
             {t("project.stack")}
           </dt>
           <dd class="m-0 flex flex-wrap gap-[5px]">
             {
               stack.map((item) => (
-                <span class="bg-night-2 rounded px-2 py-1 font-mono text-micro text-[#d4d6de]">
+                <span class="bg-night-2 text-micro rounded px-2 py-1 font-mono text-[#d4d6de]">
                   {item}
                 </span>
               ))
@@ -278,7 +278,7 @@ const bodyText =
                 data-index-link={s.id}
                 class="index-link text-slate hover:text-night flex items-baseline gap-3 border-l-2 border-[rgba(17,18,22,0.12)] py-2.5 pl-3.5 text-sm font-medium no-underline"
               >
-                <span class="text-violet font-mono text-micro">
+                <span class="text-violet text-micro font-mono">
                   {itemIndex("02", i)}
                 </span>
                 {s.label}
@@ -293,7 +293,7 @@ const bodyText =
               <a
                 href={`#${s.id}`}
                 data-index-link={s.id}
-                class="index-chip bg-paper-3 text-night rounded-full px-3 py-[7px] text-caption no-underline"
+                class="index-chip bg-paper-3 text-night text-caption rounded-full px-3 py-[7px] no-underline"
               >
                 {s.label}
               </a>
@@ -436,9 +436,9 @@ const bodyText =
           >
             ←
           </button>
-          <!-- The enlarged <img> is created by the script from the clicked
-               gallery image, so no image element ships without a source. -->
-          <span id="lightbox-stage" class="contents"></span>
+          {/* The enlarged <img> is created by the script from the clicked
+               gallery image, so no image element ships without a source. */}
+          <span id="lightbox-stage" class="contents" />
           <button
             id="lightbox-next"
             type="button"
@@ -474,7 +474,7 @@ const bodyText =
                 <span class="relative text-[clamp(22px,2.4vw,28px)] leading-[1.15] font-bold tracking-[-0.03em] text-balance">
                   {post.title}
                 </span>
-                <span class="relative flex items-center justify-between gap-3 text-caption text-[#a3a7b3]">
+                <span class="text-caption relative flex items-center justify-between gap-3 text-[#a3a7b3]">
                   <time datetime={post.date.toISOString()}>
                     {dateFormatter.format(post.date)}
                   </time>
