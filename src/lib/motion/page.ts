@@ -6,9 +6,22 @@ import { initReveal } from "./reveal";
 import { initScrollProgress } from "./scroll";
 
 let mm: gsap.MatchMedia | null = null;
+let firstLoad = true;
+
+/**
+ * Hero entrances are worth watching only when they start promptly. Past this
+ * point after navigation start, a first-load visitor has already waited for
+ * the page: show the hero at once instead of hiding it a moment longer.
+ */
+const INTRO_BUDGET_MS = 1200;
+
+/** Longest wait for web fonts before the entrances start anyway. */
+const FONTS_TIMEOUT_MS = 350;
 
 /** Builds every animation for the current page inside one revertible matchMedia. */
 function setupPage(): void {
+  const skipIntro = firstLoad && performance.now() > INTRO_BUDGET_MS;
+  firstLoad = false;
   mm?.revert();
   mm = gsap.matchMedia();
   // A conditions object only runs when at least one query matches, so
@@ -17,8 +30,8 @@ function setupPage(): void {
     // Under reduced motion global.css never hides anything, so skip it all.
     if (!ctx.conditions?.motion) return;
     // Top-to-bottom order, so ScrollTriggers refresh in page order.
-    initHomeHero();
-    initPageHero();
+    initHomeHero(skipIntro);
+    initPageHero(skipIntro);
     initReveal();
     initScrollProgress();
     // Hover effects only where a real pointer can hover.
@@ -46,13 +59,25 @@ function teardownPage(): void {
 }
 
 /**
+ * Fonts are preloaded with `font-display: swap`, so they are normally ready
+ * before this resolves. On a slow connection the wait is capped: a late font
+ * swap is cheaper than a hero that stays hidden.
+ */
+function fontsReadyOrTimeout(): Promise<void> {
+  return Promise.race([
+    document.fonts.ready.then(() => undefined),
+    new Promise<void>((resolve) => setTimeout(resolve, FONTS_TIMEOUT_MS)),
+  ]);
+}
+
+/**
  * Wires the motion lifecycle to Astro's ClientRouter. `astro:page-load` also
  * fires on the first load. Waiting for fonts keeps text measurements (and
  * therefore trigger positions and text splits) stable.
  */
 export function initPageMotion(): void {
   document.addEventListener("astro:page-load", () => {
-    document.fonts.ready.then(() => {
+    fontsReadyOrTimeout().then(() => {
       // After a navigation, start the entrances as the curtain clears.
       if (liftCurtain()) gsap.delayedCall(0.35, setupPage);
       else setupPage();

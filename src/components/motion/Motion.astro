@@ -1,7 +1,8 @@
 ---
-// Page-transition curtain (src/lib/motion/curtain.ts) plus the GSAP motion
-// lifecycle. The curtain persists across ClientRouter swaps so it can stay
-// down while the next page is fetched and swapped in.
+// Page-transition curtain (src/lib/motion/curtain.ts). The GSAP motion
+// lifecycle boots from MotionScript.astro in <head>. The curtain persists
+// across ClientRouter swaps so it can stay down while the next page is
+// fetched and swapped in.
 //
 // Each cell is a night square, and some carry a violet tint picked with the
 // same seeded formula as PixelGrid, so a covered screen reads as one of the
@@ -62,9 +63,3 @@ const cells = Array.from({ length: COLS * ROWS }, (_, i) => {
     class="bg-violet absolute inset-0 m-auto size-5 opacity-0"
     data-curtain-mark></span>
 </div>
-
-<script>
-  import { initPageMotion } from "../../lib/motion/page";
-
-  initPageMotion();
-</script>

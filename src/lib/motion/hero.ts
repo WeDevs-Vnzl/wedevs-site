@@ -1,12 +1,30 @@
 import { gsap, SplitText } from "./gsap";
 
 /**
+ * Shows a hero without its entrance: everything global.css hides for the
+ * intro becomes visible at once. Used when the intro would start too late to
+ * be worth the wait (see INTRO_BUDGET_MS in page.ts).
+ */
+function revealHeroNow(hero: HTMLElement): void {
+  gsap.set(hero.querySelectorAll("[data-hero-item]"), { autoAlpha: 1 });
+  const column = hero.querySelector<HTMLElement>("[data-hero-column]");
+  if (column) {
+    // An inline "none" beats the hidden clip in global.css.
+    gsap.set(column, { clipPath: "none" });
+    const grid = column.querySelector(":scope > svg");
+    if (grid) gsap.set(grid, { autoAlpha: 1 });
+  }
+}
+
+/**
  * Home hero entrance: title words rise out of a mask, then the emphasis
  * phrase shifts from the title color to violet, then copy and CTAs follow.
+ * With `skipIntro` the hero is simply shown.
  */
-export function initHomeHero(): void {
+export function initHomeHero(skipIntro = false): void {
   const hero = document.querySelector<HTMLElement>("[data-hero]");
   if (!hero) return;
+  if (skipIntro) return revealHeroNow(hero);
   const title = hero.querySelector<HTMLElement>("[data-hero-title]");
   const emphasis = hero.querySelector<HTMLElement>("[data-hero-emphasis]");
   const copy = hero.querySelectorAll<HTMLElement>("[data-hero-copy]");
@@ -93,9 +111,10 @@ function heroColumn(column: HTMLElement): gsap.core.Timeline {
 /**
  * Subpage hero entrance (PageHero and detail heroes): eyebrow slides in, title lines rise out
  * of a mask, support copy follows. The pixel grid drifts slower than the
- * page while the hero scrolls away.
+ * page while the hero scrolls away. With `skipIntro` the hero is simply
+ * shown and only the scroll parallax is set up.
  */
-export function initPageHero(): void {
+export function initPageHero(skipIntro = false): void {
   const hero = document.querySelector<HTMLElement>("[data-page-hero]");
   if (!hero) return;
   const eyebrow = hero.querySelector("[data-hero-eyebrow]");
@@ -103,30 +122,38 @@ export function initPageHero(): void {
   const support = hero.querySelector<HTMLElement>("[data-hero-support]");
   if (!title) return;
 
-  const split = SplitText.create(title, {
-    type: "lines",
-    mask: "lines",
-    linesClass: "split-mask",
-  });
-  // Un-hide before building the tweens: each .from() renders its start
-  // state immediately, so later items stay hidden until their turn. Doing
-  // this inside the timeline would re-show them when it starts playing.
-  gsap.set(hero.querySelectorAll("[data-hero-item]"), { autoAlpha: 1 });
-  const tl = gsap.timeline({ defaults: { duration: 0.8 }, delay: 0.05 });
+  if (skipIntro) {
+    revealHeroNow(hero);
+  } else {
+    const split = SplitText.create(title, {
+      type: "lines",
+      mask: "lines",
+      linesClass: "split-mask",
+    });
+    // Un-hide before building the tweens: each .from() renders its start
+    // state immediately, so later items stay hidden until their turn. Doing
+    // this inside the timeline would re-show them when it starts playing.
+    gsap.set(hero.querySelectorAll("[data-hero-item]"), { autoAlpha: 1 });
+    const tl = gsap.timeline({ defaults: { duration: 0.8 }, delay: 0.05 });
 
-  tl.addLabel("intro")
-    .from(eyebrow, { autoAlpha: 0, x: -12, duration: 0.5 }, "intro")
-    .from(split.lines, { yPercent: 105, stagger: 0.08, duration: 0.9 }, "<0.1")
-    .addLabel("copy", "-=0.5");
+    tl.addLabel("intro")
+      .from(eyebrow, { autoAlpha: 0, x: -12, duration: 0.5 }, "intro")
+      .from(
+        split.lines,
+        { yPercent: 105, stagger: 0.08, duration: 0.9 },
+        "<0.1",
+      )
+      .addLabel("copy", "-=0.5");
 
-  // PageHero groups its copy in one support slot; detail heroes (project,
-  // service, post) mark each block with data-hero-fade instead.
-  const copy = [
-    ...(support ? Array.from(support.children) : []),
-    ...hero.querySelectorAll("[data-hero-fade]"),
-  ];
-  if (copy.length > 0) {
-    tl.from(copy, { autoAlpha: 0, y: 16, stagger: 0.08 }, "copy");
+    // PageHero groups its copy in one support slot; detail heroes (project,
+    // service, post) mark each block with data-hero-fade instead.
+    const copy = [
+      ...(support ? Array.from(support.children) : []),
+      ...hero.querySelectorAll("[data-hero-fade]"),
+    ];
+    if (copy.length > 0) {
+      tl.from(copy, { autoAlpha: 0, y: 16, stagger: 0.08 }, "copy");
+    }
   }
 
   const grid = hero.querySelector(":scope > svg");

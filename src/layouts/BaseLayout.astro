@@ -10,6 +10,7 @@ import { brandEmail, founders } from "../lib/brand";
 
 import HeroBg from "../components/ui/HeroBg.astro";
 import Motion from "../components/motion/Motion.astro";
+import MotionScript from "../components/motion/MotionScript.astro";
 
 interface Breadcrumb {
   name: string;
@@ -106,6 +107,7 @@ const breadcrumbJsonLd = breadcrumbs?.length
     <meta name="generator" content={Astro.generator} />
 
     <ClientRouter />
+    <MotionScript />
 
     <title>{title}</title>
     <meta name="description" content={description} />

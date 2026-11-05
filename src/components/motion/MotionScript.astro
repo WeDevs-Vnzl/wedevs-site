@@ -1,0 +1,12 @@
+---
+// Boots the GSAP motion lifecycle (src/lib/motion/page.ts). Rendered in
+// <head> so the browser starts fetching the motion bundle while it is still
+// parsing the document; as a module script it never blocks rendering. The
+// curtain markup it animates lives in Motion.astro at the end of <body>.
+---
+
+<script>
+  import { initPageMotion } from "../../lib/motion/page";
+
+  initPageMotion();
+</script>
