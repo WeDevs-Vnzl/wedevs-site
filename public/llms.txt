@@ -33,4 +33,4 @@ The site is bilingual: English under /en/, Spanish under /es/.
 
 ## Contact
 
-- Email: eliezermeza.dev@gmail.com
+- Email: info@we-devs.com

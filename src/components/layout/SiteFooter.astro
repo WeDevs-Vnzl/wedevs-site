@@ -1,6 +1,6 @@
 ---
 import PixelGrid from "../ui/PixelGrid.astro";
-import { brandMailHref } from "../../lib/brand";
+import { brandEmail, brandMailHref } from "../../lib/brand";
 import { useTranslations, type Lang } from "../../lib/i18n/ui";
 import { getLocalizedPath } from "../../lib/i18n/routes";
 
@@ -79,11 +79,9 @@ const navLinks = [
       <p class="m-0 text-[15px] text-[#c5c8d2]">{t("footer.reach")}</p>
       <a
         href={brandMailHref}
-        target="_blank"
-        rel="noopener noreferrer"
         class="text-paper hover:border-paper rounded-full border border-white/30 px-4 py-2.5 text-sm font-semibold no-underline"
       >
-        Email ↗
+        {brandEmail}
       </a>
     </div>
 

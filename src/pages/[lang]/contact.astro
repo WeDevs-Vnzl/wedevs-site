@@ -1,5 +1,6 @@
 ---
 import {
+  brandEmail,
   brandMailHref as mailHref,
   brandWhatsappHref as whatsappHref,
 } from "../../lib/brand";
@@ -19,9 +20,11 @@ export function getStaticPaths() {
 const { lang } = Astro.params as { lang: Lang };
 const { t, dict } = useTranslations(lang);
 
+// The email channel shows the address itself and opens the mail client in
+// place; WhatsApp leaves the site, so it opens in a new tab.
 const channels = [
-  { href: mailHref, label: "Email" },
-  { href: whatsappHref, label: "WhatsApp" },
+  { href: mailHref, label: brandEmail, external: false },
+  { href: whatsappHref, label: "WhatsApp", external: true },
 ];
 
 const jsonLd = {
@@ -78,11 +81,11 @@ const jsonLd = {
               channels.map((c) => (
                 <a
                   href={c.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="text-violet-soft hover:text-paper text-2xl font-bold tracking-[-0.02em] no-underline"
+                  target={c.external ? "_blank" : undefined}
+                  rel={c.external ? "noopener noreferrer" : undefined}
+                  class="text-violet-soft hover:text-paper text-2xl font-bold tracking-[-0.02em] break-all no-underline"
                 >
-                  {c.label} ↗
+                  {c.label}{c.external && " ↗"}
                 </a>
               ))
             }

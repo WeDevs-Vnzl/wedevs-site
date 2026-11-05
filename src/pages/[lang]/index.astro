@@ -9,7 +9,7 @@ import ProjectsSection from "../../components/sections/ProjectsSection.astro";
 import ServicesTeaserSection from "../../components/sections/ServicesTeaserSection.astro";
 import ProofSection from "../../components/sections/ProofSection.astro";
 
-import { brandEmail } from "../../lib/brand";
+import { brandEmail, brandWhatsapp } from "../../lib/brand";
 import { locales, useTranslations, type Lang } from "../../lib/i18n/ui";
 import { getLocalizedPath } from "../../lib/i18n/routes";
 
@@ -38,9 +38,13 @@ const jsonLd = {
   // Same entity as the site-wide Organization; this node adds the service details.
   "@id": `${import.meta.env.SITE}/#organization`,
   name: "Wedevs",
+  url: import.meta.env.SITE,
+  logo: `${import.meta.env.SITE}/icons/android-chrome-512x512.png`,
   description: t("home.seoDescription"),
   areaServed: "Worldwide",
+  address: { "@type": "PostalAddress", addressCountry: "VE" },
   email: brandEmail,
+  telephone: brandWhatsapp,
   knowsAbout: [
     "Mobile apps",
     "Websites",

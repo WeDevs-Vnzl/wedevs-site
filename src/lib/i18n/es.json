@@ -276,7 +276,7 @@
     "relatedHeading": "Artículos relacionados",
     "relatedProjectHeading": "Caso de estudio",
     "backToBlog": "← Volver al blog",
-    "authorBioText": "Equipo fundador de WedevsVnzla. Ingeniería de software full-stack con especialidad en fintech y sistemas ERP.",
+    "authorBioText": "Equipo fundador de Wedevs. Ingeniería de software full-stack con especialidad en fintech y sistemas ERP.",
     "all": "Todos",
     "read": "Leer artículo",
     "soon": "Pronto habrá más artículos.",
@@ -286,8 +286,8 @@
     "seoDescription": "Escritura técnica sobre fintech, arquitectura de software y las decisiones detrás de proyectos reales: qué funcionó, qué no y por qué importó."
   },
   "aboutPage": {
-    "seoTitle": "Sobre el estudio y su fundador | Wedevs",
-    "seoDescription": "WedevsVnzla es un estudio de software venezolano fundado por Eliezer Meza y Williams Velazquez, con experiencia full-stack, fintech, mobile y producto.",
+    "seoTitle": "Sobre el estudio y sus fundadores | Wedevs",
+    "seoDescription": "Wedevs es un estudio de software venezolano fundado por Eliezer Meza y Williams Velazquez, con experiencia full-stack, fintech, mobile y producto.",
     "eyebrow": "Nosotros",
     "titleBold": "Un estudio pequeño",
     "titleLight": "que lanza software.",
@@ -316,11 +316,11 @@
     "founders": {
       "williams-velazquez": {
         "role": "Cofundación · Desarrollo mobile y diseño de producto",
-        "bio": "Williams Velazquez es parte del equipo fundador de WedevsVnzla, con especialidad en desarrollo mobile y diseño de producto, desde los primeros flujos de usuario hasta la app publicada."
+        "bio": "Williams Velazquez es parte del equipo fundador de Wedevs, con especialidad en desarrollo mobile y diseño de producto, desde los primeros flujos de usuario hasta la app publicada."
       },
       "eliezer-meza": {
         "role": "Cofundación · Ingeniería de software full-stack",
-        "bio": "Eliezer Meza es parte del equipo fundador de WedevsVnzla. Ingeniería de software full-stack con especialidad en sistemas fintech y ERP, y autoría de los artículos de este blog."
+        "bio": "Eliezer Meza es parte del equipo fundador de Wedevs. Ingeniería de software full-stack con especialidad en sistemas fintech y ERP, y autoría de los artículos de este blog."
       }
     }
   },

@@ -6,7 +6,7 @@ import Analytics from "../components/seo/Analytics.astro";
 import { analyticsEnabled, gaId } from "../lib/analytics";
 import { useTranslations, type Lang } from "../lib/i18n/ui";
 import { getCanonicalUrl } from "../lib/i18n/routes";
-import { brandEmail, founders } from "../lib/brand";
+import { brandEmail, brandSameAs, founders } from "../lib/brand";
 
 import HeroBg from "../components/ui/HeroBg.astro";
 import Motion from "../components/motion/Motion.astro";
@@ -66,6 +66,17 @@ const organizationJsonLd = {
   logo: `${site}/icons/android-chrome-512x512.png`,
   description: t("home.seoDescription"),
   email: brandEmail,
+  // Only the country is public; the studio works remotely.
+  address: { "@type": "PostalAddress", addressCountry: "VE" },
+  contactPoint: {
+    "@type": "ContactPoint",
+    contactType: "sales",
+    email: brandEmail,
+    availableLanguage: ["en", "es"],
+  },
+  // The founders' profiles are the studio's public presence until the
+  // company accounts are confirmed (see brandSameAs).
+  sameAs: [...brandSameAs, ...founders.map((f) => f.linkedin)],
   founder: founders.map((f) => ({
     "@type": "Person",
     "@id": `${site}/#${f.id}`,

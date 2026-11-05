@@ -1,11 +1,14 @@
 // Single source for the studio's contact channels.
-// TODO(brand): switch to the brand inbox (e.g. hola@we-devs.com) and add
-// Instagram and TikTok once the team confirms them.
+// TODO(brand): add Instagram and TikTok once the team confirms them.
 // CONTACT_EMAIL and CONTACT_PHONE are read at build time (set them in .env
 // locally and in Netlify's environment variables); the literals are fallbacks.
 export const brandEmail: string =
-  import.meta.env.CONTACT_EMAIL || "eliezermeza.dev@gmail.com";
-export const brandMailHref = `https://mail.google.com/mail/?view=cm&fs=1&to=${brandEmail}`;
+  import.meta.env.CONTACT_EMAIL || "info@we-devs.com";
+// A plain mailto: opens the visitor's own mail client; no third-party webmail.
+export const brandMailHref = `mailto:${brandEmail}`;
+
+// Public profiles of the studio itself (schema.org Organization.sameAs).
+export const brandSameAs: string[] = [];
 
 // wa.me expects the number in international format, digits only.
 export const brandWhatsapp: string =

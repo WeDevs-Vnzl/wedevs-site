@@ -276,7 +276,7 @@
     "relatedHeading": "Related posts",
     "relatedProjectHeading": "Case study",
     "backToBlog": "← Back to blog",
-    "authorBioText": "Co-founder of WedevsVnzla. Full-stack software engineer specialized in fintech and ERP systems.",
+    "authorBioText": "Co-founder of Wedevs. Full-stack software engineer specialized in fintech and ERP systems.",
     "all": "All",
     "read": "Read article",
     "soon": "More articles coming soon.",
@@ -286,8 +286,8 @@
     "seoDescription": "Technical writing on fintech, software architecture and the tradeoffs behind real projects: what worked, what didn't, and why it mattered to us."
   },
   "aboutPage": {
-    "seoTitle": "About the studio and its founder | Wedevs",
-    "seoDescription": "WedevsVnzla is a Venezuelan software studio founded by Eliezer Meza and Williams Velazquez: full-stack, fintech, mobile and product design expertise.",
+    "seoTitle": "About the studio and its founders | Wedevs",
+    "seoDescription": "Wedevs is a Venezuelan software studio founded by Eliezer Meza and Williams Velazquez: full-stack, fintech, mobile and product design expertise.",
     "eyebrow": "About",
     "titleBold": "A small studio",
     "titleLight": "that ships software.",
@@ -316,11 +316,11 @@
     "founders": {
       "williams-velazquez": {
         "role": "Co-founder · Mobile development & product design",
-        "bio": "Williams Velazquez co-founded WedevsVnzla. Specialized in mobile development and product design, from the first user flows to the app in the stores."
+        "bio": "Williams Velazquez co-founded Wedevs. Specialized in mobile development and product design, from the first user flows to the app in the stores."
       },
       "eliezer-meza": {
         "role": "Co-founder · Full-stack software engineer",
-        "bio": "Eliezer Meza co-founded WedevsVnzla. Full-stack software engineer specialized in fintech and ERP systems, and the author of the articles on this blog."
+        "bio": "Eliezer Meza co-founded Wedevs. Full-stack software engineer specialized in fintech and ERP systems, and the author of the articles on this blog."
       }
     }
   },

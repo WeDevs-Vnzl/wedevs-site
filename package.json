@@ -12,7 +12,7 @@
     "format:check": "prettier --check ."
   },
   "keywords": [],
-  "author": "eliezermeza.dev@gmail.com",
+  "author": "Wedevs <info@we-devs.com>",
   "license": "ISC",
   "dependencies": {
     "@astrojs/sitemap": "^3.7.3",
