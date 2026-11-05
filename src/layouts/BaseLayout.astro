@@ -33,6 +33,11 @@ interface Props {
   jsonLd?: object;
   breadcrumbs?: Breadcrumb[];
   noindex?: boolean;
+  /**
+   * Path of this page in each language when the slugs differ (blog posts).
+   * Defaults to `path` in every locale.
+   */
+  alternatePaths?: Partial<Record<Lang, string>>;
 }
 
 const {
@@ -47,6 +52,7 @@ const {
   jsonLd,
   breadcrumbs,
   noindex = false,
+  alternatePaths,
 } = Astro.props;
 
 const site = import.meta.env.SITE;
@@ -153,7 +159,7 @@ const breadcrumbJsonLd = breadcrumbs?.length
       !noindex && (
         <>
           <link rel="canonical" href={resolvedCanonical} />
-          <Hreflang path={path} />
+          <Hreflang path={path} paths={alternatePaths} />
         </>
       )
     }
@@ -164,13 +170,13 @@ const breadcrumbJsonLd = breadcrumbs?.length
     <meta property="og:title" content={ogTitle || title} />
     <meta property="og:description" content={ogDescription || description} />
     <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:type" content="image/jpeg" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content={ogTitle || title} />
     <meta property="og:site_name" content="Wedevs" />
     <meta property="og:locale" content={ogLocale} />
 
-    <meta property="og:image:type" content="image/jpeg" />
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={ogTitle || title} />

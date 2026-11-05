@@ -19,13 +19,26 @@ export function getCanonicalUrl(path: string, lang: Lang): string {
 export function getAlternates(
   pathWithoutLangPrefix: string,
 ): Record<string, string> {
+  const paths: Partial<Record<Lang, string>> = {};
+  for (const lang of locales) paths[lang] = pathWithoutLangPrefix;
+  return getAlternatesFor(paths);
+}
+
+/**
+ * hreflang alternates when each language has its own path (blog posts).
+ * Languages without a path are left out; x-default is the default language
+ * when it exists, else the first listed.
+ */
+export function getAlternatesFor(
+  paths: Partial<Record<Lang, string>>,
+): Record<string, string> {
   const alternates: Record<string, string> = {};
   for (const lang of locales) {
-    alternates[lang] = getLocalizedPath(pathWithoutLangPrefix, lang);
+    const path = paths[lang];
+    if (path) alternates[lang] = getLocalizedPath(path, lang);
   }
-  alternates["x-default"] = getLocalizedPath(
-    pathWithoutLangPrefix,
-    defaultLang,
-  );
+  const fallback = locales.find((lang) => paths[lang]);
+  const xDefault = paths[defaultLang] ? defaultLang : fallback;
+  if (xDefault) alternates["x-default"] = alternates[xDefault];
   return alternates;
 }

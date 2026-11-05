@@ -7,6 +7,7 @@ seoDescription: "From individual ChatGPT or Claude use to a shared workflow: wha
 date: 2026-11-05
 tags: ["ai", "automation", "smb", "rag"]
 author: eliezer-meza
+translationKey: implement-ai-company
 ---
 
 If you run a company and have been using ChatGPT or Claude for months, you have probably been here: you found a way of working with AI that saves you hours, you gladly pay for a subscription, and you wonder why the rest of the team does not get the same out of it. You try to share it, everyone tries it their own way, and within a few weeks you have five different versions of the same process.

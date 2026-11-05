@@ -61,6 +61,19 @@ const relatedProjects = (await getEntries(relatedRefs))
 const path = `/blog/${getPostSlug(entry.id)}`;
 const canonicalUrl = getCanonicalUrl(path, lang);
 
+// Translations share a translationKey (or, without one, the slug); each
+// language keeps its own slug, so hreflang and the language switch need the
+// paired path. Without a translation the switch goes to the other blog index.
+const keyOf = (post: typeof entry) =>
+  post.data.translationKey ?? getPostSlug(post.id);
+const alternatePaths = Object.fromEntries(
+  (await getCollection("blog", (post) => keyOf(post) === keyOf(entry))).map(
+    (post) => [post.data.lang, `/blog/${getPostSlug(post.id)}`],
+  ),
+) as Partial<Record<Lang, string>>;
+const otherLang: Lang = lang === "en" ? "es" : "en";
+const otherPath = alternatePaths[otherLang] ?? "/blog";
+
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "BlogPosting",
@@ -98,6 +111,8 @@ const jsonLd = {
   coverImage={entry.data.coverImage}
   related={related}
   relatedProjects={relatedProjects}
+  alternatePaths={alternatePaths}
+  otherPath={otherPath}
   jsonLd={jsonLd}
 >
   <Content />

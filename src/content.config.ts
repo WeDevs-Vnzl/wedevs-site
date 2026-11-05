@@ -87,6 +87,9 @@ const blog = defineCollection({
     coverImage: z.string().optional(),
     // Founder id (src/lib/brand.ts) who wrote the post; defaults to blogAuthor.
     author: z.enum(founderIds).optional(),
+    // Shared by the translations of one post, whose slugs differ per language;
+    // hreflang and the language switch pair them by it. Defaults to the slug.
+    translationKey: z.string().optional(),
     // Project ids (filenames in src/content/projects) this post writes about.
     // The project page lists these posts back, so the link is declared only here.
     relatedProjects: z.array(reference("projects")).optional(),
