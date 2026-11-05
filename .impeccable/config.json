@@ -1,0 +1,26 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "design-system-font-size",
+        "value": "34px",
+        "createdAt": "2026-11-05T15:02:40.686Z",
+        "reason": "editorial prose h2 upper bound inside BlogLayout article styles; blog scale is separate from the UI ramp"
+      },
+      {
+        "rule": "design-system-font-size",
+        "value": "21px",
+        "createdAt": "2026-11-05T15:02:40.709Z",
+        "reason": "editorial prose h3 inside BlogLayout article styles; blog scale is separate from the UI ramp"
+      },
+      {
+        "rule": "design-system-font-size",
+        "value": "32px",
+        "createdAt": "2026-11-05T15:02:40.732Z",
+        "reason": "decorative arrow glyph on the next-project card, not text"
+      }
+    ]
+  }
+}

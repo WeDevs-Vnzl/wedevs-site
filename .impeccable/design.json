@@ -1,0 +1,531 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-05T15:05:00Z",
+  "title": "Design System: Wedevs",
+  "extensions": {
+    "colorMeta": {
+      "paper": {
+        "role": "neutral",
+        "displayName": "Paper",
+        "canonical": "#fafaf7",
+        "tonalRamp": [
+          "oklch(18% 0.004 95)",
+          "oklch(30% 0.005 95)",
+          "oklch(45% 0.006 95)",
+          "oklch(60% 0.007 95)",
+          "oklch(74% 0.007 95)",
+          "oklch(86% 0.006 95)",
+          "oklch(94% 0.005 95)",
+          "oklch(98.5% 0.004 95)"
+        ]
+      },
+      "paper-2": {
+        "role": "neutral",
+        "displayName": "Paper 2",
+        "canonical": "#f4f2ee",
+        "tonalRamp": [
+          "oklch(18% 0.004 80)",
+          "oklch(30% 0.005 80)",
+          "oklch(45% 0.006 80)",
+          "oklch(60% 0.007 80)",
+          "oklch(74% 0.007 80)",
+          "oklch(86% 0.006 80)",
+          "oklch(93% 0.006 80)",
+          "oklch(96% 0.005 80)"
+        ]
+      },
+      "paper-3": {
+        "role": "neutral",
+        "displayName": "Paper 3",
+        "canonical": "#ecebe5",
+        "tonalRamp": [
+          "oklch(18% 0.004 95)",
+          "oklch(30% 0.005 95)",
+          "oklch(45% 0.006 95)",
+          "oklch(60% 0.007 95)",
+          "oklch(74% 0.007 95)",
+          "oklch(86% 0.006 95)",
+          "oklch(91% 0.006 95)",
+          "oklch(94% 0.006 95)"
+        ]
+      },
+      "mist": {
+        "role": "neutral",
+        "displayName": "Mist",
+        "canonical": "#eef0f5",
+        "tonalRamp": [
+          "oklch(18% 0.006 265)",
+          "oklch(30% 0.008 265)",
+          "oklch(45% 0.01 265)",
+          "oklch(60% 0.01 265)",
+          "oklch(74% 0.01 265)",
+          "oklch(86% 0.008 265)",
+          "oklch(92% 0.007 265)",
+          "oklch(95.5% 0.006 265)"
+        ]
+      },
+      "white": {
+        "role": "neutral",
+        "displayName": "White",
+        "canonical": "#ffffff",
+        "tonalRamp": [
+          "oklch(15% 0 0)",
+          "oklch(30% 0 0)",
+          "oklch(45% 0 0)",
+          "oklch(60% 0 0)",
+          "oklch(75% 0 0)",
+          "oklch(87% 0 0)",
+          "oklch(95% 0 0)",
+          "oklch(100% 0 0)"
+        ]
+      },
+      "night": {
+        "role": "neutral",
+        "displayName": "Night",
+        "canonical": "#111216",
+        "tonalRamp": [
+          "oklch(17% 0.008 280)",
+          "oklch(24% 0.01 280)",
+          "oklch(34% 0.012 280)",
+          "oklch(46% 0.012 280)",
+          "oklch(60% 0.012 280)",
+          "oklch(74% 0.01 280)",
+          "oklch(86% 0.008 280)",
+          "oklch(95% 0.005 280)"
+        ]
+      },
+      "night-2": {
+        "role": "neutral",
+        "displayName": "Night 2",
+        "canonical": "#22242b",
+        "tonalRamp": [
+          "oklch(17% 0.008 280)",
+          "oklch(25% 0.012 280)",
+          "oklch(34% 0.012 280)",
+          "oklch(46% 0.012 280)",
+          "oklch(60% 0.012 280)",
+          "oklch(74% 0.01 280)",
+          "oklch(86% 0.008 280)",
+          "oklch(95% 0.005 280)"
+        ]
+      },
+      "graphite": {
+        "role": "neutral",
+        "displayName": "Graphite",
+        "canonical": "#40424b",
+        "tonalRamp": [
+          "oklch(17% 0.008 280)",
+          "oklch(26% 0.012 280)",
+          "oklch(37% 0.014 280)",
+          "oklch(48% 0.014 280)",
+          "oklch(60% 0.012 280)",
+          "oklch(74% 0.01 280)",
+          "oklch(86% 0.008 280)",
+          "oklch(95% 0.005 280)"
+        ]
+      },
+      "slate": {
+        "role": "neutral",
+        "displayName": "Slate",
+        "canonical": "#55575f",
+        "tonalRamp": [
+          "oklch(17% 0.008 280)",
+          "oklch(28% 0.012 280)",
+          "oklch(45% 0.014 280)",
+          "oklch(55% 0.014 280)",
+          "oklch(66% 0.012 280)",
+          "oklch(78% 0.01 280)",
+          "oklch(88% 0.008 280)",
+          "oklch(95% 0.005 280)"
+        ]
+      },
+      "fog": {
+        "role": "neutral",
+        "displayName": "Fog",
+        "canonical": "#b4b7c2",
+        "tonalRamp": [
+          "oklch(17% 0.008 275)",
+          "oklch(30% 0.012 275)",
+          "oklch(45% 0.014 275)",
+          "oklch(60% 0.014 275)",
+          "oklch(77% 0.012 275)",
+          "oklch(85% 0.01 275)",
+          "oklch(91% 0.008 275)",
+          "oklch(96% 0.005 275)"
+        ]
+      },
+      "night-copy": {
+        "role": "neutral",
+        "displayName": "Night Copy",
+        "canonical": "#c5c8d2",
+        "tonalRamp": [
+          "oklch(17% 0.008 275)",
+          "oklch(30% 0.012 275)",
+          "oklch(45% 0.014 275)",
+          "oklch(60% 0.014 275)",
+          "oklch(74% 0.012 275)",
+          "oklch(83% 0.012 275)",
+          "oklch(91% 0.008 275)",
+          "oklch(96% 0.005 275)"
+        ]
+      },
+      "night-meta": {
+        "role": "neutral",
+        "displayName": "Night Meta",
+        "canonical": "#9a9da8",
+        "tonalRamp": [
+          "oklch(17% 0.008 275)",
+          "oklch(30% 0.012 275)",
+          "oklch(45% 0.014 275)",
+          "oklch(60% 0.014 275)",
+          "oklch(69% 0.012 275)",
+          "oklch(80% 0.01 275)",
+          "oklch(90% 0.008 275)",
+          "oklch(96% 0.005 275)"
+        ]
+      },
+      "violet": {
+        "role": "primary",
+        "displayName": "Electric Violet",
+        "canonical": "#4f55e8",
+        "tonalRamp": [
+          "oklch(22% 0.1 275)",
+          "oklch(32% 0.16 275)",
+          "oklch(44% 0.21 275)",
+          "oklch(54% 0.22 275)",
+          "oklch(64% 0.19 275)",
+          "oklch(75% 0.14 275)",
+          "oklch(86% 0.08 275)",
+          "oklch(95% 0.03 275)"
+        ]
+      },
+      "violet-soft": {
+        "role": "primary",
+        "displayName": "Soft Violet",
+        "canonical": "#8f94ff",
+        "tonalRamp": [
+          "oklch(22% 0.1 275)",
+          "oklch(32% 0.16 275)",
+          "oklch(44% 0.21 275)",
+          "oklch(54% 0.22 275)",
+          "oklch(69% 0.16 275)",
+          "oklch(78% 0.12 275)",
+          "oklch(87% 0.07 275)",
+          "oklch(95% 0.03 275)"
+        ]
+      },
+      "line-night": {
+        "role": "neutral",
+        "displayName": "Hairline on paper",
+        "canonical": "rgba(17, 18, 22, 0.12)"
+      },
+      "line-night-strong": {
+        "role": "neutral",
+        "displayName": "Strong hairline on paper",
+        "canonical": "rgba(17, 18, 22, 0.2)"
+      },
+      "line-paper": {
+        "role": "neutral",
+        "displayName": "Hairline on night",
+        "canonical": "rgba(255, 255, 255, 0.3)"
+      },
+      "legacy-ink": {
+        "role": "neutral",
+        "displayName": "Legacy Ink (retiring)",
+        "canonical": "#f6f5f2"
+      },
+      "legacy-muted": {
+        "role": "neutral",
+        "displayName": "Legacy Muted (retiring)",
+        "canonical": "#a9aab0"
+      },
+      "legacy-accent": {
+        "role": "primary",
+        "displayName": "Legacy Periwinkle (retiring)",
+        "canonical": "#6b80ff"
+      },
+      "legacy-surface": {
+        "role": "neutral",
+        "displayName": "Legacy Surface (retiring)",
+        "canonical": "#15161a"
+      },
+      "legacy-line": {
+        "role": "neutral",
+        "displayName": "Legacy Hairline (retiring)",
+        "canonical": "rgba(246, 245, 242, 0.08)"
+      },
+      "error": {
+        "role": "error",
+        "displayName": "Form Error",
+        "canonical": "#b91c1c"
+      },
+      "ink-prose": {
+        "role": "neutral",
+        "displayName": "Ink Prose",
+        "canonical": "#2a2c33",
+        "tonalRamp": [
+          "oklch(17% 0.008 280)",
+          "oklch(26% 0.012 280)",
+          "oklch(36% 0.012 280)",
+          "oklch(46% 0.012 280)",
+          "oklch(60% 0.012 280)",
+          "oklch(74% 0.01 280)",
+          "oklch(86% 0.008 280)",
+          "oklch(95% 0.005 280)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Page hero titles on night and the contact band headline on violet."
+      },
+      "display-light": {
+        "displayName": "Display Light",
+        "purpose": "Home hero only; 300 weight with an 800 violet emphasis span."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Section titles on paper."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "FAQ questions, card titles, list headings."
+      },
+      "lead": {
+        "displayName": "Lead",
+        "purpose": "Opening paragraph of a reading page or section, max 760px, in Ink Prose."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Running copy, FAQ answers, form fields."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Mono uppercase eyebrows, form labels, footer menu heading."
+      },
+      "mono": {
+        "displayName": "Mono",
+        "purpose": "Metadata, copyright, language toggle, stack tags."
+      },
+      "support": {
+        "displayName": "Support",
+        "purpose": "Short paragraph beside a hero title, 460 to 480px wide."
+      },
+      "caption": {
+        "displayName": "Caption",
+        "purpose": "Card metadata, result lines, footer navigation, index chips."
+      },
+      "micro": {
+        "displayName": "Micro",
+        "purpose": "Stack tags and the smallest mono labels."
+      }
+    },
+    "shadows": [
+      {
+        "name": "popover",
+        "value": "0 12px 32px -12px rgba(17, 18, 22, 0.25)",
+        "purpose": "The custom select's open list. The only shadow in the system."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-signature",
+        "value": "cubic-bezier(0.22, 1, 0.36, 1)",
+        "purpose": "The single easing for CSS and GSAP motion."
+      },
+      {
+        "name": "duration-default",
+        "value": "0.5s",
+        "purpose": "GSAP default tween duration."
+      },
+      {
+        "name": "duration-state",
+        "value": "150ms",
+        "purpose": "Colour, border and background transitions on links and buttons."
+      },
+      {
+        "name": "reveal-from",
+        "value": "autoAlpha: 0, y: 16px",
+        "purpose": "Start state for [data-reveal] targets."
+      },
+      {
+        "name": "reveal-base-delay",
+        "value": "0.15s",
+        "purpose": "Delay before a reveal starts."
+      },
+      {
+        "name": "reveal-stagger",
+        "value": "0.06s",
+        "purpose": "Stagger between children of [data-reveal-group]."
+      },
+      {
+        "name": "hero-line-rise",
+        "value": "yPercent: 105 to 110, stagger 0.05 to 0.08s, duration 0.8 to 0.9s",
+        "purpose": "Masked line or word rise in heroes."
+      },
+      {
+        "name": "hero-grid-flicker",
+        "value": "opacity 0 to 1, duration 0.3s, stagger amount 0.9s from random",
+        "purpose": "Pixel grid cells appearing in heroes."
+      },
+      {
+        "name": "magnetic",
+        "value": "quickTo x/y, 0.4s, power3",
+        "purpose": "Pills with data-magnetic drift toward the pointer."
+      },
+      {
+        "name": "header-hide",
+        "value": "transform 300ms ease-out",
+        "purpose": "Sticky header sliding away on idle scroll."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "sm",
+        "value": "640px"
+      },
+      {
+        "name": "md",
+        "value": "768px"
+      },
+      {
+        "name": "lg",
+        "value": "1024px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Electric Violet pill for the one main action on a paper surface.",
+      "html": "<a href=\"#\" class=\"ds-btn-primary\">Let's talk</a>",
+      "css": ".ds-btn-primary { display: inline-flex; align-items: center; gap: 6px; background: #4f55e8; color: #ffffff; font-family: Manrope, system-ui, sans-serif; font-size: 15px; font-weight: 700; line-height: 1.2; padding: 16px 26px; border-radius: 9999px; text-decoration: none; transition: opacity 150ms ease; } .ds-btn-primary:hover { opacity: 0.9; } .ds-btn-primary:focus-visible { outline: none; box-shadow: 0 0 0 2px #fafaf7, 0 0 0 4px #4f55e8; }"
+    },
+    {
+      "name": "Night Button",
+      "kind": "button",
+      "refersTo": "button-night",
+      "description": "Night pill in the sticky header; fills violet on hover.",
+      "html": "<a href=\"#\" class=\"ds-btn-night\">Let's talk ↗</a>",
+      "css": ".ds-btn-night { display: inline-block; background: #111216; color: #fafaf7; font-family: Manrope, system-ui, sans-serif; font-size: 14px; font-weight: 600; line-height: 1.2; padding: 10px 16px; border-radius: 9999px; text-decoration: none; transition: background-color 150ms ease, color 150ms ease; } .ds-btn-night:hover { background: #4f55e8; color: #fafaf7; } .ds-btn-night:focus-visible { outline: none; box-shadow: 0 0 0 2px #fafaf7, 0 0 0 4px #4f55e8; }"
+    },
+    {
+      "name": "Outline Button",
+      "kind": "button",
+      "refersTo": "button-outline",
+      "description": "Hairline pill for secondary actions and the language toggle on paper.",
+      "html": "<a href=\"#\" class=\"ds-btn-outline\">Let's talk ↗</a>",
+      "css": ".ds-btn-outline { display: inline-block; background: transparent; color: #111216; border: 1px solid rgba(17, 18, 22, 0.2); font-family: Manrope, system-ui, sans-serif; font-size: 14px; font-weight: 600; line-height: 1.2; padding: 10px 16px; border-radius: 9999px; text-decoration: none; transition: border-color 150ms ease, color 150ms ease; } .ds-btn-outline:hover { border-color: #4f55e8; color: #4f55e8; } .ds-btn-outline:focus-visible { outline: none; box-shadow: 0 0 0 2px #fafaf7, 0 0 0 4px #4f55e8; }"
+    },
+    {
+      "name": "Text Field",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "White field with a violet mono label and a slate icon; border and icon turn violet on hover and focus.",
+      "html": "<div class=\"ds-field\"><label class=\"ds-field-label\" for=\"ds-email\">Email</label><div class=\"ds-field-wrap\"><svg class=\"ds-field-icon\" width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><rect width=\"20\" height=\"16\" x=\"2\" y=\"4\" rx=\"2\"/><path d=\"m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7\"/></svg><input id=\"ds-email\" class=\"ds-field-input\" type=\"email\" placeholder=\"you@company.com\"></div></div>",
+      "css": ".ds-field { display: flex; flex-direction: column; gap: 6px; font-family: Manrope, system-ui, sans-serif; } .ds-field-label { color: #4f55e8; font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; } .ds-field-wrap { position: relative; display: flex; align-items: center; } .ds-field-icon { position: absolute; left: 16px; color: #55575f; pointer-events: none; transition: color 150ms ease; } .ds-field-input { width: 100%; background: #ffffff; color: #111216; border: 1px solid rgba(17, 18, 22, 0.2); border-radius: 6px; padding: 12px 16px 12px 44px; font-size: 15px; outline: none; transition: border-color 150ms ease; } .ds-field-input::placeholder { color: rgba(85, 87, 95, 0.7); } .ds-field-wrap:hover .ds-field-input, .ds-field-input:focus-visible { border-color: #4f55e8; } .ds-field-wrap:hover .ds-field-icon, .ds-field-input:focus-visible + .ds-field-icon { color: #4f55e8; }"
+    },
+    {
+      "name": "Inner Page Navigation",
+      "kind": "nav",
+      "refersTo": "button-night",
+      "description": "Sticky paper header: night links, violet active state, mono language pill and night CTA pill.",
+      "html": "<header class=\"ds-nav\"><span class=\"ds-nav-logo\"><svg width=\"24\" height=\"23\" viewBox=\"0 0 68 64\" aria-hidden=\"true\"><polyline points=\"6,16 17,48 28,26 39,48 50,16\" fill=\"none\" stroke=\"#111216\" stroke-width=\"6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><line x1=\"62\" y1=\"10\" x2=\"54\" y2=\"54\" stroke=\"#6b80ff\" stroke-width=\"6\" stroke-linecap=\"round\"/></svg></span><nav class=\"ds-nav-links\"><a href=\"#\" class=\"ds-nav-link ds-nav-link-active\">Services</a><a href=\"#\" class=\"ds-nav-link\">Projects</a><a href=\"#\" class=\"ds-nav-link\">Blog</a><a href=\"#\" class=\"ds-nav-link\">Contact</a></nav><div class=\"ds-nav-right\"><a href=\"#\" class=\"ds-nav-lang\">ES</a><a href=\"#\" class=\"ds-nav-cta\">Let's talk ↗</a></div></header>",
+      "css": ".ds-nav { display: flex; align-items: center; justify-content: space-between; gap: 16px; background: #fafaf7; color: #111216; padding: 18px 24px; border-bottom: 1px solid rgba(17, 18, 22, 0.1); font-family: Manrope, system-ui, sans-serif; } .ds-nav-links { display: flex; gap: 20px; font-size: 15px; } .ds-nav-link { color: #111216; text-decoration: none; transition: color 150ms ease; } .ds-nav-link:hover { color: #4f55e8; } .ds-nav-link-active { color: #4f55e8; font-weight: 700; } .ds-nav-right { display: flex; align-items: center; gap: 8px; } .ds-nav-lang { color: #111216; border: 1px solid rgba(17, 18, 22, 0.2); border-radius: 9999px; padding: 8px 11px; font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500; text-decoration: none; transition: border-color 150ms ease; } .ds-nav-lang:hover { border-color: rgba(17, 18, 22, 0.5); } .ds-nav-cta { background: #111216; color: #fafaf7; border-radius: 9999px; padding: 10px 16px; font-size: 14px; font-weight: 600; text-decoration: none; transition: background-color 150ms ease; } .ds-nav-cta:hover { background: #4f55e8; }"
+    },
+    {
+      "name": "Index Chip",
+      "kind": "chip",
+      "refersTo": "chip-index",
+      "description": "Paper 3 pill for section indexes and tags on paper.",
+      "html": "<a href=\"#\" class=\"ds-chip-index\">Context</a>",
+      "css": ".ds-chip-index { display: inline-block; background: #ecebe5; color: #111216; font-family: Manrope, system-ui, sans-serif; font-size: 13px; line-height: 1.2; padding: 7px 12px; border-radius: 9999px; text-decoration: none; transition: background-color 150ms ease; } .ds-chip-index:hover { background: #e4e2db; }"
+    },
+    {
+      "name": "Dark Card",
+      "kind": "card",
+      "refersTo": "card-night",
+      "description": "Night block with a mono eyebrow, a bold title and a pixel-grid texture; used for related projects and blog teasers.",
+      "html": "<a href=\"#\" class=\"ds-card-night\"><svg class=\"ds-card-grid\" viewBox=\"0 0 12 6\" preserveAspectRatio=\"none\" aria-hidden=\"true\"><rect x=\"1\" y=\"0\" width=\"1\" height=\"1\" fill=\"#8f94ff\" opacity=\"0.08\"/><rect x=\"4\" y=\"1\" width=\"1\" height=\"1\" fill=\"#8f94ff\" opacity=\"0.05\"/><rect x=\"7\" y=\"0\" width=\"1\" height=\"1\" fill=\"#8f94ff\" opacity=\"0.1\"/><rect x=\"9\" y=\"2\" width=\"1\" height=\"1\" fill=\"#8f94ff\" opacity=\"0.04\"/><rect x=\"2\" y=\"3\" width=\"1\" height=\"1\" fill=\"#8f94ff\" opacity=\"0.06\"/><rect x=\"11\" y=\"1\" width=\"1\" height=\"1\" fill=\"#8f94ff\" opacity=\"0.07\"/></svg><span class=\"ds-card-eyebrow\">Case study</span><span class=\"ds-card-title\">Payments reconciled nightly</span><span class=\"ds-card-link\">View project →</span></a>",
+      "css": ".ds-card-night { position: relative; display: flex; flex-direction: column; justify-content: space-between; gap: 32px; min-height: 200px; overflow: hidden; background: #111216; color: #fafaf7; border-radius: 20px; padding: 28px; font-family: Manrope, system-ui, sans-serif; text-decoration: none; } .ds-card-grid { position: absolute; inset: 0 0 auto 0; width: 100%; height: 50%; pointer-events: none; } .ds-card-eyebrow { position: relative; color: #8f94ff; font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; } .ds-card-title { position: relative; font-size: clamp(22px, 2.4vw, 30px); font-weight: 700; letter-spacing: -0.02em; line-height: 1.15; } .ds-card-link { position: relative; font-size: 15px; font-weight: 600; color: #fafaf7; transition: color 150ms ease; } .ds-card-night:hover .ds-card-link { color: #8f94ff; }"
+    },
+    {
+      "name": "Section Label",
+      "kind": "custom",
+      "refersTo": "eyebrow",
+      "description": "Numbered mono eyebrow that opens every major section.",
+      "html": "<p class=\"ds-section-label\">01 · Services</p>",
+      "css": ".ds-section-label { margin: 0; color: #55575f; font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; line-height: 1.4; }"
+    },
+    {
+      "name": "FAQ Row",
+      "kind": "custom",
+      "refersTo": "title",
+      "description": "Hairline-separated details row with a violet plus that rotates when open.",
+      "html": "<details class=\"ds-faq\" open><summary class=\"ds-faq-q\">Do you work with existing codebases?<span class=\"ds-faq-plus\" aria-hidden=\"true\">+</span></summary><p class=\"ds-faq-a\">Yes. Most of our work is on existing platforms, not greenfield builds.</p></details>",
+      "css": ".ds-faq { border-top: 1px solid rgba(17, 18, 22, 0.12); border-bottom: 1px solid rgba(17, 18, 22, 0.12); padding: 20px 0; font-family: Manrope, system-ui, sans-serif; color: #111216; } .ds-faq-q { display: flex; align-items: center; justify-content: space-between; gap: 16px; cursor: pointer; list-style: none; font-size: 18px; font-weight: 600; letter-spacing: -0.015em; } .ds-faq-q::-webkit-details-marker { display: none; } .ds-faq-plus { color: #4f55e8; font-size: 24px; line-height: 1; transition: transform 200ms ease; } .ds-faq[open] .ds-faq-plus { transform: rotate(45deg); } .ds-faq-a { margin: 12px 0 0; max-width: 68ch; color: #55575f; font-size: 15px; line-height: 1.6; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Blueprint with One Lamp Lit",
+    "overview": "The site is drawn like an engineer's blueprint. Most of the sheet is cool, slightly warm paper where people read and decide; the important moments are framed in deep night bands that carry the title, the proof and the footer. Across both, a faint mosaic of pixel cells and hairline rules gives the sheet its grid. There is exactly one light source: an electric violet that marks where to act, what to emphasise and what is live. Everything else stays in ink, graphite and fog.\n\nDensity is generous and typographic. Headlines are set huge, extremely tight and either feather-light or extra-bold, so hierarchy comes from weight and scale rather than from boxes or shadows. Supporting copy is small and calm. Labels are monospaced, uppercase and widely tracked, numbered like sections of a specification (\"01 · SERVICES\"). Motion is part of the material: text rises out of a mask, the logo draws itself, pixel cells flicker in, and anything interactive glides on one signature ease.\n\nThe system is flat. No drop shadows, no gradients on surfaces, no glassy blur as decoration. Depth is a change of sheet (paper to night) or a hairline, never a lift. The retiring dark-only palette (ink on near-black with a periwinkle accent) still exists in a few components; it is documented as legacy so new work does not extend it.",
+    "keyCharacteristics": [
+      "Two sheets, paper and night, alternating in full-bleed bands.",
+      "One accent, violet, used for action, emphasis and the live state; a softer violet only on night.",
+      "Manrope at extreme weights (300 and 800) with negative tracking; JetBrains Mono for all labels and metadata.",
+      "Pill geometry for every control; 20px corners for cards; 6px for fields.",
+      "Flat surfaces, hairline borders at 12 to 20 percent ink, no shadows except one popover.",
+      "Deterministic pixel-grid mosaics as texture, never imagery.",
+      "GSAP motion on a single signature ease, respecting reduced motion."
+    ],
+    "rules": [
+      {
+        "name": "The One Lamp Rule",
+        "body": "Violet is the only chromatic colour on any screen. It marks the action, the emphasis or the live state, and nothing else. If two things on one viewport are violet, one of them is wrong.",
+        "section": "colors"
+      },
+      {
+        "name": "The Two Sheets Rule",
+        "body": "A surface is either paper or night. Depth is a change of sheet, not a tint, a gradient or a shadow.",
+        "section": "colors"
+      },
+      {
+        "name": "The Two Weights Rule",
+        "body": "A headline uses at most two weights, far apart (300 and 800, or 400 and 700). Never 500 next to 600.",
+        "section": "typography"
+      },
+      {
+        "name": "The Annotation Rule",
+        "body": "Anything that labels, numbers or dates content is monospaced, uppercase and tracked. Body text is never monospaced; labels are never Manrope.",
+        "section": "typography"
+      },
+      {
+        "name": "The No-Lift Rule",
+        "body": "Cards, buttons and bands cast no shadow at rest or on hover. Hover changes colour, border or position by one pixel, never elevation. Only a floating menu may cast the popover shadow.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do alternate full-bleed Paper and Night bands; put the title, the proof and the footer on Night.",
+      "Do reserve Electric Violet for one action or emphasis per viewport, and switch to Soft Violet on Night.",
+      "Do set headlines in Manrope at two far-apart weights with negative tracking (-0.05em or tighter at display size).",
+      "Do use JetBrains Mono, uppercase, tracked 0.08 to 0.12em, for every label, number and date.",
+      "Do make every control a pill and every card a 20px-radius block; fields and panels get 6px.",
+      "Do scale type and padding with clamp() and keep horizontal page padding at clamp(20px, 4vw, 56px).",
+      "Do seed each pixel grid so it renders identically on every build, and keep its cells under 12 percent opacity.",
+      "Do start motion targets hidden only under prefers-reduced-motion: no-preference, and reveal them with GSAP autoAlpha on the signature ease."
+    ],
+    "donts": [
+      "Don't add a second accent hue, a gradient fill or a tinted surface; the only colours besides Violet are paper and ink neutrals.",
+      "Don't cast shadows on cards, buttons or bands; the select popover is the single exception.",
+      "Don't use mid weights (500, 600) in display or headline sizes, or set a headline in JetBrains Mono.",
+      "Don't extend the legacy dark palette (periwinkle #6b80ff, near-black #0e0f12, ink #f6f5f2) to new surfaces; migrate it when touched.",
+      "Don't use photographs, illustrations or icon decoration as texture; the pixel grid and hairlines are the only ornament.",
+      "Don't underline navigation or button text; links in running copy are the only underlined text.",
+      "Don't blur or frost surfaces for decoration; backdrop-blur is limited to the mobile menu overlay."
+    ]
+  }
+}
