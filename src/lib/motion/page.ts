@@ -2,7 +2,7 @@ import { coverCurtain, liftCurtain } from "./curtain";
 import { initMagnetic } from "./emphasis";
 import { FINE_POINTER, FULL_MOTION, gsap, prefersReducedMotion } from "./gsap";
 import { initHomeHero, initPageHero } from "./hero";
-import { initPixelGrids } from "./pixelGrid";
+import { fillPixelGrids, initPixelGrids } from "./pixelGrid";
 import { initReveal } from "./reveal";
 import { initScrollProgress } from "./scroll";
 
@@ -30,6 +30,9 @@ function setupPage(): void {
       html.hasAttribute("data-hero-late"));
   firstLoad = false;
   html.setAttribute("data-motion-ready", "");
+  // The grids' cells ship empty (see PixelGrid.astro); build them before any
+  // entrance queries the rects, and under reduced motion too.
+  fillPixelGrids();
   mm?.revert();
   mm = gsap.matchMedia();
   // A conditions object only runs when at least one query matches, so

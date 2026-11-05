@@ -2,24 +2,8 @@
 // Page-transition curtain (src/lib/motion/curtain.ts). The GSAP motion
 // lifecycle boots from MotionScript.astro in <head>. The curtain persists
 // across ClientRouter swaps so it can stay down while the next page is
-// fetched and swapped in.
-//
-// Each cell is a night square, and some carry a violet tint picked with the
-// same seeded formula as PixelGrid, so a covered screen reads as one of the
-// site's dark pixel-grid heroes.
-const COLS = 24;
-const ROWS = 24;
-const HI = 0.05;
-const LO = 0.015;
-
-let s = 7;
-const rand = () => (s = (s * 9301 + 49297) % 233280) / 233280;
-
-const cells = Array.from({ length: COLS * ROWS }, (_, i) => {
-  const v = rand();
-  const tint = v > 0.82 ? +(0.02 + rand() * HI).toFixed(3) : v > 0.6 ? LO : 0;
-  return { x: i % COLS, y: Math.floor(i / COLS), tint };
-});
+// fetched and swapped in. The mosaic cells are built by curtain.ts on the
+// first navigation: over a thousand nodes that no first paint needs.
 ---
 
 <div
@@ -30,35 +14,11 @@ const cells = Array.from({ length: COLS * ROWS }, (_, i) => {
 >
   <svg
     class="absolute inset-0 size-full"
-    viewBox={`0 0 ${COLS} ${ROWS}`}
+    viewBox="0 0 24 24"
     preserveAspectRatio="xMidYMid slice"
     focusable="false"
     shape-rendering="crispEdges"
-  >
-    {
-      cells.map((c) => (
-        <g style="opacity: 0" data-curtain-cell>
-          <rect
-            x={c.x}
-            y={c.y}
-            width="1.02"
-            height="1.02"
-            fill="var(--color-night)"
-          />
-          {c.tint > 0 && (
-            <rect
-              x={c.x}
-              y={c.y}
-              width="1"
-              height="1"
-              fill="var(--color-violet-soft)"
-              opacity={c.tint}
-            />
-          )}
-        </g>
-      ))
-    }
-  </svg>
+    data-curtain-grid></svg>
   <span
     class="bg-violet absolute inset-0 m-auto size-5 opacity-0"
     data-curtain-mark></span>

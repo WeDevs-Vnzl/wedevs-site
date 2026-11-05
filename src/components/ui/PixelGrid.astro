@@ -4,8 +4,10 @@
  * hairline grid aligned to a mosaic of square cells with scattered opacities,
  * film grain over everything and, with `glow`, a soft light at the bottom
  * whose edge is displaced by noise so it reads as cloud rather than as a
- * gradient. The cells are one inline SVG so a few hundred of them cost a
- * single DOM node per rect that is actually visible.
+ * gradient. The cells are one SVG whose rects are built on the client by
+ * src/lib/motion/pixelGrid.ts (fillPixelGrids) from the seed and sizes in
+ * its data attributes: a few hundred rects per band would otherwise be most
+ * of the page's HTML. Without JavaScript the hairlines and glow remain.
  *
  * Motion hooks (src/lib/motion/pixelGrid.ts and hero.ts) target the
  * `data-pixel-grid` root, the cell rects and `.pixel-grid-glow` only; the
@@ -39,16 +41,6 @@ const {
   glow = false,
 } = Astro.props;
 
-let s = seed;
-const rand = () => (s = (s * 9301 + 49297) % 233280) / 233280;
-
-const cells: { x: number; y: number; o: number }[] = [];
-for (let i = 0; i < cols * rows; i++) {
-  const v = rand();
-  const o = v > 0.82 ? +(0.02 + rand() * hi).toFixed(3) : v > 0.6 ? lo : 0;
-  if (o > 0) cells.push({ x: i % cols, y: Math.floor(i / cols), o });
-}
-
 // SVG ids must be unique per document; two grids with the same config share
 // identical definitions, so a collision between them is harmless.
 const id = `pixel-grid-${seed}-${cols}x${rows}`;
@@ -70,13 +62,12 @@ const id = `pixel-grid-${seed}-${cols}x${rows}`;
     viewBox={`0 0 ${cols} ${rows}`}
     preserveAspectRatio={cover ? "xMidYMin slice" : undefined}
     focusable="false"
-  >
-    {
-      cells.map((c) => (
-        <rect x={c.x} y={c.y} width="1" height="1" fill={color} opacity={c.o} />
-      ))
-    }
-  </svg>
+    fill={color}
+    data-seed={seed}
+    data-cols={cols}
+    data-rows={rows}
+    data-hi={hi}
+    data-lo={lo}></svg>
 
   {
     glow && (
